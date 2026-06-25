@@ -1,5 +1,9 @@
 import { HeaderNav, type NavCategory } from "@/components/header-nav";
-import { getCategories } from "@/data/catalog";
+import {
+  getCategories,
+  getProductsByCategory,
+  getProductCount,
+} from "@/data/catalog";
 
 export function SiteHeader() {
   const nav: NavCategory[] = getCategories().map((c) => ({
@@ -7,11 +11,13 @@ export function SiteHeader() {
     slug: c.slug,
     blurb: c.blurb,
     icon: c.icon,
-    subcategories: c.subcategories.map((sc) => ({
+    productCount: c.productCount,
+    image: getProductsByCategory(c.slug)[0]?.image,
+    subcategories: c.subcategories.slice(0, 6).map((sc) => ({
       name: sc.name,
       slug: sc.slug,
     })),
   }));
 
-  return <HeaderNav nav={nav} />;
+  return <HeaderNav nav={nav} totalProducts={getProductCount()} />;
 }

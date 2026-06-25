@@ -5,10 +5,16 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  FomaPrint design system
-  - Primary brand color: brass / amber (warm, premium — evokes laser engraving on wood & leather)
-  - Accent: deep evergreen (trust / natural, used sparingly)
-  - Neutrals: warm stone scale on a near-black warm ink
+  FomaPrint — "Engraved Premium" design system
+  ------------------------------------------------------------------
+  B2B print-on-demand & laser-engraving partner for resellers.
+  Mood: Aesop × Linear × high-end print house.
+  - Brand: brass / bronze (warm, tactile — evokes laser engraving on
+    wood, metal & leather). Used as a precious accent, never as fill.
+  - Surfaces: warm bone paper (light) + warm espresso "ink" (dark
+    sections). Hairline borders, layered warm shadows, metallic rules.
+  - Type: Space Grotesk (display), Inter (UI/body), Fraunces (editorial
+    serif accent). Fluid clamp() scale.
 */
 @theme inline {
   --color-background: var(--background);
@@ -16,6 +22,7 @@
 
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
+  --font-serif: var(--font-serif);
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --color-card: var(--card);
@@ -35,11 +42,19 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Brand extensions */
+  /* Brand: brass / bronze */
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-muted: var(--brand-muted);
   --color-brand-strong: var(--brand-strong);
+
+  /* Ink: warm espresso for dark editorial sections */
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-border: var(--ink-border);
+
+  /* Accent: deep evergreen (sparingly) */
   --color-evergreen: var(--evergreen);
   --color-evergreen-foreground: var(--evergreen-foreground);
   --color-evergreen-muted: var(--evergreen-muted);
@@ -55,44 +70,63 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-3xl: calc(var(--radius) * 2.4);
 
+  /* Layered warm shadows */
   --shadow-soft: 0 1px 2px oklch(0.2 0.02 60 / 0.04), 0 8px 24px oklch(0.2 0.02 60 / 0.06);
   --shadow-card: 0 1px 3px oklch(0.2 0.02 60 / 0.05), 0 12px 32px oklch(0.2 0.02 60 / 0.07);
+  --shadow-lg: 0 2px 4px oklch(0.2 0.02 60 / 0.05), 0 18px 44px -10px oklch(0.2 0.02 60 / 0.13);
+  --shadow-xl: 0 4px 8px oklch(0.2 0.02 60 / 0.06), 0 40px 80px -18px oklch(0.2 0.02 60 / 0.2);
+  --shadow-brand: 0 10px 34px -8px oklch(0.62 0.115 68 / 0.42);
+
+  /* Premium easings */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-marquee-slow: marquee 64s linear infinite;
+  --animate-shimmer: shimmer 2.4s var(--ease-premium) infinite;
 }
 
 :root {
-  --background: oklch(0.994 0.0025 85);
-  --foreground: oklch(0.205 0.012 60);
+  /* Warm bone paper */
+  --background: oklch(0.992 0.003 86);
+  --foreground: oklch(0.21 0.012 58);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.205 0.012 60);
+  --card-foreground: oklch(0.21 0.012 58);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.205 0.012 60);
+  --popover-foreground: oklch(0.21 0.012 58);
 
-  --primary: oklch(0.255 0.018 58);
+  --primary: oklch(0.25 0.018 56);
   --primary-foreground: oklch(0.985 0.004 85);
 
   --secondary: oklch(0.955 0.008 80);
-  --secondary-foreground: oklch(0.255 0.018 58);
+  --secondary-foreground: oklch(0.25 0.018 56);
 
   --muted: oklch(0.963 0.007 80);
   --muted-foreground: oklch(0.515 0.014 65);
 
   --accent: oklch(0.95 0.012 82);
-  --accent-foreground: oklch(0.255 0.018 58);
+  --accent-foreground: oklch(0.25 0.018 56);
 
   --destructive: oklch(0.577 0.245 27.325);
 
-  --border: oklch(0.905 0.008 80);
-  --input: oklch(0.905 0.008 80);
+  --border: oklch(0.9 0.008 78);
+  --input: oklch(0.9 0.008 78);
   --ring: oklch(0.72 0.108 76);
 
-  /* Brand: brass / amber */
+  /* Brand: brass / bronze */
   --brand: oklch(0.72 0.108 76);
-  --brand-foreground: oklch(0.255 0.03 58);
+  --brand-foreground: oklch(0.25 0.03 58);
   --brand-muted: oklch(0.957 0.035 84);
   --brand-strong: oklch(0.55 0.115 62);
+
+  /* Ink: warm espresso (dark sections) */
+  --ink: oklch(0.205 0.014 56);
+  --ink-foreground: oklch(0.955 0.006 85);
+  --ink-muted: oklch(0.72 0.012 78);
+  --ink-border: oklch(1 0 0 / 0.1);
 
   /* Accent: deep evergreen */
   --evergreen: oklch(0.43 0.072 168);
@@ -100,6 +134,16 @@
   --evergreen-muted: oklch(0.95 0.028 165);
 
   --radius: 0.7rem;
+
+  /* Metallic foil sheen (engraved brass) */
+  --metallic: linear-gradient(
+    135deg,
+    oklch(0.58 0.095 62) 0%,
+    oklch(0.86 0.09 90) 28%,
+    oklch(0.7 0.11 74) 52%,
+    oklch(0.9 0.07 95) 70%,
+    oklch(0.55 0.1 60) 100%
+  );
 
   --chart-1: oklch(0.72 0.108 76);
   --chart-2: oklch(0.43 0.072 168);
@@ -130,7 +174,7 @@
   }
 
   ::selection {
-    background-color: color-mix(in oklch, var(--brand) 30%, transparent);
+    background-color: color-mix(in oklch, var(--brand) 32%, transparent);
     color: var(--foreground);
   }
 
@@ -151,6 +195,85 @@
   .eyebrow {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-strong;
   }
+
+  /* ---- Fluid display type scale (clamp) ---- */
+  .text-display {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(2.75rem, 5.4vw + 1rem, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+  .text-h1 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(2.15rem, 3.6vw + 1rem, 3.6rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+  }
+  .text-h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.7rem, 2.2vw + 1rem, 2.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .text-h3 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 1vw + 1rem, 1.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+  .text-lead {
+    font-size: clamp(1.05rem, 0.55vw + 1rem, 1.3rem);
+    line-height: 1.6;
+  }
+
+  /* Frosted glass surface (nav) */
+  .glass {
+    background: color-mix(in oklch, var(--background) 72%, transparent);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+  }
+  .glass-ink {
+    background: color-mix(in oklch, var(--ink) 64%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+  }
+
+  /* Thin metallic rule (engraved brass line) */
+  .rule-metallic {
+    height: 1px;
+    width: 100%;
+    border: 0;
+    background: var(--metallic);
+    opacity: 0.85;
+  }
+
+  /* Metallic foil text (accent words & engraved numerals) */
+  .text-metallic {
+    background: var(--metallic);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Film-grain / noise overlay for dark sections */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
 
 @utility no-scrollbar {
@@ -159,4 +282,54 @@
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Mask for edge-faded marquee rows */
+@utility marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -150% 0;
+  }
+  100% {
+    background-position: 250% 0;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

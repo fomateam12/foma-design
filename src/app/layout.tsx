@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Inter, Space_Grotesk, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { QuoteProvider } from "@/components/quote-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { site } from "@/lib/site";
@@ -12,10 +13,18 @@ const inter = Inter({
   display: "swap",
 });
 
-const sora = Sora({
+const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
+});
+
+const fraunces = Fraunces({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  display: "swap",
+  style: ["normal", "italic"],
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -30,14 +39,15 @@ export const metadata: Metadata = {
   creator: site.legalName,
   publisher: site.legalName,
   keywords: [
-    "personalized gifts",
-    "laser engraved gifts",
-    "custom drinkware",
-    "engraved tumblers",
-    "custom cutting board",
-    "print on demand gifts",
-    "corporate gifts",
-    "monogram gifts",
+    "print on demand for resellers",
+    "wholesale laser engraving",
+    "white label personalization",
+    "blind drop shipping USA",
+    "Etsy fulfillment partner",
+    "custom drinkware wholesale",
+    "engraved tumblers bulk",
+    "POD supplier",
+    "made in USA print on demand",
     "FomaPrint",
   ],
   openGraph: {
@@ -59,7 +69,7 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
   alternates: { canonical: "/" },
-  category: "shopping",
+  category: "business",
 };
 
 export const viewport: Viewport = {
@@ -73,7 +83,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${sora.variable} h-full`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${fraunces.variable} h-full`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
@@ -84,11 +94,13 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <SiteHeader />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
+        <QuoteProvider>
+          <SiteHeader />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </QuoteProvider>
         <Toaster position="top-center" theme="light" richColors closeButton />
       </body>
     </html>

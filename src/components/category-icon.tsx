@@ -1,4 +1,4 @@
-import { Gift, CupSoda, Coffee, Frame, NotebookPen } from "lucide-react";
+import { Gift, CupSoda, Coffee, Frame, NotebookPen, Award } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import type { IconKey } from "@/data/types";
 
@@ -8,6 +8,7 @@ const ICONS: Record<IconKey, React.ComponentType<LucideProps>> = {
   coffee: Coffee,
   frame: Frame,
   notebook: NotebookPen,
+  award: Award,
 };
 
 export function CategoryIcon({

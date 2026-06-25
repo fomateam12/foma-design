@@ -18,9 +18,7 @@ export default function TermsPage() {
       />
 
       <article className="mt-6 max-w-3xl">
-        <h1 className="font-heading text-4xl font-bold tracking-tight text-foreground">
-          Terms of Service
-        </h1>
+        <h1 className="text-h2 text-foreground">Terms of Service</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Last updated: {UPDATED}
         </p>
@@ -49,10 +47,10 @@ export default function TermsPage() {
               Quotes &amp; pricing
             </h2>
             <p className="mt-3">
-              Prices shown are starting prices and may vary based on
-              personalization, quantity and finishing options. We confirm final
-              pricing in your quote before production. Bulk, corporate and
-              reseller pricing is available on request.
+              Pricing is wholesale and provided by quote rather than listed
+              publicly. Per-unit rates depend on the product, personalization,
+              quantity and finishing options. We confirm final pricing in your
+              quote before production, and pricing may be updated over time.
             </p>
           </section>
 

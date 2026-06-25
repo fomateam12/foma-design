@@ -3,20 +3,21 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Star,
   Check,
   ArrowRight,
   PenTool,
   Mail,
   Truck,
   ShieldCheck,
+  Tags,
   Ruler,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProductGrid } from "@/components/product-grid";
+import { AddToQuoteButton } from "@/components/add-to-quote-button";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { formatPrice, cloudinary } from "@/lib/format";
+import { cloudinary } from "@/lib/format";
 import {
   getAllProducts,
   getProduct,
@@ -67,11 +68,6 @@ export default async function ProductPage({
     description: product.description,
     sku: product.sku,
     brand: { "@type": "Brand", name: site.name },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount,
-    },
     offers: {
       "@type": "Offer",
       priceCurrency: "USD",
@@ -142,23 +138,19 @@ export default async function ProductPage({
           </h1>
 
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <Star className="size-4 fill-brand text-brand" />
-              <span className="font-medium text-foreground">
-                {product.rating.toFixed(1)}
-              </span>
-              ({product.reviewCount} reviews)
+            <span className="font-mono text-xs uppercase tracking-wide">
+              SKU: {product.sku}
             </span>
-            <span>SKU: {product.sku}</span>
           </div>
 
-          <div className="mt-5 flex items-baseline gap-3">
-            <span className="font-heading text-3xl font-bold text-foreground">
-              {formatPrice(product.basePrice)}
-            </span>
-            <span className="text-sm text-muted-foreground">
-              + personalization included
-            </span>
+          <div className="mt-5 rounded-2xl border border-border bg-secondary/40 p-4">
+            <p className="font-heading text-lg font-semibold text-foreground">
+              Wholesale pricing on request
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Tiered reseller pricing with personalization included — add this
+              item to a quote and we&apos;ll send rates within one business day.
+            </p>
           </div>
 
           <p className="mt-5 leading-relaxed text-muted-foreground">
@@ -198,26 +190,41 @@ export default async function ProductPage({
           </div>
 
           {/* CTAs */}
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href={`/custom-order?product=${encodeURIComponent(product.sku)}`}
-              className={cn(buttonVariants({ size: "lg" }), "flex-1")}
-            >
-              <PenTool className="size-4" />
-              Personalize this item
-            </Link>
-            <a
-              href={`mailto:${site.email}?subject=${encodeURIComponent(
-                `Question about ${product.name} (${product.sku})`,
-              )}`}
-              className={cn(
-                buttonVariants({ variant: "outline", size: "lg" }),
-                "flex-1",
-              )}
-            >
-              <Mail className="size-4" />
-              Ask a question
-            </a>
+          <div className="mt-6 space-y-3">
+            <AddToQuoteButton
+              item={{
+                id: product.id,
+                sku: product.sku,
+                name: product.name,
+                image: product.image,
+              }}
+              variant="full"
+              className="w-full"
+            />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href={`/custom-order?product=${encodeURIComponent(product.sku)}`}
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "flex-1",
+                )}
+              >
+                <PenTool className="size-4" />
+                Personalize this item
+              </Link>
+              <a
+                href={`mailto:${site.email}?subject=${encodeURIComponent(
+                  `Question about ${product.name} (${product.sku})`,
+                )}`}
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "flex-1",
+                )}
+              >
+                <Mail className="size-4" />
+                Ask a question
+              </a>
+            </div>
           </div>
 
           {/* Trust */}
@@ -236,7 +243,7 @@ export default async function ProductPage({
               </p>
             </div>
             <div className="flex items-start gap-2.5">
-              <Star className="mt-0.5 size-5 text-brand-strong" />
+              <Tags className="mt-0.5 size-5 text-brand-strong" />
               <p className="text-xs leading-relaxed text-muted-foreground">
                 Bulk & corporate pricing available
               </p>

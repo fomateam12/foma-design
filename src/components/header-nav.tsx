@@ -7,8 +7,8 @@ import {
   ChevronRight,
   ArrowRight,
   Phone,
+  FileText,
   Sparkles,
-  PenTool,
 } from "lucide-react";
 import {
   NavigationMenu,
@@ -28,7 +28,9 @@ import {
 } from "@/components/ui/sheet";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SearchBox } from "@/components/search-box";
+import { QuoteIndicator } from "@/components/quote-indicator";
 import { Logo } from "@/components/logo";
+import { ProductImage } from "@/components/product-image";
 import { CategoryIcon } from "@/components/category-icon";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
@@ -39,16 +41,25 @@ export interface NavCategory {
   slug: string;
   blurb: string;
   icon: IconKey;
+  productCount: number;
+  image?: string;
   subcategories: { name: string; slug: string }[];
 }
 
-const UTILITY_LINKS = [
-  { label: "Resellers", href: "/sell" },
+const NAV_LINKS = [
+  { label: "How it works", href: "/#how" },
+  { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
-export function HeaderNav({ nav }: { nav: NavCategory[] }) {
+export function HeaderNav({
+  nav,
+  totalProducts,
+}: {
+  nav: NavCategory[];
+  totalProducts: number;
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -62,24 +73,25 @@ export function HeaderNav({ nav }: { nav: NavCategory[] }) {
   return (
     <>
       {/* Announcement bar (scrolls away) */}
-      <div className="bg-primary text-primary-foreground">
+      <div className="bg-ink text-ink-foreground">
         <div className="container-px flex h-9 items-center justify-center gap-2 text-center text-[0.78rem] font-medium">
           <Sparkles className="size-3.5 text-brand" aria-hidden="true" />
           <span>
-            Free design proof on every custom order · Made to order in the USA
+            Wholesale POD &amp; laser engraving · Blind drop-ship from the USA ·
+            Free design proof on every order
           </span>
         </div>
       </div>
 
       <header
         className={cn(
-          "sticky top-0 z-50 w-full border-b transition-all duration-200",
+          "sticky top-0 z-50 w-full transition-all duration-300 ease-premium",
           scrolled
-            ? "border-border bg-background/85 shadow-sm backdrop-blur-md"
-            : "border-transparent bg-background",
+            ? "glass border-b border-border shadow-soft"
+            : "border-b border-transparent bg-background/70 backdrop-blur-md",
         )}
       >
-        <div className="container-px flex h-16 items-center gap-3 lg:h-20 lg:gap-5">
+        <div className="container-px flex h-16 items-center gap-3 lg:h-[4.5rem] lg:gap-5">
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
@@ -105,6 +117,9 @@ export function HeaderNav({ nav }: { nav: NavCategory[] }) {
               </div>
 
               <nav className="flex-1 overflow-y-auto px-2 pb-4">
+                <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  Catalog
+                </p>
                 {nav.map((cat) => (
                   <details key={cat.slug} className="group border-b border-border/60">
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-md px-3 py-3 outline-none hover:bg-muted focus-visible:bg-muted">
@@ -140,14 +155,7 @@ export function HeaderNav({ nav }: { nav: NavCategory[] }) {
                 ))}
 
                 <div className="mt-3 flex flex-col gap-1 px-1">
-                  <Link
-                    href="/custom-order"
-                    onClick={() => setMobileOpen(false)}
-                    className="rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
-                  >
-                    Custom Orders
-                  </Link>
-                  {UTILITY_LINKS.map((l) => (
+                  {NAV_LINKS.map((l) => (
                     <Link
                       key={l.href}
                       href={l.href}
@@ -157,6 +165,31 @@ export function HeaderNav({ nav }: { nav: NavCategory[] }) {
                       {l.label}
                     </Link>
                   ))}
+                  <Link
+                    href="/quote"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                  >
+                    <FileText className="size-4 text-brand-strong" />
+                    Request a quote
+                  </Link>
+                </div>
+
+                <div className="mt-4 flex flex-col gap-2 px-1">
+                  <Link
+                    href="/sell"
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(buttonVariants({ variant: "brand", size: "lg" }))}
+                  >
+                    Apply to sell
+                  </Link>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+                  >
+                    Log in
+                  </Link>
                 </div>
               </nav>
 
@@ -174,57 +207,70 @@ export function HeaderNav({ nav }: { nav: NavCategory[] }) {
 
           <Logo />
 
-          {/* Desktop mega menu */}
+          {/* Desktop nav */}
           <NavigationMenu className="hidden lg:flex" align="start">
             <NavigationMenuList>
-              {nav.map((cat) => (
-                <NavigationMenuItem key={cat.slug}>
-                  <NavigationMenuTrigger>{cat.name}</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid w-[680px] max-w-[88vw] grid-cols-[1.05fr_2fr] gap-4 p-4">
-                      <Link
-                        href={`/category/${cat.slug}`}
-                        className="group/promo relative flex flex-col justify-between gap-6 overflow-hidden rounded-xl bg-gradient-to-br from-brand-muted to-secondary p-5 outline-none ring-1 ring-border focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        <div className="space-y-2">
-                          <span className="inline-flex size-10 items-center justify-center rounded-lg bg-background/70 text-brand-strong shadow-sm">
-                            <CategoryIcon icon={cat.icon} className="size-5" />
-                          </span>
-                          <h3 className="font-heading text-base font-semibold text-foreground">
-                            {cat.name}
-                          </h3>
-                          <p className="text-xs leading-relaxed text-muted-foreground">
-                            {cat.blurb}
-                          </p>
-                        </div>
-                        <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-strong">
-                          Browse all
-                          <ArrowRight className="size-4 transition-transform group-hover/promo:translate-x-0.5" />
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Catalog</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="grid w-[760px] max-w-[92vw] grid-cols-[1fr_1.7fr] gap-4 p-4">
+                    <Link
+                      href="/categories"
+                      className="group/promo relative flex flex-col justify-between gap-6 overflow-hidden rounded-xl bg-gradient-to-br from-brand-muted to-secondary p-5 outline-none ring-1 ring-border focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <div className="space-y-2">
+                        <span className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-strong">
+                          Full catalog
                         </span>
-                      </Link>
+                        <h3 className="font-heading text-lg font-semibold text-foreground">
+                          {totalProducts.toLocaleString()}+ products ready to
+                          personalize
+                        </h3>
+                        <p className="text-xs leading-relaxed text-muted-foreground">
+                          Drinkware, gifts, frames and office goods — engraved
+                          and blind-shipped under your brand.
+                        </p>
+                      </div>
+                      <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-strong">
+                        Browse everything
+                        <ArrowRight className="size-4 transition-transform group-hover/promo:translate-x-0.5" />
+                      </span>
+                    </Link>
 
-                      <ul className="grid grid-cols-2 content-start gap-0.5">
-                        {cat.subcategories.map((sc) => (
-                          <li key={sc.slug}>
-                            <NavigationMenuLink
-                              render={
-                                <Link
-                                  href={`/category/${cat.slug}/${sc.slug}`}
-                                />
-                              }
-                              className="text-muted-foreground hover:text-foreground"
-                            >
-                              {sc.name}
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              ))}
+                    <ul className="grid grid-cols-2 content-start gap-1">
+                      {nav.map((cat) => (
+                        <li key={cat.slug}>
+                          <NavigationMenuLink
+                            render={<Link href={`/category/${cat.slug}`} />}
+                            className="flex items-center gap-3 rounded-lg p-2"
+                          >
+                            <ProductImage
+                              src={cat.image ?? ""}
+                              alt=""
+                              seed={cat.slug}
+                              icon={cat.icon}
+                              width={120}
+                              sizes="48px"
+                              className="size-11 shrink-0 rounded-md border border-border"
+                              imgClassName="p-1"
+                            />
+                            <span className="min-w-0">
+                              <span className="block truncate text-sm font-medium text-foreground">
+                                {cat.name}
+                              </span>
+                              <span className="block text-xs text-muted-foreground">
+                                {cat.productCount.toLocaleString()} items
+                              </span>
+                            </span>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
 
-              {UTILITY_LINKS.map((l) => (
+              {NAV_LINKS.map((l) => (
                 <NavigationMenuItem key={l.href}>
                   <NavigationMenuLink
                     render={<Link href={l.href} />}
@@ -239,23 +285,28 @@ export function HeaderNav({ nav }: { nav: NavCategory[] }) {
 
           {/* Right utilities */}
           <div className="ml-auto flex items-center gap-2">
-            <SearchBox className="hidden w-48 md:block lg:w-64 xl:w-72" />
+            <SearchBox className="hidden w-44 md:block lg:w-56 xl:w-64" />
+
+            <QuoteIndicator />
+
             <Link
-              href="/custom-order"
+              href="/login"
               className={cn(
-                buttonVariants({ size: "default" }),
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "hidden lg:inline-flex",
+              )}
+            >
+              Log in
+            </Link>
+
+            <Link
+              href="/sell"
+              className={cn(
+                buttonVariants({ variant: "brand", size: "default" }),
                 "hidden sm:inline-flex",
               )}
             >
-              <PenTool className="size-4" />
-              Custom order
-            </Link>
-            <Link
-              href="/custom-order"
-              aria-label="Request a custom order"
-              className={cn(buttonVariants({ size: "icon" }), "sm:hidden")}
-            >
-              <PenTool className="size-4" />
+              Apply to sell
             </Link>
           </div>
         </div>

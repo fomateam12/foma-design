@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Tags } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProductGrid } from "@/components/product-grid";
 import { cn } from "@/lib/utils";
@@ -29,7 +30,7 @@ export async function generateMetadata({
   const found = getSubcategory(slug, subSlug);
   if (!found) return { title: "Not found" };
   const { category, subcategory } = found;
-  const description = `Shop ${subcategory.productCount} personalized ${subcategory.name.toLowerCase()} — laser-engraved to order by FomaPrint.`;
+  const description = `Shop ${subcategory.productCount} personalized ${subcategory.name.toLowerCase()} — laser-engraved to order and blind drop-shipped by FomaPrint. Wholesale pricing for resellers.`;
   return {
     title: `${subcategory.name} — ${category.name}`,
     description,
@@ -61,21 +62,27 @@ export default async function SubcategoryPage({
       />
 
       <header className="mt-6 max-w-2xl">
-        <h1 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          {subcategory.name}
-        </h1>
+        <Link
+          href={`/category/${category.slug}`}
+          className="eyebrow text-brand-strong hover:underline"
+        >
+          {category.name}
+        </Link>
+        <h1 className="mt-2 text-h2 text-foreground">{subcategory.name}</h1>
         <p className="mt-3 text-base leading-relaxed text-muted-foreground">
           {subcategory.blurb}
         </p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {products.length.toLocaleString()} products
+        <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1 text-xs font-medium text-muted-foreground">
+          <Tags className="size-3.5 text-brand-strong" />
+          {products.length.toLocaleString()} products · Wholesale pricing on
+          request
         </p>
       </header>
 
       {/* Sibling subcategories */}
       <nav
         aria-label={`More in ${category.name}`}
-        className="no-scrollbar mt-6 flex gap-2 overflow-x-auto pb-1"
+        className="no-scrollbar mt-7 flex gap-2 overflow-x-auto pb-1"
       >
         {category.subcategories.map((sc) => {
           const active = sc.slug === subcategory.slug;

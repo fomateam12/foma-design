@@ -18,9 +18,7 @@ export default function PrivacyPage() {
       />
 
       <article className="mt-6 max-w-3xl">
-        <h1 className="font-heading text-4xl font-bold tracking-tight text-foreground">
-          Privacy Policy
-        </h1>
+        <h1 className="text-h2 text-foreground">Privacy Policy</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Last updated: {UPDATED}
         </p>

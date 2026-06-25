@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { sellerApplicationSchema } from "@/lib/validation";
-import { sendSellerApplicationEmails } from "@/lib/email";
+import { quoteSchema } from "@/lib/validation";
+import { sendQuoteRequestEmails } from "@/lib/email";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const parsed = sellerApplicationSchema.safeParse(body);
+  const parsed = quoteSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
       {
@@ -21,22 +21,23 @@ export async function POST(request: Request) {
     );
   }
 
+  // Honeypot tripped — silently accept so bots can't tell.
   if (parsed.data.company) {
     return NextResponse.json({ ok: true });
   }
 
   try {
-    const result = await sendSellerApplicationEmails(parsed.data);
+    const result = await sendQuoteRequestEmails(parsed.data);
     if (!result.ok) {
       return NextResponse.json(
-        { error: "We couldn't submit your application. Please email us directly." },
+        { error: "We couldn't submit your request. Please email us directly." },
         { status: 502 },
       );
     }
   } catch (err) {
-    console.error("[seller-application] dispatch threw:", err);
+    console.error("[quote] dispatch threw:", err);
     return NextResponse.json(
-      { error: "We couldn't submit your application. Please email us directly." },
+      { error: "We couldn't submit your request. Please email us directly." },
       { status: 502 },
     );
   }

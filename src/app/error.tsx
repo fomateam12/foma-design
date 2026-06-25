@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Home, RotateCw, TriangleAlert } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { site } from "@/lib/site";
 
 export default function Error({
   error,
@@ -42,6 +43,15 @@ export default function Error({
           Back home
         </Link>
       </div>
+      <p className="mt-6 text-sm text-muted-foreground">
+        Still stuck? Email{" "}
+        <a
+          href={`mailto:${site.email}`}
+          className="font-medium text-brand-strong hover:underline"
+        >
+          {site.email}
+        </a>
+      </p>
     </div>
   );
 }
