@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push *)",
+      "Bash(git reset --hard *)",
+      "Bash(vercel *)",
+      "Bash(npx vercel *)",
+      "Read(./.env*)",
+      "Edit(./.env*)",
+      "Bash(curl * | *)"
+    ],
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npm install *)",
+      "Bash(npx *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Edit(./src/**)",
+      "Edit(./app/**)",
+      "Edit(./components/**)",
+      "Edit(./public/**)"
+    ]
+  }
+}
