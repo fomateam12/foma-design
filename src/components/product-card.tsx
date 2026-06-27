@@ -8,7 +8,6 @@ import type { IconKey, Product } from "@/data/types";
 const SLUG_ICON: Record<string, IconKey> = {
   "best-seller": "award",
   "gifts-and-promotions": "gift",
-  "polar-camel": "cup-soda",
   drinkware: "coffee",
   "frames-and-decor": "frame",
   "office-tech": "notebook",

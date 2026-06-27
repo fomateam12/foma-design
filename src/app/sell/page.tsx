@@ -124,7 +124,7 @@ export default function SellPage() {
             <p className="mt-5 max-w-2xl text-lead text-muted-foreground">
               Partner with {site.legalName} and sell over{" "}
               {productCount.toLocaleString()} laser-engravable products — from
-              Polar Camel drinkware to custom frames — with wholesale pricing,
+              premium drinkware to custom frames — with wholesale pricing,
               made-to-order U.S. production and blind drop-shipping under your
               brand.
             </p>

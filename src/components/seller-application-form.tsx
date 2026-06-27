@@ -184,7 +184,7 @@ export function SellerApplicationForm() {
         <Label htmlFor="se-interest">Which products are you interested in? *</Label>
         <Input
           id="se-interest"
-          placeholder="e.g. Polar Camel tumblers, cutting boards, frames"
+          placeholder="e.g. tumblers, cutting boards, frames"
           className={cn(FIELD, "mt-1.5")}
           aria-invalid={!!errors.productInterest}
           {...register("productInterest")}

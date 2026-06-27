@@ -72,13 +72,252 @@ interface RawData {
 const data = rawData as unknown as RawData;
 
 /* ------------------------------------------------------------------ */
+/* Brand normalization                                                 */
+/*                                                                     */
+/* The scraped feed mirrors the supplier's taxonomy, where insulated   */
+/* "Polar Camel" drinkware is its own top-level category. FOMA presents */
+/* it as one unified "Drinkware" category with the "Polar Camel"        */
+/* trademark stripped from every name. We fold that category into       */
+/* Drinkware here — the single point every consumer (pages, search,     */
+/* sitemap) reads from — so it survives the daily re-scrape.            */
+/* ------------------------------------------------------------------ */
+
+const MERGE_SOURCE_SLUG = "polar-camel";
+const MERGE_TARGET = { id: "3", slug: "drinkware", name: "Drinkware" } as const;
+
+/* ------------------------------------------------------------------ */
+/* Catalog curation (FomaPrint assortment, applied over the feed)      */
+/*                                                                     */
+/* The supplier feed is broader than what FOMA actually sells. These   */
+/* lists trim it to the FomaPrint assortment and survive the daily     */
+/* re-scrape because they are reapplied here, the single point every   */
+/* consumer reads from:                                                */
+/*   - REMOVED_SKUS: pulled from every page, search and sitemap.       */
+/*   - ADDED_PRODUCTS: supplier items the feed doesn't carry, injected */
+/*     idempotently so a later scrape that includes them won't dupe.   */
+/*   - ADDED_SUBCATEGORIES: subcategory tiles those additions need.    */
+/* ------------------------------------------------------------------ */
+
+const REMOVED_SKUS = new Set<string>([
+  "APF446B", "APF446GY", "APF457B", "APF457GY", "APF4810B", "APF4810GY",
+  "BBQ01A", "BBQ02A", "BBQ03B", "BBQ11B", "BBQ12B", "BBQ13B",
+  "BBQ14B", "CDL1011", "CDL1012", "CDL1013", "CDL1014", "CDL1015",
+  "CDL1016", "CDL1017", "CDL1061", "CDL1062", "CDL1063", "CDL1064",
+  "CDL1065", "CDL1066", "CDL1067", "GFT008", "GFT048", "GFT1001",
+  "GFT1002", "GFT1003", "GFT1004", "GFT1005", "GFT1006", "GFT1007",
+  "GFT1008", "GFT1009", "GFT1010", "GFT1011", "GFT1012", "GFT1046",
+  "GFT1047", "GFT1048", "GFT1049", "GFT1050", "GFT1051", "GFT1052",
+  "GFT1053", "GFT1054", "GFT1055", "GFT1056", "GFT1057", "GFT1058",
+  "GFT1296", "GFT1297", "GFT1298", "GFT1300", "GFT1302", "GFT1304",
+  "GFT1307", "GFT159", "GFT2023", "GFT2024", "GFT2025", "GFT2026",
+  "GFT2027", "GFT2028", "GFT2029", "GFT2030", "GFT2031", "GFT2032",
+  "GFT2033", "GFT2034", "HMD01", "LDC0102", "LDC0104", "LDC0105",
+  "LDC0110", "LDC0111", "LDC0113", "LDC0202", "LDC0204", "LDC0205",
+  "LDC0210", "LDC0211", "LDC0213", "LDC0302", "LDC0304", "LDC0305",
+  "LDC0310", "LDC0311", "LDC0313", "LDC0402", "LDC0404", "LDC0405",
+  "LDC0410", "LDC0411", "LDC0413", "LLF1046", "LLF1057", "LLF10810",
+  "LLF1246", "LLF1257", "LLF12810", "LLF146", "LLF1546", "LLF1557",
+  "LLF15810", "LLF1646", "LLF1657", "LLF16810", "LLF1810", "LLF1846",
+  "LLF18810", "LLF1946", "LLF1957", "LLF19810", "LLF246", "LLF257",
+  "LLF2810", "LLF30146", "LLF30157", "LLF30346", "LLF30357", "LLF30446",
+  "LLF30457", "LLF30546", "LLF30557", "LLF30946", "LLF30957", "LLF31246",
+  "LLF31257", "LLF31346", "LLF31357", "LLF31446", "LLF31457", "LLF346A",
+  "LLF357A", "LLF3810A", "LLF446", "LLF457", "LLF4810", "LLF546",
+  "LLF557", "LLF5810", "LLF946", "LLF957", "LLF9810", "LLT01",
+  "LTM033", "MRT01", "SLT010", "SLT011", "SLT020", "SLT021",
+  "SLT030", "SLT031", "SLT040", "SLT041", "SLT042", "SLT050",
+  "SLT051", "SLT085", "SLT086",
+]);
+
+const ADDED_PRODUCTS: RawProduct[] = [
+  {
+    id: "gft2091",
+    name: "Pink Round Silicone Grip Coaster",
+    sku: "GFT2091",
+    size: "3 3/4\" diameter",
+    price: 3.6,
+    image: "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1669753944/products/images/large/GFT2091--de027336.png",
+    imageFull: "https://res.cloudinary.com/business-products/image/upload/q_auto/v1669753944/products/images/large/GFT2091--de027336.png",
+    categoryId: "3",
+    categorySlug: "drinkware",
+    categoryName: "Drinkware",
+    subId: "sgc",
+    subSlug: "silicone-grip-coasters",
+    subName: "Silicone Grip Coasters",
+  },
+  {
+    id: "gft2101",
+    name: "Pink Square Silicone Grip Coaster",
+    sku: "GFT2101",
+    size: "3 3/4\" x 3 3/4\"",
+    price: 3.6,
+    image: "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1669753959/products/images/large/GFT2101--6eabc84a.png",
+    imageFull: "https://res.cloudinary.com/business-products/image/upload/q_auto/v1669753959/products/images/large/GFT2101--6eabc84a.png",
+    categoryId: "3",
+    categorySlug: "drinkware",
+    categoryName: "Drinkware",
+    subId: "sgc",
+    subSlug: "silicone-grip-coasters",
+    subName: "Silicone Grip Coasters",
+  },
+  {
+    id: "gft2071",
+    name: "Red Round Silicone Grip Coaster",
+    sku: "GFT2071",
+    size: "3 3/4\" diameter",
+    price: 3.6,
+    image: "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1669753908/products/images/large/GFT2071--e4157213.png",
+    imageFull: "https://res.cloudinary.com/business-products/image/upload/q_auto/v1669753908/products/images/large/GFT2071--e4157213.png",
+    categoryId: "3",
+    categorySlug: "drinkware",
+    categoryName: "Drinkware",
+    subId: "sgc",
+    subSlug: "silicone-grip-coasters",
+    subName: "Silicone Grip Coasters",
+  },
+  {
+    id: "gft2081",
+    name: "Red Square Silicone Grip Coaster",
+    sku: "GFT2081",
+    size: "3 3/4\" x 3 3/4\"",
+    price: 3.6,
+    image: "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1669753926/products/images/large/GFT2081--4b00d095.png",
+    imageFull: "https://res.cloudinary.com/business-products/image/upload/q_auto/v1669753926/products/images/large/GFT2081--4b00d095.png",
+    categoryId: "3",
+    categorySlug: "drinkware",
+    categoryName: "Drinkware",
+    subId: "sgc",
+    subSlug: "silicone-grip-coasters",
+    subName: "Silicone Grip Coasters",
+  },
+  {
+    id: "gft2102",
+    name: "Teal Square Silicone Grip Coaster",
+    sku: "GFT2102",
+    size: "3 3/4\" x 3 3/4\"",
+    price: 3.6,
+    image: "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1669753965/products/images/large/GFT2102--8ed26440.png",
+    imageFull: "https://res.cloudinary.com/business-products/image/upload/q_auto/v1669753965/products/images/large/GFT2102--8ed26440.png",
+    categoryId: "3",
+    categorySlug: "drinkware",
+    categoryName: "Drinkware",
+    subId: "sgc",
+    subSlug: "silicone-grip-coasters",
+    subName: "Silicone Grip Coasters",
+  },
+  {
+    id: "lbh21",
+    name: "Stainless Steel Polar Camel Insulated Beverage Holder",
+    sku: "LBH21",
+    size: "5 1/4\"",
+    price: 22.0,
+    image: "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1669755588/products/images/large/LBH21--df17df08.png",
+    imageFull: "https://res.cloudinary.com/business-products/image/upload/q_auto/v1669755588/products/images/large/LBH21--df17df08.png",
+    categoryId: "2",
+    categorySlug: "polar-camel",
+    categoryName: "Polar Camel",
+    subId: "19",
+    subSlug: "polar-camel-beverage-holders",
+    subName: "Polar Camel Beverage Holders",
+  },
+];
+
+/* New subcategories the additions introduce, keyed by the (post-merge)
+   category slug they belong under. Count is recomputed from products. */
+const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {
+  drinkware: [
+    { subId: "sgc", slug: "silicone-grip-coasters", name: "Silicone Grip Coasters", count: 0 },
+  ],
+};
+
+function stripBrand(text: string): string {
+  return text
+    .replace(/\bpolar\s+camel\b/gi, " ")
+    .replace(/\s+([.,])/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function stripBrandSlug(slug: string): string {
+  const cleaned = slug
+    .replace(/polar-camel-?/g, "")
+    .replace(/(^-+)|(-+$)/g, "")
+    .replace(/-{2,}/g, "-");
+  return cleaned || slug;
+}
+
+function normalizeCatalog(): { products: RawProduct[]; categories: RawCategory[] } {
+  const subSlugBySubId = new Map<string, string>();
+  const categories: RawCategory[] = [];
+  let target: RawCategory | undefined;
+
+  const addSub = (cat: RawCategory, sc: RawCategory["subcategories"][number]) => {
+    let slug = stripBrandSlug(sc.slug);
+    const taken = new Set(cat.subcategories.map((s) => s.slug));
+    if (taken.has(slug)) {
+      let i = 2;
+      while (taken.has(`${slug}-${i}`)) i++;
+      slug = `${slug}-${i}`;
+    }
+    subSlugBySubId.set(sc.subId, slug);
+    cat.subcategories.push({ ...sc, slug, name: stripBrand(sc.name) });
+  };
+
+  for (const c of data.categories) {
+    if (c.slug === MERGE_SOURCE_SLUG || c.slug === MERGE_TARGET.slug) {
+      if (!target) {
+        target = { ...MERGE_TARGET, subcategories: [] };
+        categories.push(target);
+      }
+      for (const sc of c.subcategories) addSub(target, sc);
+      continue;
+    }
+    const cat: RawCategory = { ...c, subcategories: [] };
+    categories.push(cat);
+    for (const sc of c.subcategories) addSub(cat, sc);
+  }
+
+  // Append any FomaPrint-introduced subcategories to their category.
+  for (const cat of categories) {
+    for (const sc of ADDED_SUBCATEGORIES[cat.slug] ?? []) addSub(cat, sc);
+  }
+
+  // Trim the feed to the FomaPrint assortment, then inject curated additions
+  // the scrape doesn't carry (skipping any a later scrape may already include).
+  const kept = data.products.filter(
+    (p) => !REMOVED_SKUS.has(p.sku.toUpperCase()),
+  );
+  const present = new Set(kept.map((p) => p.sku.toUpperCase()));
+  const sourceProducts = [
+    ...kept,
+    ...ADDED_PRODUCTS.filter((p) => !present.has(p.sku.toUpperCase())),
+  ];
+
+  const products = sourceProducts.map((p) => {
+    const merged = p.categorySlug === MERGE_SOURCE_SLUG;
+    return {
+      ...p,
+      name: stripBrand(p.name),
+      categoryId: merged ? MERGE_TARGET.id : p.categoryId,
+      categorySlug: merged ? MERGE_TARGET.slug : p.categorySlug,
+      categoryName: merged ? MERGE_TARGET.name : p.categoryName,
+      subSlug: subSlugBySubId.get(p.subId) ?? p.subSlug,
+      subName: stripBrand(p.subName),
+    };
+  });
+
+  return { products, categories };
+}
+
+const { products: normProducts, categories: normCategories } = normalizeCatalog();
+
+/* ------------------------------------------------------------------ */
 /* Presentation metadata (authored)                                    */
 /* ------------------------------------------------------------------ */
 
 const CATEGORY_ICONS: Record<string, IconKey> = {
   "best-seller": "award",
   "gifts-and-promotions": "gift",
-  "polar-camel": "cup-soda",
   drinkware: "coffee",
   "frames-and-decor": "frame",
   "office-tech": "notebook",
@@ -89,10 +328,8 @@ const CATEGORY_BLURBS: Record<string, string> = {
     "Our own laser-engraved best sellers — personalized tumblers and lighters, made to order by FOMA FAMILY LLC.",
   "gifts-and-promotions":
     "Laser-engraved keepsakes, awards, barware and promotional gifts for every milestone.",
-  "polar-camel":
-    "Double-wall vacuum-insulated tumblers, bottles and mugs in dozens of powder-coated finishes.",
   drinkware:
-    "Mugs, coasters, glassware and bar tools ready for crisp, permanent engraving.",
+    "Insulated tumblers, water bottles, mugs, coasters and glassware ready for crisp, permanent engraving.",
   "frames-and-decor":
     "Photo frames, slate signage and ornaments that turn moments into heirlooms.",
   "office-tech":
@@ -180,7 +417,7 @@ function buildDescriptions(p: RawProduct): {
 /* Build the catalog once at module load                               */
 /* ------------------------------------------------------------------ */
 
-const jdsProducts: Product[] = data.products.map((p) => {
+const jdsProducts: Product[] = normProducts.map((p) => {
   const rng = rngFor(p.sku);
   const leadTimeDays = intBetween(rng, 5, 14);
   const badges: string[] = [];
@@ -225,16 +462,19 @@ for (const p of allProducts) {
   (productsBySub.get(sKey) ?? productsBySub.set(sKey, []).get(sKey)!).push(p);
 }
 
-const categories: Category[] = [...data.categories, FOMA_CATEGORY].map((c) => {
-  const subcategories: Subcategory[] = c.subcategories.map((sc) => {
-    const items = productsBySub.get(`${c.slug}/${sc.slug}`) ?? [];
-    return {
-      slug: sc.slug,
-      name: sc.name,
-      blurb: `Personalized ${sc.name.toLowerCase()}, laser-engraved to order.`,
-      productCount: items.length,
-    };
-  });
+const categories: Category[] = [...normCategories, FOMA_CATEGORY].map((c) => {
+  const subcategories: Subcategory[] = c.subcategories
+    .map((sc) => {
+      const items = productsBySub.get(`${c.slug}/${sc.slug}`) ?? [];
+      return {
+        slug: sc.slug,
+        name: sc.name,
+        blurb: `Personalized ${sc.name.toLowerCase()}, laser-engraved to order.`,
+        productCount: items.length,
+      };
+    })
+    // Drop tiles a curation left empty so the grid never shows "0 products".
+    .filter((sc) => sc.productCount > 0);
   return {
     slug: c.slug,
     name: c.name,
