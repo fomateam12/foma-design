@@ -5,16 +5,16 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  FomaPrint — "Engraved Premium" design system
+  FomaPrint — "Supplier Minimal" design system
   ------------------------------------------------------------------
-  B2B print-on-demand & laser-engraving partner for resellers.
-  Mood: Aesop × Linear × high-end print house.
-  - Brand: brass / bronze (warm, tactile — evokes laser engraving on
-    wood, metal & leather). Used as a precious accent, never as fill.
-  - Surfaces: warm bone paper (light) + warm espresso "ink" (dark
-    sections). Hairline borders, layered warm shadows, metallic rules.
-  - Type: Space Grotesk (display), Inter (UI/body), Fraunces (editorial
-    serif accent). Fluid clamp() scale.
+  B2B print-on-demand & laser-engraving partner for online resellers.
+  Mood: Aesop × Linear × premium US print house — quiet and serious.
+  - Accent: a single earthy RUST (no gold / no metallic). Used for the
+    logo, CTAs, numerals, eyebrows, links and active nav — never as fill.
+  - Surfaces: warm cream paper (light) + deep navy "ink" (dark sections).
+    Hairline borders, very soft shadows. The one bold moment is the live
+    product banner; everything else stays calm.
+  - Type: Hanken Grotesk (display/headings), Inter (UI/body). Fluid clamp().
 */
 @theme inline {
   --color-background: var(--background);
@@ -42,19 +42,31 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Brand: brass / bronze */
+  /* Accent: single earthy rust (no gold / no metallic) */
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-muted: var(--brand-muted);
   --color-brand-strong: var(--brand-strong);
+  --color-rust: var(--rust);
+  --color-rust-bright: var(--rust-bright);
 
-  /* Ink: warm espresso for dark editorial sections */
+  /* Warm cream surfaces */
+  --color-cream: var(--cream);
+  --color-cream-soft: var(--cream-soft);
+  --color-surface: var(--surface);
+  --color-tile: var(--tile);
+  --color-line: var(--line);
+  --color-muted-light: var(--muted-light);
+
+  /* Ink: deep navy for dark sections */
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
   --color-ink-muted: var(--ink-muted);
   --color-ink-border: var(--ink-border);
+  --color-ink-deep: var(--ink-deep);
+  --color-ink-card: var(--ink-card);
 
-  /* Accent: deep evergreen (sparingly) */
+  /* Legacy evergreen tokens repointed to neutral navy (single-accent system) */
   --color-evergreen: var(--evergreen);
   --color-evergreen-foreground: var(--evergreen-foreground);
   --color-evergreen-muted: var(--evergreen-muted);
@@ -77,7 +89,7 @@
   --shadow-card: 0 1px 3px oklch(0.2 0.02 60 / 0.05), 0 12px 32px oklch(0.2 0.02 60 / 0.07);
   --shadow-lg: 0 2px 4px oklch(0.2 0.02 60 / 0.05), 0 18px 44px -10px oklch(0.2 0.02 60 / 0.13);
   --shadow-xl: 0 4px 8px oklch(0.2 0.02 60 / 0.06), 0 40px 80px -18px oklch(0.2 0.02 60 / 0.2);
-  --shadow-brand: 0 10px 34px -8px oklch(0.62 0.115 68 / 0.42);
+  --shadow-brand: 0 12px 30px -12px rgba(168, 72, 30, 0.3);
 
   /* Premium easings */
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
@@ -89,67 +101,75 @@
 }
 
 :root {
-  /* Warm bone paper */
-  --background: oklch(0.992 0.003 86);
-  --foreground: oklch(0.21 0.012 58);
+  /* Warm cream paper */
+  --cream: #fbf5ea;
+  --cream-soft: #f7f1e6;
+  --surface: #ffffff;
+  --tile: #f8f3eb;
+  --line: #ebe3d5;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.012 58);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.012 58);
+  /* Single earthy rust accent — no gold, no metallic */
+  --rust: #a8481e;
+  --rust-bright: #c05a28;
 
-  --primary: oklch(0.25 0.018 56);
-  --primary-foreground: oklch(0.985 0.004 85);
+  /* Deep navy ink */
+  --ink: #1c2430;
+  --ink-deep: #1a222e;
+  --ink-card: #28323f;
+  --muted-light: #9a958c;
 
-  --secondary: oklch(0.955 0.008 80);
-  --secondary-foreground: oklch(0.25 0.018 56);
+  --background: var(--cream);
+  --foreground: var(--ink);
 
-  --muted: oklch(0.963 0.007 80);
-  --muted-foreground: oklch(0.515 0.014 65);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
 
-  --accent: oklch(0.95 0.012 82);
-  --accent-foreground: oklch(0.25 0.018 56);
+  --primary: var(--rust);
+  --primary-foreground: #fdf7ec;
+
+  --secondary: var(--cream-soft);
+  --secondary-foreground: var(--ink);
+
+  --muted: var(--cream-soft);
+  --muted-foreground: #6e6a63;
+
+  --accent: var(--tile);
+  --accent-foreground: var(--ink);
 
   --destructive: oklch(0.577 0.245 27.325);
 
-  --border: oklch(0.9 0.008 78);
-  --input: oklch(0.9 0.008 78);
-  --ring: oklch(0.72 0.108 76);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--rust-bright);
 
-  /* Brand: brass / bronze */
-  --brand: oklch(0.72 0.108 76);
-  --brand-foreground: oklch(0.25 0.03 58);
-  --brand-muted: oklch(0.957 0.035 84);
-  --brand-strong: oklch(0.55 0.115 62);
+  /* Brand = rust (single accent); names kept for component compatibility */
+  --brand: var(--rust);
+  --brand-foreground: #fdf7ec;
+  --brand-muted: #f3e4da;
+  --brand-strong: var(--rust);
 
-  /* Ink: warm espresso (dark sections) */
-  --ink: oklch(0.205 0.014 56);
-  --ink-foreground: oklch(0.955 0.006 85);
-  --ink-muted: oklch(0.72 0.012 78);
-  --ink-border: oklch(1 0 0 / 0.1);
+  /* Ink foreground/muted for dark navy sections */
+  --ink-foreground: #f4efe6;
+  --ink-muted: #b7b1a6;
+  --ink-border: oklch(1 0 0 / 0.12);
 
-  /* Accent: deep evergreen */
-  --evergreen: oklch(0.43 0.072 168);
-  --evergreen-foreground: oklch(0.97 0.012 165);
-  --evergreen-muted: oklch(0.95 0.028 165);
+  /* Legacy evergreen → neutral navy ink (single-accent system, no 2nd accent) */
+  --evergreen: var(--ink);
+  --evergreen-foreground: var(--ink-foreground);
+  --evergreen-muted: var(--cream-soft);
 
   --radius: 0.7rem;
 
-  /* Metallic foil sheen (engraved brass) */
-  --metallic: linear-gradient(
-    135deg,
-    oklch(0.58 0.095 62) 0%,
-    oklch(0.86 0.09 90) 28%,
-    oklch(0.7 0.11 74) 52%,
-    oklch(0.9 0.07 95) 70%,
-    oklch(0.55 0.1 60) 100%
-  );
+  /* Subtle rust sheen — replaces the old gold "metallic" (logo tile + accents) */
+  --metallic: linear-gradient(135deg, #c0592a 0%, #a8481e 55%, #8e3a16 100%);
 
-  --chart-1: oklch(0.72 0.108 76);
-  --chart-2: oklch(0.43 0.072 168);
-  --chart-3: oklch(0.55 0.115 62);
-  --chart-4: oklch(0.62 0.05 70);
-  --chart-5: oklch(0.4 0.04 60);
+  --chart-1: var(--rust);
+  --chart-2: var(--ink);
+  --chart-3: var(--rust-bright);
+  --chart-4: #6e6a63;
+  --chart-5: #28323f;
 }
 
 @layer base {
@@ -242,21 +262,23 @@
     -webkit-backdrop-filter: saturate(160%) blur(14px);
   }
 
-  /* Thin metallic rule (engraved brass line) */
+  /* Thin hairline rule (subtle rust → transparent) */
   .rule-metallic {
     height: 1px;
     width: 100%;
     border: 0;
-    background: var(--metallic);
-    opacity: 0.85;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklch, var(--rust) 50%, transparent),
+      transparent
+    );
+    opacity: 0.9;
   }
 
-  /* Metallic foil text (accent words & engraved numerals) */
+  /* Accent words & numerals — solid rust (no gold foil) */
   .text-metallic {
-    background: var(--metallic);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--rust);
   }
 
   /* Film-grain / noise overlay for dark sections */

@@ -13,13 +13,12 @@ import type { IconKey } from "@/data/types";
  * deterministic placeholder — so a broken-image icon never appears.
  */
 
+// Warm, neutral sand/cream tints only — single-accent system, no gold/green/blue.
 const PRESETS: [string, string][] = [
-  ["oklch(0.95 0.032 80)", "oklch(0.89 0.055 68)"],
-  ["oklch(0.95 0.022 165)", "oklch(0.9 0.04 168)"],
-  ["oklch(0.95 0.016 250)", "oklch(0.9 0.03 255)"],
-  ["oklch(0.96 0.024 42)", "oklch(0.91 0.045 45)"],
-  ["oklch(0.96 0.018 110)", "oklch(0.9 0.03 120)"],
-  ["oklch(0.975 0.006 80)", "oklch(0.915 0.018 60)"],
+  ["oklch(0.97 0.012 80)", "oklch(0.93 0.018 68)"],
+  ["oklch(0.975 0.008 60)", "oklch(0.93 0.014 50)"],
+  ["oklch(0.97 0.01 90)", "oklch(0.92 0.016 78)"],
+  ["oklch(0.965 0.014 45)", "oklch(0.915 0.02 42)"],
 ];
 
 function hash(seed: string): number {

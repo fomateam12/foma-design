@@ -46,11 +46,12 @@ export interface NavCategory {
   subcategories: { name: string; slug: string }[];
 }
 
+// Header nav: How It Works · Catalog · Shipping · FAQ (+ Become a Seller CTA).
+// Catalog is the mega-menu trigger rendered between item 0 and items 1..n.
 const NAV_LINKS = [
-  { label: "How it works", href: "/#how" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "How it works", href: "/how-it-works" },
+  { label: "Shipping", href: "/shipping" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 export function HeaderNav({
@@ -181,7 +182,7 @@ export function HeaderNav({
                     onClick={() => setMobileOpen(false)}
                     className={cn(buttonVariants({ variant: "brand", size: "lg" }))}
                   >
-                    Apply to sell
+                    Become a Seller
                   </Link>
                   <Link
                     href="/login"
@@ -210,6 +211,14 @@ export function HeaderNav({
           {/* Desktop nav */}
           <NavigationMenu className="hidden lg:flex" align="start">
             <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  render={<Link href="/how-it-works" />}
+                  className="h-9 px-2.5 font-medium"
+                >
+                  How it works
+                </NavigationMenuLink>
+              </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Catalog</NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -270,7 +279,7 @@ export function HeaderNav({
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              {NAV_LINKS.map((l) => (
+              {NAV_LINKS.slice(1).map((l) => (
                 <NavigationMenuItem key={l.href}>
                   <NavigationMenuLink
                     render={<Link href={l.href} />}
@@ -306,7 +315,7 @@ export function HeaderNav({
                 "hidden sm:inline-flex",
               )}
             >
-              Apply to sell
+              Become a Seller
             </Link>
           </div>
         </div>
