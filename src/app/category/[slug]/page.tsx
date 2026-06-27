@@ -15,10 +15,15 @@ import {
   getProductsByCategory,
 } from "@/data/catalog";
 import {
+  buildColorFacets,
+  buildMaterialFacets,
   buildSizeFacets,
   buildSubcategoryFacets,
+  filterByColor,
+  filterByMaterial,
   filterBySize,
   filterBySubcategory,
+  planFacets,
 } from "@/lib/product-taxonomy";
 
 export function generateStaticParams() {
@@ -54,7 +59,12 @@ export default async function CategoryPage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ size?: string | string[]; sub?: string | string[] }>;
+  searchParams: Promise<{
+    size?: string | string[];
+    sub?: string | string[];
+    color?: string | string[];
+    material?: string | string[];
+  }>;
 }) {
   const { slug } = await params;
   const sp = await searchParams;
@@ -63,17 +73,27 @@ export default async function CategoryPage({
 
   const activeSizes = asArray(sp.size);
   const activeSubs = asArray(sp.sub);
-  const anyFilter = activeSizes.length > 0 || activeSubs.length > 0;
+  const activeColors = asArray(sp.color);
+  const activeMaterials = asArray(sp.material);
+  const anyFilter =
+    activeSizes.length + activeSubs.length + activeColors.length + activeMaterials.length > 0;
 
   const all = getProductsByCategory(category.slug);
-  const filtered = filterBySize(filterBySubcategory(all, activeSubs), activeSizes);
+  const filtered = filterByMaterial(
+    filterByColor(
+      filterBySize(filterBySubcategory(all, activeSubs), activeSizes),
+      activeColors,
+    ),
+    activeMaterials,
+  );
 
-  // Facets are always computed against the WHOLE category — so chip counts
-  // tell you "how many products would there be in this category if I picked
-  // this size?" rather than co-narrowing with the current selection, which
-  // would zero them out and dead-end the user.
+  // Facets are always computed against the WHOLE category — picking one
+  // facet shouldn't zero out the others and dead-end the user.
   const sizeFacets = buildSizeFacets(all);
+  const colorFacets = buildColorFacets(all);
+  const materialFacets = buildMaterialFacets(all);
   const subFacets = buildSubcategoryFacets(all);
+  const plan = planFacets(all, sizeFacets, colorFacets, materialFacets);
 
   const popular = filtered.length > 0 ? filtered.slice(0, 8) : all.slice(0, 8);
   const basePath = `/category/${category.slug}`;
@@ -121,10 +141,15 @@ export default async function CategoryPage({
         <div className="grid gap-10 lg:grid-cols-[18rem_1fr]">
           <CatalogFilters
             basePath={basePath}
+            plan={plan}
             sizeFacets={sizeFacets}
+            colorFacets={colorFacets}
+            materialFacets={materialFacets}
             subFacets={subFacets}
             activeSizes={activeSizes}
             activeSubs={activeSubs}
+            activeColors={activeColors}
+            activeMaterials={activeMaterials}
           />
 
           <div className="min-w-0">

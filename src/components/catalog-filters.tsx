@@ -1,40 +1,41 @@
 import Link from "next/link";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { SizeFacet, SubcategoryFacet } from "@/lib/product-taxonomy";
+import type {
+  FacetPlan,
+  SimpleFacet,
+  SizeFacet,
+  SubcategoryFacet,
+} from "@/lib/product-taxonomy";
 
-/**
- * Toggle a value into / out of a search-param array and produce the relative
- * URL string. Multi-value query params are encoded by repeating the key
- * (`?size=20+oz&size=40+oz`), which is what Next's URLSearchParams accepts.
- */
-function buildToggleHref(
+/** Combine the selected size/sub/color/material values into a relative URL. */
+function buildHref(
   basePath: string,
-  currentSizes: readonly string[],
-  currentSubs: readonly string[],
-  key: "size" | "sub",
-  value: string,
+  state: { sizes: string[]; subs: string[]; colors: string[]; materials: string[] },
+  toggle: { key: "size" | "sub" | "color" | "material"; value: string },
 ): string {
+  const next = {
+    size: [...state.sizes],
+    sub: [...state.subs],
+    color: [...state.colors],
+    material: [...state.materials],
+  };
+  const list = next[toggle.key];
+  const idx = list.indexOf(toggle.value);
+  if (idx >= 0) list.splice(idx, 1);
+  else list.push(toggle.value);
+
   const params = new URLSearchParams();
-  let sizes = currentSizes;
-  let subs = currentSubs;
-  if (key === "size") {
-    sizes = currentSizes.includes(value)
-      ? currentSizes.filter((s) => s !== value)
-      : [...currentSizes, value];
-  } else {
-    subs = currentSubs.includes(value)
-      ? currentSubs.filter((s) => s !== value)
-      : [...currentSubs, value];
-  }
-  for (const s of sizes) params.append("size", s);
-  for (const s of subs) params.append("sub", s);
+  for (const s of next.size) params.append("size", s);
+  for (const s of next.sub) params.append("sub", s);
+  for (const c of next.color) params.append("color", c);
+  for (const m of next.material) params.append("material", m);
   const qs = params.toString();
   return qs ? `${basePath}?${qs}` : basePath;
 }
 
-function bucketLabel(bucket: SizeFacet["bucket"]): string {
-  switch (bucket) {
+function bucketLabel(b: SizeFacet["bucket"]): string {
+  switch (b) {
     case "oz":
       return "Volume";
     case "rect":
@@ -48,35 +49,139 @@ function bucketLabel(bucket: SizeFacet["bucket"]): string {
   }
 }
 
-export function CatalogFilters({
-  basePath,
-  sizeFacets,
-  subFacets,
-  activeSizes,
-  activeSubs,
-}: {
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h4 className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+      {children}
+    </h4>
+  );
+}
+
+interface ChipProps {
+  active: boolean;
+  href: string;
+  count: number;
+  children: React.ReactNode;
+  /** Hex(es) for the leading color swatch. `null` / omit = no swatch. */
+  swatch?: string | string[] | null;
+}
+
+function FilterChip({ active, href, count, children, swatch }: ChipProps) {
+  return (
+    <li>
+      <Link
+        href={href}
+        aria-pressed={active}
+        className={cn(
+          "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition",
+          active
+            ? "border-brand-strong bg-brand-strong text-brand-foreground"
+            : "border-border bg-background text-foreground hover:border-brand-strong/60",
+        )}
+      >
+        {swatch ? <Swatch hex={swatch} /> : null}
+        <span className="leading-none">{children}</span>
+        <span
+          className={cn(
+            "ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold leading-none",
+            active ? "bg-brand-foreground/15" : "bg-muted text-muted-foreground",
+          )}
+        >
+          {count}
+        </span>
+      </Link>
+    </li>
+  );
+}
+
+function Swatch({ hex }: { hex: string | string[] }) {
+  if (Array.isArray(hex)) {
+    return (
+      <span
+        aria-hidden="true"
+        className="block size-3 shrink-0 rounded-full border border-border/60"
+        style={{
+          backgroundImage: `conic-gradient(${hex.join(", ")})`,
+        }}
+      />
+    );
+  }
+  return (
+    <span
+      aria-hidden="true"
+      className="block size-3 shrink-0 rounded-full border border-border/60"
+      style={{ backgroundColor: hex }}
+    />
+  );
+}
+
+export interface CatalogFiltersProps {
   basePath: string;
+  /** What gets rendered — null/empty arrays = hide that section. */
+  plan: FacetPlan;
   sizeFacets: SizeFacet[];
+  colorFacets: SimpleFacet[];
+  materialFacets: SimpleFacet[];
   subFacets: SubcategoryFacet[];
   activeSizes: readonly string[];
   activeSubs: readonly string[];
-}) {
-  const anyActive = activeSizes.length > 0 || activeSubs.length > 0;
+  activeColors: readonly string[];
+  activeMaterials: readonly string[];
+}
 
-  // Group size facets by bucket so the UI can label them sensibly. Drop
-  // small buckets (< 2 distinct values) — a "filter" with one option is just
-  // noise.
-  const groups: Record<string, SizeFacet[]> = {};
+export function CatalogFilters({
+  basePath,
+  plan,
+  sizeFacets,
+  colorFacets,
+  materialFacets,
+  subFacets,
+  activeSizes,
+  activeSubs,
+  activeColors,
+  activeMaterials,
+}: CatalogFiltersProps) {
+  const state = {
+    sizes: [...activeSizes],
+    subs: [...activeSubs],
+    colors: [...activeColors],
+    materials: [...activeMaterials],
+  };
+  const anyActive =
+    activeSizes.length + activeSubs.length + activeColors.length + activeMaterials.length > 0;
+
+  // Group size facets by bucket so the UI can label them sensibly.
+  const sizeGroups: Record<string, SizeFacet[]> = {};
   for (const f of sizeFacets) {
-    (groups[f.bucket] ??= []).push(f);
+    if (
+      (f.bucket === "oz" && !plan.showOz) ||
+      (f.bucket === "rect" && !plan.showRect) ||
+      (f.bucket === "inch" && !plan.showInch) ||
+      (f.bucket === "diam" && !plan.showDiam)
+    ) {
+      continue;
+    }
+    (sizeGroups[f.bucket] ??= []).push(f);
   }
-  const groupedSizeEntries = Object.entries(groups).filter(
-    ([, list]) => list.length >= 2,
-  );
+  const sizeGroupEntries = Object.entries(sizeGroups).filter(([, list]) => list.length >= 1);
 
-  // Subcategory facets: surface only the top N to avoid a 20+ chip wall.
-  const TOP_SUBS = 12;
-  const visibleSubs = subFacets.slice(0, TOP_SUBS);
+  // Subcategory facets: only the top N — beyond that the subcategory tiles
+  // grid below handles discovery.
+  const TOP_SUBS = 10;
+  const subs = subFacets.slice(0, TOP_SUBS);
+
+  const colors = plan.showColor ? colorFacets : [];
+  const materials = plan.showMaterial ? materialFacets : [];
+
+  // Nothing to render at all? Don't show the rail.
+  if (
+    !sizeGroupEntries.length &&
+    !subs.length &&
+    !colors.length &&
+    !materials.length
+  ) {
+    return null;
+  }
 
   return (
     <aside
@@ -84,112 +189,94 @@ export function CatalogFilters({
       className="rounded-2xl border border-border bg-card/60 p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto"
     >
       <div className="flex items-center justify-between gap-3">
-        <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-foreground">
-          Filter
+        <h3 className="font-heading text-sm font-semibold text-foreground">
+          Refine
         </h3>
         {anyActive ? (
           <Link
             href={basePath}
-            className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-brand-strong"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-brand-strong"
           >
             <X className="size-3" />
-            Clear all
+            Clear
           </Link>
         ) : null}
       </div>
 
-      {visibleSubs.length > 0 ? (
-        <section className="mt-5">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Collection
-          </h4>
-          <ul className="mt-2 flex flex-wrap gap-2">
-            {visibleSubs.map((sub) => {
-              const active = activeSubs.includes(sub.slug);
-              return (
-                <li key={sub.slug}>
-                  <Link
-                    href={buildToggleHref(
-                      basePath,
-                      activeSizes,
-                      activeSubs,
-                      "sub",
-                      sub.slug,
-                    )}
-                    aria-pressed={active}
-                    className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition",
-                      active
-                        ? "border-brand-strong bg-brand-strong text-brand-foreground"
-                        : "border-border bg-background text-foreground hover:border-brand-strong/60",
-                    )}
-                  >
-                    {sub.name}
-                    <span
-                      className={cn(
-                        "rounded-full px-1 text-[10px] font-semibold",
-                        active
-                          ? "bg-brand-foreground/15"
-                          : "bg-muted text-muted-foreground",
-                      )}
-                    >
-                      {sub.count}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
+      {subs.length > 0 ? (
+        <section className="mt-5 space-y-2">
+          <SectionHeading>Collection</SectionHeading>
+          <ul className="flex flex-wrap gap-1.5">
+            {subs.map((sub) => (
+              <FilterChip
+                key={sub.slug}
+                active={activeSubs.includes(sub.slug)}
+                href={buildHref(basePath, state, { key: "sub", value: sub.slug })}
+                count={sub.count}
+              >
+                {sub.name}
+              </FilterChip>
+            ))}
           </ul>
           {subFacets.length > TOP_SUBS ? (
-            <p className="mt-2 text-[11px] text-muted-foreground">
-              +{subFacets.length - TOP_SUBS} more collections —{" "}
-              <span className="font-medium">see tiles below</span>
+            <p className="text-[11px] text-muted-foreground">
+              {subFacets.length - TOP_SUBS} more — see tiles below
             </p>
           ) : null}
         </section>
       ) : null}
 
-      {groupedSizeEntries.map(([bucket, list]) => (
-        <section key={bucket} className="mt-5">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            {bucketLabel(bucket as SizeFacet["bucket"])}
-          </h4>
-          <ul className="mt-2 flex flex-wrap gap-2">
-            {list.map((f) => {
-              const active = activeSizes.includes(f.canonical);
-              return (
-                <li key={f.canonical}>
-                  <Link
-                    href={buildToggleHref(
-                      basePath,
-                      activeSizes,
-                      activeSubs,
-                      "size",
-                      f.canonical,
-                    )}
-                    aria-pressed={active}
-                    className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition",
-                      active
-                        ? "border-brand-strong bg-brand-strong text-brand-foreground"
-                        : "border-border bg-background text-foreground hover:border-brand-strong/60",
-                    )}
-                  >
-                    {f.canonical}
-                    <span
-                      className={cn(
-                        "rounded-full px-1 text-[10px] font-semibold",
-                        active
-                          ? "bg-brand-foreground/15"
-                          : "bg-muted text-muted-foreground",
-                      )}
-                    >
-                      {f.count}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
+      {colors.length > 0 ? (
+        <section className="mt-5 space-y-2">
+          <SectionHeading>Color</SectionHeading>
+          <ul className="flex flex-wrap gap-1.5">
+            {colors.map((f) => (
+              <FilterChip
+                key={f.canonical}
+                active={activeColors.includes(f.canonical)}
+                href={buildHref(basePath, state, { key: "color", value: f.canonical })}
+                count={f.count}
+                swatch={f.swatch}
+              >
+                {f.canonical}
+              </FilterChip>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {materials.length > 0 ? (
+        <section className="mt-5 space-y-2">
+          <SectionHeading>Material</SectionHeading>
+          <ul className="flex flex-wrap gap-1.5">
+            {materials.map((f) => (
+              <FilterChip
+                key={f.canonical}
+                active={activeMaterials.includes(f.canonical)}
+                href={buildHref(basePath, state, { key: "material", value: f.canonical })}
+                count={f.count}
+              >
+                {f.canonical}
+              </FilterChip>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {sizeGroupEntries.map(([bucket, list]) => (
+        <section key={bucket} className="mt-5 space-y-2">
+          <SectionHeading>{bucketLabel(bucket as SizeFacet["bucket"])}</SectionHeading>
+          <ul className="flex flex-wrap gap-1.5">
+            {list.map((f) => (
+              <FilterChip
+                key={f.canonical}
+                active={activeSizes.includes(f.canonical)}
+                href={buildHref(basePath, state, { key: "size", value: f.canonical })}
+                count={f.count}
+              >
+                {f.canonical}
+              </FilterChip>
+            ))}
           </ul>
         </section>
       ))}

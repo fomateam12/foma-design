@@ -11,7 +11,15 @@ import {
   getSubcategory,
   getProductsBySubcategory,
 } from "@/data/catalog";
-import { buildSizeFacets, filterBySize } from "@/lib/product-taxonomy";
+import {
+  buildColorFacets,
+  buildMaterialFacets,
+  buildSizeFacets,
+  filterByColor,
+  filterByMaterial,
+  filterBySize,
+  planFacets,
+} from "@/lib/product-taxonomy";
 
 function asArray(v: string | string[] | undefined): string[] {
   if (Array.isArray(v)) return v;
@@ -52,7 +60,11 @@ export default async function SubcategoryPage({
   searchParams,
 }: {
   params: Promise<{ slug: string; subSlug: string }>;
-  searchParams: Promise<{ size?: string | string[] }>;
+  searchParams: Promise<{
+    size?: string | string[];
+    color?: string | string[];
+    material?: string | string[];
+  }>;
 }) {
   const { slug, subSlug } = await params;
   const sp = await searchParams;
@@ -62,11 +74,24 @@ export default async function SubcategoryPage({
   const all = getProductsBySubcategory(category.slug, subcategory.slug);
 
   const activeSizes = asArray(sp.size);
-  const filtered = filterBySize(all, activeSizes);
-  // Facets always built against the full subcategory so picking one chip
-  // doesn't zero out the others.
+  const activeColors = asArray(sp.color);
+  const activeMaterials = asArray(sp.material);
+  const filtered = filterByMaterial(
+    filterByColor(filterBySize(all, activeSizes), activeColors),
+    activeMaterials,
+  );
+
   const sizeFacets = buildSizeFacets(all);
-  const hasSizeFilter = sizeFacets.length >= 2;
+  const colorFacets = buildColorFacets(all);
+  const materialFacets = buildMaterialFacets(all);
+  const plan = planFacets(all, sizeFacets, colorFacets, materialFacets);
+  const hasAnyFacet =
+    plan.showOz ||
+    plan.showRect ||
+    plan.showInch ||
+    plan.showDiam ||
+    plan.showColor ||
+    plan.showMaterial;
   const basePath = `/category/${category.slug}/${subcategory.slug}`;
 
   return (
@@ -122,22 +147,27 @@ export default async function SubcategoryPage({
         })}
       </nav>
 
-      {hasSizeFilter ? (
+      {hasAnyFacet ? (
         <div className="mt-8 grid gap-8 lg:grid-cols-[16rem_1fr]">
           <CatalogFilters
             basePath={basePath}
+            plan={plan}
             sizeFacets={sizeFacets}
+            colorFacets={colorFacets}
+            materialFacets={materialFacets}
             subFacets={[]}
             activeSizes={activeSizes}
             activeSubs={[]}
+            activeColors={activeColors}
+            activeMaterials={activeMaterials}
           />
           <div className="min-w-0">
-            {activeSizes.length > 0 ? (
+            {activeSizes.length + activeColors.length + activeMaterials.length > 0 ? (
               <p className="mb-4 text-sm text-muted-foreground">
                 {filtered.length.toLocaleString()}{" "}
                 {filtered.length === 1 ? "match" : "matches"} for{" "}
                 <span className="font-medium text-foreground">
-                  {activeSizes.join(", ")}
+                  {[...activeColors, ...activeMaterials, ...activeSizes].join(", ")}
                 </span>
               </p>
             ) : null}
@@ -147,13 +177,13 @@ export default async function SubcategoryPage({
               <div className="rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center">
                 <p className="text-sm text-muted-foreground">
                   No <strong>{subcategory.name}</strong> match the selected
-                  size.
+                  filters.
                 </p>
                 <Link
                   href={basePath}
                   className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand-strong hover:underline"
                 >
-                  Clear size filter
+                  Clear filters
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
