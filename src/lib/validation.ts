@@ -49,6 +49,17 @@ export const SHIP_MODELS = [
   "Not sure yet — advise me",
 ] as const;
 
+/** Sales channels a reseller might list our products on. */
+export const SALES_CHANNELS = [
+  "Etsy",
+  "Shopify",
+  "Amazon",
+  "eBay",
+  "Own website",
+  "In person / retail",
+  "Other",
+] as const;
+
 /** A single line on a request-for-quote. */
 export const quoteItemSchema = z.object({
   sku: z.string().trim().min(1).max(60),
@@ -68,6 +79,8 @@ export const quoteFormSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   website: z.string().trim().max(200).optional().or(z.literal("")),
+  channels: z.array(z.enum(SALES_CHANNELS)).max(SALES_CHANNELS.length).optional(),
+  monthlyVolume: z.enum(MONTHLY_VOLUMES).optional().or(z.literal("")),
   shipModel: z.enum(SHIP_MODELS, { message: "Choose a fulfillment model." }),
   deadline: z.string().trim().max(60).optional().or(z.literal("")),
   artworkUrl: z.string().trim().max(300).optional().or(z.literal("")),

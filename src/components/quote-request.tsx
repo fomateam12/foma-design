@@ -25,6 +25,8 @@ import {
   quoteFormSchema,
   quoteSchema,
   SHIP_MODELS,
+  SALES_CHANNELS,
+  MONTHLY_VOLUMES,
   type QuoteFormInput,
 } from "@/lib/validation";
 
@@ -62,6 +64,8 @@ export function QuoteRequest() {
       email: "",
       phone: "",
       website: "",
+      channels: [],
+      monthlyVolume: "",
       shipModel: undefined,
       deadline: "",
       artworkUrl: "",
@@ -344,24 +348,64 @@ export function QuoteRequest() {
               </div>
 
               <div>
-                <Label htmlFor="q-ship">Fulfillment model *</Label>
-                <select
-                  id="q-ship"
-                  className={cn(SELECT, "mt-1.5")}
-                  defaultValue=""
-                  aria-invalid={!!errors.shipModel}
-                  {...register("shipModel")}
-                >
-                  <option value="" disabled>
-                    Select…
-                  </option>
-                  {SHIP_MODELS.map((m) => (
-                    <option key={m} value={m}>
-                      {m}
-                    </option>
+                <span className="text-sm font-medium text-foreground">
+                  Where do you sell?
+                </span>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {SALES_CHANNELS.map((c) => (
+                    <label
+                      key={c}
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground transition-colors has-[:checked]:border-brand has-[:checked]:bg-brand-muted has-[:checked]:text-brand-strong"
+                    >
+                      <input
+                        type="checkbox"
+                        value={c}
+                        className="size-3.5 rounded border-input accent-primary"
+                        {...register("channels")}
+                      />
+                      {c}
+                    </label>
                   ))}
-                </select>
-                <ErrorText msg={errors.shipModel?.message} />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <Label htmlFor="q-ship">Fulfillment model *</Label>
+                  <select
+                    id="q-ship"
+                    className={cn(SELECT, "mt-1.5")}
+                    defaultValue=""
+                    aria-invalid={!!errors.shipModel}
+                    {...register("shipModel")}
+                  >
+                    <option value="" disabled>
+                      Select…
+                    </option>
+                    {SHIP_MODELS.map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                  <ErrorText msg={errors.shipModel?.message} />
+                </div>
+                <div>
+                  <Label htmlFor="q-volume">Monthly volume</Label>
+                  <select
+                    id="q-volume"
+                    className={cn(SELECT, "mt-1.5")}
+                    defaultValue=""
+                    {...register("monthlyVolume")}
+                  >
+                    <option value="">Not sure yet</option>
+                    {MONTHLY_VOLUMES.map((v) => (
+                      <option key={v} value={v}>
+                        {v}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">

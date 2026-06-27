@@ -70,7 +70,7 @@ function shell(title: string, inner: string): string {
   return `<div style="background:#f6f3ee;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
   <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e7e1d8;border-radius:14px;overflow:hidden">
     <div style="background:#2a2620;padding:18px 24px">
-      <span style="color:#fff;font-size:18px;font-weight:700">Foma<span style="color:#caa45a">Print</span></span>
+      <span style="color:#fff;font-size:18px;font-weight:700">Foma<span style="color:#d2703c">Print</span></span>
     </div>
     <div style="padding:24px">
       <h1 style="margin:0 0 12px;font-size:18px;color:#2a2620">${esc(title)}</h1>
@@ -326,6 +326,8 @@ export async function sendQuoteRequestEmails(
       ${row("Email", data.email)}
       ${row("Phone", data.phone)}
       ${row("Website", data.website)}
+      ${row("Sells on", data.channels?.join(", "))}
+      ${row("Monthly volume", data.monthlyVolume)}
       ${row("Fulfillment", data.shipModel)}
       ${row("Deadline", data.deadline)}
       ${row("Artwork", data.artworkUrl)}
@@ -366,6 +368,8 @@ export async function sendQuoteRequestEmails(
       email: data.email,
       phone: data.phone,
       website: data.website,
+      channels: data.channels?.join(", "),
+      monthlyVolume: data.monthlyVolume,
       shipModel: data.shipModel,
       deadline: data.deadline,
       artworkUrl: data.artworkUrl,
