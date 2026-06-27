@@ -1,33 +1,5 @@
 import { z } from "zod";
 
-export const customOrderSchema = z.object({
-  fullName: z.string().trim().min(2, "Please enter your name."),
-  email: z.string().trim().email("Enter a valid email address."),
-  phone: z.string().trim().max(40).optional().or(z.literal("")),
-  product: z.string().trim().max(160).optional().or(z.literal("")),
-  category: z.string().trim().max(80).optional().or(z.literal("")),
-  quantity: z
-    .number({ message: "Enter a quantity." })
-    .int("Whole numbers only.")
-    .min(1, "Quantity must be at least 1.")
-    .max(100000, "That's a big order — email us directly."),
-  personalization: z
-    .string()
-    .trim()
-    .min(3, "Tell us what you'd like engraved.")
-    .max(2000),
-  deadline: z.string().trim().max(60).optional().or(z.literal("")),
-  budget: z.string().trim().max(60).optional().or(z.literal("")),
-  details: z.string().trim().max(4000).optional().or(z.literal("")),
-  consent: z.boolean().refine((v) => v === true, {
-    message: "Please agree so we can contact you about your order.",
-  }),
-  // Honeypot — must stay empty.
-  company: z.string().optional(),
-});
-
-export type CustomOrderInput = z.infer<typeof customOrderSchema>;
-
 export const BUSINESS_TYPES = [
   "Retail store",
   "Online shop",

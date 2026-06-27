@@ -139,10 +139,10 @@ export function QuoteRequest() {
             <ArrowRight className="size-4" />
           </Link>
           <Link
-            href="/custom-order"
+            href="/sell"
             className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
           >
-            Start a custom order
+            Apply to sell
           </Link>
         </div>
       </div>

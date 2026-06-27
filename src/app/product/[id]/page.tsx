@@ -5,7 +5,7 @@ import Image from "next/image";
 import {
   Check,
   ArrowRight,
-  PenTool,
+  FileText,
   Mail,
   Truck,
   ShieldCheck,
@@ -203,14 +203,14 @@ export default async function ProductPage({
             />
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
-                href={`/custom-order?product=${encodeURIComponent(product.sku)}`}
+                href="/quote"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
                   "flex-1",
                 )}
               >
-                <PenTool className="size-4" />
-                Personalize this item
+                <FileText className="size-4" />
+                Request a quote
               </Link>
               <a
                 href={`mailto:${site.email}?subject=${encodeURIComponent(

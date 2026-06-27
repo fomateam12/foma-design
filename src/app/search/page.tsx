@@ -77,17 +77,18 @@ export default async function SearchPage({
             </h2>
             <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
               Try a different keyword, or browse our categories. You can also
-              start a custom order and we&apos;ll help you find the perfect piece.
+              request a quote and we&apos;ll help you source the right products
+              to resell.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Link href="/categories" className={cn(buttonVariants())}>
                 Browse categories
               </Link>
               <Link
-                href="/custom-order"
+                href="/quote"
                 className={cn(buttonVariants({ variant: "outline" }))}
               >
-                Start a custom order
+                Request a quote
               </Link>
             </div>
           </section>

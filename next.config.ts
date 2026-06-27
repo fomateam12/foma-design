@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/custom-order", destination: "/quote", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

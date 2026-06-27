@@ -1,10 +1,6 @@
 import nodemailer, { type Transporter } from "nodemailer";
 import { site } from "@/lib/site";
-import type {
-  CustomOrderInput,
-  SellerApplicationInput,
-  QuoteInput,
-} from "@/lib/validation";
+import type { SellerApplicationInput, QuoteInput } from "@/lib/validation";
 
 /**
  * Lead delivery — free, self-hosted. No paid third-party sender.
@@ -236,65 +232,6 @@ async function dispatch(opts: {
 }
 
 /* ------------------------------- public API ------------------------------- */
-
-export async function sendCustomOrderEmails(
-  data: CustomOrderInput,
-): Promise<DeliveryResult> {
-  const adminInner = `
-    <table style="width:100%;border-collapse:collapse;border:1px solid #e7e1d8;border-radius:8px">
-      ${row("Name", data.fullName)}
-      ${row("Email", data.email)}
-      ${row("Phone", data.phone)}
-      ${row("Product", data.product)}
-      ${row("Category", data.category)}
-      ${row("Quantity", data.quantity)}
-      ${row("Personalization", data.personalization)}
-      ${row("Deadline", data.deadline)}
-      ${row("Budget", data.budget)}
-      ${row("Details", data.details)}
-    </table>
-    <p style="font-size:12px;color:#8a8175;margin-top:12px">A CSV copy of this lead is attached.</p>`;
-
-  const customerInner = `
-    <p style="font-size:14px;color:#2a2620;line-height:1.6">Hi ${esc(
-      data.fullName,
-    )},</p>
-    <p style="font-size:14px;color:#544c40;line-height:1.6">Thanks for your custom order request! We've received your details and our team will reply within one business day with a free design proof and quote.</p>
-    <table style="width:100%;border-collapse:collapse;border:1px solid #e7e1d8;border-radius:8px;margin-top:8px">
-      ${row("Product", data.product || "Custom request")}
-      ${row("Quantity", data.quantity)}
-      ${row("Personalization", data.personalization)}
-    </table>
-    <p style="font-size:14px;color:#544c40;line-height:1.6;margin-top:16px">Talk soon,<br/>The ${esc(
-      site.name,
-    )} team</p>`;
-
-  return dispatch({
-    kind: "custom-order",
-    logData: {
-      fullName: data.fullName,
-      email: data.email,
-      phone: data.phone,
-      product: data.product,
-      category: data.category,
-      quantity: data.quantity,
-      personalization: data.personalization,
-      deadline: data.deadline,
-      budget: data.budget,
-      details: data.details,
-    },
-    admin: {
-      subject: `New custom order request — ${data.fullName}`,
-      html: shell("New custom order request", adminInner),
-      replyTo: data.email,
-    },
-    customer: {
-      to: data.email,
-      subject: `We received your custom order request — ${site.name}`,
-      html: shell("Thanks for your request!", customerInner),
-    },
-  });
-}
 
 export async function sendSellerApplicationEmails(
   data: SellerApplicationInput,
