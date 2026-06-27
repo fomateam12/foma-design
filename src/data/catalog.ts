@@ -217,14 +217,12 @@ const REMOVED_SKUS = new Set<string>([
   "SLT061", "SLT062", "SLT071", "SLT075", "SLT076", "SLT077",
   "SLT078", "SLT079", "SLT080", "SLT081", "SLT088",
 
-  // Marked "SIL (x)" in fomaprint liste.xlsx (2026-06-27 refresh) — 20 SKUs
-  // that were still live in the feed; removed per the spreadsheet. The 5
-  // silicone-grip-coaster SKUs also marked "SIL (x)" were curated additions
-  // (see ADDED_PRODUCTS) and are dropped there, not here. No other curation changed.
-  "BR2251", "BR2501", "FSK101", "FSK102", "FSK103", "FSK104",
-  "FSK111", "FSK303", "FSK309", "FSK312", "FSK628", "FSK651SETA",
-  "GFT014", "GFT015", "GFT441", "GFT442", "GFT443", "GFT444",
-  "GFT485", "SLT087",
+  // NOTE: the 2026-06-27 "SIL (x)" refresh of 20 still-live feed SKUs was
+  // ROLLED BACK at the user's request — several were wrongly marked in the
+  // spreadsheet (e.g. GFT441-444/GFT485 cutting boards). They are intentionally
+  // NOT removed here pending a name-level re-review with the user before any
+  // re-deletion. (BR2251, BR2501, FSK101-104, FSK111, FSK303, FSK309, FSK312,
+  // FSK628, FSK651SETA, GFT014, GFT015, GFT441-444, GFT485, SLT087.)
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
