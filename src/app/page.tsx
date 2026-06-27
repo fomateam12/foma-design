@@ -7,6 +7,7 @@ import {
   MapPin,
   Boxes,
   Zap,
+  TrendingUp,
   Store,
   ShoppingBag,
   PenTool,
@@ -25,6 +26,7 @@ import { CategoryIcon } from "@/components/category-icon";
 import { SectionHeader } from "@/components/section-header";
 import { BentoGrid, BentoCard } from "@/components/bento";
 import { Marquee } from "@/components/marquee";
+import { ProductBanner } from "@/components/product-banner";
 import { Reveal } from "@/components/reveal";
 import { StatCounter } from "@/components/stat-counter";
 import { buttonVariants } from "@/components/ui/button";
@@ -135,32 +137,39 @@ export default function HomePage() {
         <div className="container-px grid items-center gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
           <Reveal>
             <span className="eyebrow inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1 text-brand-strong backdrop-blur-sm">
-              <Sparkles className="size-3.5" />
-              Wholesale POD &amp; laser engraving
+              <MapPin className="size-3.5" />
+              Made in the USA · Ships next day
             </span>
             <h1 className="mt-5 text-display text-foreground">
-              Sell it. We&apos;ll{" "}
-              <span className="font-serif text-metallic">engrave, make</span>{" "}
-              &amp; ship it.
+              Print under your brand.{" "}
+              <span className="font-serif text-metallic">We make &amp; ship it.</span>
             </h1>
             <p className="mt-5 max-w-xl text-lead text-muted-foreground">
-              {site.name} is the U.S. print-on-demand partner for online
-              resellers. You list the products and make the sale — we personalize,
-              produce and blind-ship them to your customer under your brand.
+              You sell. We print, quality-check and blind-ship to your customer
+              under your label — fast production from our US print center.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link href="/sell" className={cn(buttonVariants({ variant: "brand", size: "lg" }))}>
-                Apply to sell
+                Apply to Sell
                 <ArrowRight className="size-4" />
               </Link>
               <Link
-                href="/quote"
+                href="/categories"
                 className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
               >
-                Request a quote
+                View Catalog
               </Link>
             </div>
+
+            <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-muted-foreground">
+              {["White-label", "Next-day production", "No MOQ"].map((chip) => (
+                <li key={chip} className="flex items-center gap-1.5">
+                  <BadgeCheck className="size-4 text-brand-strong" />
+                  {chip}
+                </li>
+              ))}
+            </ul>
 
             <dl className="mt-10 flex flex-wrap gap-x-8 gap-y-4">
               <div>
@@ -219,10 +228,13 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ---------------------- Live product banner --------------------- */}
+      <ProductBanner />
+
       {/* ----------------------- Integration marquee -------------------- */}
       <section className="border-b border-border bg-secondary/30 py-12">
         <p className="container-px text-center text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Built to fulfill the channels you already sell on
+          Fulfill Amazon, Etsy &amp; Shopify orders through us
         </p>
         <Marquee className="mt-8">
           {CHANNELS.map((c) => (
@@ -269,6 +281,15 @@ export default function HomePage() {
             </Reveal>
           ))}
         </div>
+        <div className="mt-10 text-center">
+          <Link
+            href="/how-it-works"
+            className="inline-flex items-center gap-1 text-sm font-semibold text-brand-strong hover:underline"
+          >
+            See how it works
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
       </section>
 
       {/* --------------------------- Why FomaPrint ---------------------- */}
@@ -276,8 +297,8 @@ export default function HomePage() {
         <div className="container-px">
           <SectionHeader
             eyebrow="Why FomaPrint"
-            title="A production partner built for resellers"
-            description="Everything you need to sell personalized goods without owning a laser, holding stock or revealing a supplier."
+            title="Built for sellers who want margin and control."
+            description="Sell personalized goods at your own price without owning a laser, holding stock or revealing a supplier."
             action={
               <Link
                 href="/sell"
@@ -293,16 +314,16 @@ export default function HomePage() {
             <BentoCard
               tone="ink"
               icon={<Truck className="size-5" />}
-              eyebrow="Blind drop-shipping"
+              eyebrow="Truly white-label"
               title="We ship under your brand — never ours"
               description="Orders go straight to your customer in unbranded packaging, with no FomaPrint invoices, logos or marketing inserts. Your store stays the only name they see."
               className="sm:col-span-2 lg:col-span-2"
             />
             <BentoCard
               tone="brand"
-              icon={<BadgeCheck className="size-5" />}
-              title="Free design proof"
-              description="A digital proof on every order, approved before we ever engrave."
+              icon={<TrendingUp className="size-5" />}
+              title="High profit margin"
+              description="Buy at wholesale and set your own retail price — a healthy margin on every personalized order."
             />
             <BentoCard
               icon={<MapPin className="size-5" />}
@@ -310,14 +331,14 @@ export default function HomePage() {
               description="Produced to order in our American studio for fast, reliable turnaround."
             />
             <BentoCard
-              icon={<Boxes className="size-5" />}
-              title="Low minimums"
-              description="Start with a single unit. Scale to bulk and unlock tiered wholesale pricing."
+              icon={<Zap className="size-5" />}
+              title="Next-day production"
+              description="Most orders enter production within a business day at our US print center — your customers aren't left waiting."
             />
             <BentoCard
-              icon={<Zap className="size-5" />}
-              title="Permanent engraving"
-              description="Crisp laser marks that never fade, peel or wash off the product."
+              icon={<Boxes className="size-5" />}
+              title="No minimums"
+              description="Start with a single unit and scale to bulk for tiered wholesale pricing."
             />
           </BentoGrid>
         </div>
@@ -547,7 +568,7 @@ export default function HomePage() {
               Start today
             </span>
             <h2 className="mt-3 text-h2 text-ink-foreground">
-              Add FomaPrint to your storefront
+              Start dropshipping under your brand
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lead text-ink-muted">
               Apply to become a reseller or send us a quote. We&apos;ll reply
