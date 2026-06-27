@@ -35,6 +35,11 @@ export interface Product {
   basePrice: number;
   image: string;
   imageFull: string;
+  /** Ordered gallery of additional view URLs (primary first, BLANK variants
+   *  last). Optional — undefined when no curated gallery has been bound for
+   *  this SKU. The single `image` / `imageFull` fields above remain the
+   *  primary references and stay populated regardless. */
+  images?: string[];
   categoryId: string;
   categorySlug: string;
   categoryName: string;

@@ -15,6 +15,7 @@
  */
 
 import rawData from "./products.json";
+import productImagesRaw from "./product-images.json";
 import { fomaProducts, FOMA_CATEGORY } from "./foma-products";
 import type {
   Category,
@@ -447,9 +448,26 @@ const jdsProducts: Product[] = normProducts.map((p) => {
   };
 });
 
+// Curated multi-view image galleries, keyed by SKU (case-insensitive).
+// Source: .scrape/incoming/Product_images bound to catalog SKUs by
+// .scrape/overnight/build_image_report.py — the binaries themselves are
+// served from /public/products/{SKU}/ but are NOT committed (volume >> 500MB);
+// only the URL bindings live in src/data/product-images.json.
+const productImagesByUpper = new Map<string, string[]>(
+  Object.entries(productImagesRaw as Record<string, string[]>).map(
+    ([k, v]) => [k.toUpperCase(), v],
+  ),
+);
+
+function withGallery(p: Product): Product {
+  const images = productImagesByUpper.get(p.sku.toUpperCase());
+  return images && images.length > 0 ? { ...p, images } : p;
+}
+
 // FOMA's own inventory (foma-products.ts) is merged in alongside the reseller
-// catalog without altering it.
-const allProducts: Product[] = [...jdsProducts, ...fomaProducts];
+// catalog without altering it. The curated gallery is applied uniformly so any
+// future FOMA SKU can pick up its bindings the same way.
+const allProducts: Product[] = [...jdsProducts, ...fomaProducts].map(withGallery);
 
 const productById = new Map(allProducts.map((p) => [p.id, p]));
 

@@ -1,0 +1,24 @@
+{
+  "BPN101": [
+    "/products/BPN101/BPN101.png",
+    "/products/BPN101/BPN101.jpg",
+    "/products/BPN101/BPN101_FLAT.png",
+    "/products/BPN101/BPN101_OPEN.png",
+    "/products/BPN101/BPN101_BLANK.png",
+    "/products/BPN101/BPN101_OPEN_BLANK.png"
+  ],
+  "BPN102": [
+    "/products/BPN102/BPN102.png",
+    "/products/BPN102/BPN102.jpg",
+    "/products/BPN102/BPN102_FLAT.png",
+    "/products/BPN102/BPN102_OPEN.png",
+    "/products/BPN102/BPN102_STYLED.png",
+    "/products/BPN102/BPN102_BLANK.png",
+    "/products/BPN102/BPN102_OPEN_BLANK.png"
+  ],
+  "LBH21": [
+    "/products/LBH21/LBH21.png",
+    "/products/LBH21/LBH21.jpg",
+    "/products/LBH21/LBH21_BLANK.png"
+  ]
+}

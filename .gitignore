@@ -44,3 +44,6 @@ next-env.d.ts
 # scrape artifacts (raw supplier HTML + tooling; not part of the app)
 /.scrape/
 settings.local.json
+
+# Large product image library — placed locally for review, not committed (see overnight-image-report.md)
+/public/products/
