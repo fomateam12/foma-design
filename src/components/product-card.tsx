@@ -26,7 +26,6 @@ export function ProductCard({
   /** Optional overlay action (e.g. an Add-to-quote button). */
   action?: ReactNode;
 }) {
-  const badge = product.badges[0];
   const icon = SLUG_ICON[product.categorySlug] ?? "gift";
 
   return (
@@ -35,22 +34,15 @@ export function ProductCard({
         href={`/product/${product.id}`}
         className="flex flex-1 flex-col rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
-        <div className="relative">
-          <ProductImage
-            src={product.image}
-            alt={product.name}
-            seed={product.sku}
-            icon={icon}
-            priority={priority}
-            className="aspect-square rounded-2xl border border-border"
-            imgClassName="p-3 group-hover:scale-[1.04]"
-          />
-          {badge ? (
-            <span className="absolute left-3 top-3 rounded-full bg-brand px-2.5 py-1 text-[11px] font-semibold text-brand-foreground shadow-sm">
-              {badge}
-            </span>
-          ) : null}
-        </div>
+        <ProductImage
+          src={product.image}
+          alt={product.name}
+          seed={product.sku}
+          icon={icon}
+          priority={priority}
+          className="aspect-square rounded-2xl border border-border"
+          imgClassName="p-3 group-hover:scale-[1.04]"
+        />
 
         <div className="mt-3.5 flex flex-1 flex-col gap-1 px-0.5">
           <p className="text-xs font-medium text-muted-foreground">

@@ -110,18 +110,6 @@ export default async function ProductPage({
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-contain p-8"
             />
-            {product.badges[0] ? (
-              <span
-                className={cn(
-                  "absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold shadow-sm",
-                  product.badges[0] === "Bestseller"
-                    ? "bg-brand text-brand-foreground"
-                    : "bg-evergreen text-evergreen-foreground",
-                )}
-              >
-                {product.badges[0]}
-              </span>
-            ) : null}
           </div>
         </div>
 
