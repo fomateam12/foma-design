@@ -5,7 +5,7 @@
 - Image files scanned: **53353**
 - SKUs with at least one matched image: **1279**
 - SKUs with **zero** matched images: **0**
-- Image files matched to a SKU: **4602**
+- Image files matched to a SKU: **4599**
 - Orphan files (no SKU match): **47194**
 - Total size of matched files (would-be copy): **8.26 GB**
 
@@ -17,8 +17,8 @@ Matched-file volume (8.26 GB) **exceeds the 500MB threshold**. Per the task cons
 
 | Images | SKU count |
 |--------|-----------|
-| 1 | 53 |
-| 2 | 237 |
+| 1 | 56 |
+| 2 | 234 |
 | 3 | 502 |
 | 4 | 179 |
 | 5 | 116 |
@@ -351,8 +351,8 @@ Files whose extracted candidate did not match any catalog SKU. Most of these com
 
 | SKU | # | First | Last |
 |-----|---|-------|------|
-| `ADW10BK` | 2 | `adw10bk.jpg` | `ADW10BK.jpg` |
-| `ADW10CL` | 2 | `adw10cl.jpg` | `ADW10CL.jpg` |
+| `ADW10BK` | 1 | `adw10bk.jpg` | `-` |
+| `ADW10CL` | 1 | `adw10cl.jpg` | `-` |
 | `ADW8BK` | 1 | `adw8bk.jpg` | `-` |
 | `ADW8CL` | 2 | `ADW8CL.png` | `adw8cl.jpg` |
 | `BPN101` | 6 | `BPN101.png` | `BPN101_OPEN_BLANK.png` |
@@ -403,7 +403,7 @@ Files whose extracted candidate did not match any catalog SKU. Most of these com
 | `FSK308` | 5 | `FSK308.png` | `FSK308_OPEN_BLANK.png` |
 
 
-## Duplicate basenames within a SKU (1557)
+## Duplicate basenames within a SKU (1560)
 
 Multiple source files with identical filenames were found for the same SKU; only the highest-ordered one was kept. The dropped variants were almost certainly identical (same file copied into multiple supplier categories).
 
@@ -469,7 +469,7 @@ Multiple source files with identical filenames were found for the same SKU; only
 | `LTM753` | `Drinkware/16oz Pints/Undecorated/LTM753_BLANK.png` | `_Polar_Camel_Complete_Collection/16oz Pints/Undecorated/LTM753_BLANK.png` |
 | `GFT2081` | `All_Product_Images/large/GFT2081.png` | `Drinkware/Coasters/GFT2081.png` |
 | `LTM5209` | `Drinkware/Leatherette Tumblers/20 oz SS Leatherette Tumblers/Decorated/LTM5209.png` | `_Polar_Camel_Complete_Collection/Leatherette Tumblers/20 oz SS Leatherette Tumblers/Decorated/LTM5209.png` |
-| ... | ... | (+1497 more) |
+| ... | ... | (+1500 more) |
 
 _Full manifest: `.scrape/overnight/matches.json`_
 _Catalog sidecar: `src/data/product-images.json`_
