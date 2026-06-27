@@ -217,12 +217,13 @@ const REMOVED_SKUS = new Set<string>([
   "SLT061", "SLT062", "SLT071", "SLT075", "SLT076", "SLT077",
   "SLT078", "SLT079", "SLT080", "SLT081", "SLT088",
 
-  // NOTE: the 2026-06-27 "SIL (x)" refresh of 20 still-live feed SKUs was
-  // ROLLED BACK at the user's request — several were wrongly marked in the
-  // spreadsheet (e.g. GFT441-444/GFT485 cutting boards). They are intentionally
-  // NOT removed here pending a name-level re-review with the user before any
-  // re-deletion. (BR2251, BR2501, FSK101-104, FSK111, FSK303, FSK309, FSK312,
-  // FSK628, FSK651SETA, GFT014, GFT015, GFT441-444, GFT485, SLT087.)
+  // 2026-06-27 "SIL (x)" refresh, after a name-level review with the user.
+  // 14 confirmed-correct removals: flasks (FSK*) + knives/multi-tools.
+  // The cutting/serving boards (GFT441-444, GFT485, SLT087) were wrongly
+  // marked in the spreadsheet and are deliberately KEPT live.
+  "FSK101", "FSK102", "FSK103", "FSK104", "FSK111", "FSK303",
+  "FSK309", "FSK312", "FSK628", "FSK651SETA",
+  "GFT014", "GFT015", "BR2251", "BR2501",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
