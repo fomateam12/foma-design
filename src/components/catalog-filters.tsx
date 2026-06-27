@@ -81,7 +81,7 @@ export function CatalogFilters({
   return (
     <aside
       aria-label="Filter products"
-      className="rounded-2xl border border-border bg-card/60 p-5 lg:sticky lg:top-24 lg:self-start"
+      className="rounded-2xl border border-border bg-card/60 p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto"
     >
       <div className="flex items-center justify-between gap-3">
         <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-foreground">
