@@ -16,25 +16,14 @@ either intentional (by instruction) or need a human with credentials/access.
   inbox. The API still returns `{"ok":true}` — by design, so a prospect never sees a failure caused
   by our mail config. **Action:** set the SMTP vars (host/port/user/pass/from/to) in the Vercel
   project before relying on email delivery. Until then, harvest leads from the log/CSV.
-- **Vercel preview deploy — BLOCKED, needs a one-line human step.** The project *is* linked
-  (`.vercel/project.json` → `foma-design`, team `foma1`), the code builds clean, and current
-  production (`foma-design.vercel.app`) is untouched. But no deploy could be triggered
-  autonomously because **all three** mechanisms are unavailable in this environment:
-  1. **Vercel CLI not installed** and **no auth token** present (`~/.vercel`, `VERCEL_TOKEN`,
-     `node_modules/.bin/vercel` all absent) — `vercel login` is interactive, so it can't run
-     unattended.
-  2. **No git remote** is configured on this clone (`git remote -v` is empty), so the
-     git-integration path (push a branch → auto preview) has nowhere to push.
-  3. The MCP `deploy_to_vercel` tool is **advisory only** — it returns instructions, it does not
-     create a deployment, and no other Vercel MCP tool in the set creates one.
-
-  **Action (pick one):**
-  - **CLI:** `cd /Users/eymen/foma-design && npx vercel deploy` (after `npx vercel login`).
-    Note: **plain `vercel deploy` makes a *preview*** — do **not** add `--prod`. The
-    `.vercel/project.json` link means it deploys straight to the `foma-design` project.
-  - **Git:** add a remote, then `git push -u origin redesign/b2b-unify`. With Vercel git
-    integration on, a non-production branch push yields a **preview** URL automatically (no merge
-    to `main`, no prod). The branch is 12 commits ahead and ready.
+- **Vercel preview deploy — DONE.** Live preview:
+  **https://foma-design-i143uipog-foma1.vercel.app**
+  (deployment `dpl_82TU5V3aob7tQaH4CJrW8jvJT8JG`, `readyState: READY`, `target: null` = preview).
+  Deployed with `npx vercel deploy` (no `--prod`) using the authenticated CLI — the token lives at
+  the macOS path `~/Library/Application Support/com.vercel.cli/auth.json` (user
+  `fomalaser1212-6166`), which an earlier check missed by looking at the Linux XDG path.
+  **Production (`foma-design.vercel.app`) is untouched** — promotion is a separate, explicit
+  `vercel deploy --prod`, intentionally not run. No merge to `main`.
 
 ## Tooling limitations encountered
 
