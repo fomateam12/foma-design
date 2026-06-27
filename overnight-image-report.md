@@ -1,5 +1,20 @@
 # Overnight Image Matching Report
 
+## TL;DR — for the morning
+
+| | |
+|---|---|
+| **Branch** | `gece/20260626` (commits `5d2842f`, `3ddd524`, `9c3ca5d`; not pushed) |
+| **Schema** | `Product.images?: string[]` added (optional gallery). Existing `image`/`imageFull` untouched. |
+| **Match rate** | **1279 / 1279** catalog SKUs got at least one image — 100%, exact matches only (no fuzzy). |
+| **Sidecar** | `src/data/product-images.json` (1279 SKUs → 4599 ordered URLs). |
+| **Files** | 4599 image files cloned to `public/products/{SKU}/` via APFS clonefile — 8.26 GB on disk. |
+| **Git** | `public/products/` is gitignored (volume > 500 MB threshold). Code + bindings ARE committed. |
+| **Awaiting decision** | Where do the binaries live in prod? (Vercel Blob / Cloudinary / S3+CDN.) See "Next steps" at bottom. |
+| **Build** | `npm run build` green — 1352 static pages, 1281 product pages, no TS errors. |
+
+---
+
 - Source: `~/foma-design/.scrape/incoming/Product_images/Product_Images/`
 - Catalog SKUs after curation: **1279**
 - Image files scanned: **53353**
@@ -473,3 +488,36 @@ Multiple source files with identical filenames were found for the same SKU; only
 
 _Full manifest: `.scrape/overnight/matches.json`_
 _Catalog sidecar: `src/data/product-images.json`_
+---
+
+## Next steps (morning decision)
+
+The 8.26 GB of bound images sit in `public/products/{SKU}/` locally but are NOT
+committed. To ship them in prod, pick one path:
+
+1. **Vercel Blob** — `pnpm/npm i @vercel/blob`, write a one-shot upload script
+   that walks `public/products/`, uploads each file under a stable key, and
+   either rewrites `src/data/product-images.json` to the returned URLs OR keeps
+   `/products/{SKU}/...` paths and adds a Next rewrite to Blob. Public storage
+   is GA.
+2. **Cloudinary** — already the legacy supplier CDN host (existing `image`
+   field uses `res.cloudinary.com/business-products/...`). Upload the new
+   gallery under a FOMA folder, point sidecar at the Cloudinary URLs.
+3. **S3 + CDN (CloudFront / R2)** — most flexibility, most setup. Pick if you
+   want one bucket shared with other assets.
+
+In all three cases the URL shape in `src/data/product-images.json` is the only
+runtime knob. The schema (`Product.images: string[]`) doesn't care where the
+URLs point.
+
+Once a host is picked, the upload + URL-rewrite step can be regenerated from
+`.scrape/overnight/matches.json` (machine-readable source of truth, kept
+gitignored under `/.scrape/`).
+
+### Helper scripts (in `.scrape/overnight/`, gitignored)
+
+- `build_image_report.py` — rebuilds `overnight-image-report.md`,
+  `.scrape/overnight/matches.json`, and `src/data/product-images.json` from
+  the on-disk image dump. Idempotent.
+- `place_images.py [SKU...]` — clones (APFS `clonefile`) bound images from
+  `.scrape/incoming/...` into `public/products/{SKU}/`. No args = all SKUs.
