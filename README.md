@@ -21,6 +21,10 @@ cp .env.example .env.local   # optional — see below
 npm run dev                  # http://localhost:3000
 ```
 
+> **New machine?** See [`DEPLOY.md`](./DEPLOY.md) for the clone-to-deploy
+> walkthrough, the env-var reference (`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`,
+> `RESEND_API_KEY`, …), and the curated image-library regeneration scripts.
+
 Emails are a no-op until you add a `RESEND_API_KEY`, so every page and form
 works end-to-end out of the box.
 
