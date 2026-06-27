@@ -62,6 +62,127 @@ export function productSize(product: Product): NormalizedSize | null {
 }
 
 /* ------------------------------------------------------------------ */
+/* Volume extraction (name-preferred)                                  */
+/*                                                                     */
+/* The supplier feed's `size` field for drinkware is inconsistent: a   */
+/* "32 oz. Polar Camel Water Bottle" in olive green has size="32 oz."  */
+/* but the same bottle in royal blue/red/black has size="11 1/2""      */
+/* (just the height). The name, however, ALWAYS contains "32 oz." for  */
+/* every variant. Pulling volume from the name first is the only way   */
+/* to get a stable filter facet — fall back to the size field when     */
+/* the name has no oz token (e.g. accessories without a volume).       */
+/* ------------------------------------------------------------------ */
+
+const NAME_VOLUME_RE = /\b(\d+(?:\.\d+)?)\s*oz\.?\b/i;
+
+export function productVolume(product: Product): string | null {
+  const m = product.name.match(NAME_VOLUME_RE);
+  if (m) {
+    let n = m[1];
+    if (n.endsWith(".0")) n = n.slice(0, -2);
+    return `${n} oz`;
+  }
+  const sized = productSize(product);
+  return sized && sized.bucket === "oz" ? sized.canonical : null;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dimension bucketing — Small / Medium / Large                        */
+/*                                                                     */
+/* For non-drinkware subcategories that vary by physical dimension     */
+/* (portfolios, frames, cutting boards, journals…) we bucket each      */
+/* SKU into S / M / L using its primary size. The user-visible chips   */
+/* become a manageable three-way navigation instead of 20+ exact       */
+/* fractional measurements.                                            */
+/* ------------------------------------------------------------------ */
+
+export type SizeTier = "Small" | "Medium" | "Large";
+
+function parseInchToken(s: string): number {
+  // "5 1/4" / "1 1/2" / "10" — supplier uses these mixed forms.
+  let total = 0;
+  for (const piece of s.trim().split(/\s+/)) {
+    if (piece.includes("/")) {
+      const [num, den] = piece.split("/").map(Number);
+      if (Number.isFinite(num) && Number.isFinite(den) && den !== 0) {
+        total += num / den;
+      }
+    } else {
+      const n = Number(piece);
+      if (Number.isFinite(n)) total += n;
+    }
+  }
+  return total;
+}
+
+export function productSizeTier(product: Product): SizeTier | null {
+  const ns = productSize(product);
+  if (!ns) return null;
+  if (ns.bucket === "rect") {
+    const m = ns.canonical.match(/^([\d\s/.]+)"\s*x\s*([\d\s/.]+)"$/);
+    if (!m) return null;
+    const a = parseInchToken(m[1]);
+    const b = parseInchToken(m[2]);
+    const area = a * b;
+    if (area <= 0) return null;
+    if (area < 45) return "Small";
+    if (area < 110) return "Medium";
+    return "Large";
+  }
+  if (ns.bucket === "inch") {
+    const n = parseInchToken(ns.canonical.replace(/"/g, ""));
+    if (n <= 0) return null;
+    if (n < 5) return "Small";
+    if (n < 9) return "Medium";
+    return "Large";
+  }
+  if (ns.bucket === "diam") {
+    const m = ns.canonical.match(/^([\d\s/.]+)"/);
+    if (!m) return null;
+    const n = parseInchToken(m[1]);
+    if (n <= 0) return null;
+    if (n < 4) return "Small";
+    if (n < 8) return "Medium";
+    return "Large";
+  }
+  return null;
+}
+
+const TIER_ORDER: Record<SizeTier, number> = {
+  Small: 0,
+  Medium: 1,
+  Large: 2,
+};
+
+export function buildSizeTierFacets(
+  products: Product[],
+  { minCount = 2 }: { minCount?: number } = {},
+): SimpleFacet[] {
+  const counts = new Map<SizeTier, number>();
+  for (const p of products) {
+    const t = productSizeTier(p);
+    if (!t) continue;
+    counts.set(t, (counts.get(t) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([canonical, count]) => ({ canonical, count }))
+    .filter((f) => f.count >= minCount)
+    .sort((a, b) => TIER_ORDER[a.canonical as SizeTier] - TIER_ORDER[b.canonical as SizeTier]);
+}
+
+export function filterBySizeTier(
+  products: Product[],
+  allowed: readonly string[],
+): Product[] {
+  if (allowed.length === 0) return products;
+  const set = new Set(allowed);
+  return products.filter((p) => {
+    const t = productSizeTier(p);
+    return t ? set.has(t) : false;
+  });
+}
+
+/* ------------------------------------------------------------------ */
 /* Color extraction                                                    */
 /*                                                                     */
 /* Most products encode color in the name: "Royal Blue 12 oz. Powder   */
@@ -193,34 +314,28 @@ export interface SubcategoryFacet {
 }
 
 /**
- * Build size facets, but with enterprise hygiene:
- *
- *   - `minCount`: hide any chip with fewer than N products. Defaults
- *     to 2 — a "filter" with one matching product is dead-end noise.
- *   - The "other" bucket (combo strings like `"2 oz. 2 3/8""`) is
- *     dropped from the UI entirely; it surfaces in counts/totals only.
+ * Build volume facets ONLY. Linear / rectangular / diameter buckets
+ * have been retired from the filter UI: they were either noise (one
+ * chip per supplier-product, see "9 3/4" x 5/8"" on cake pans) or
+ * misleading (bottle-height chips that look like "available sizes"
+ * but are actually just the SKU's physical dimension). Volume is the
+ * one continuous size facet that B2B buyers actually filter on, so
+ * that's the only one we build.
  */
-export function buildSizeFacets(
+export function buildVolumeFacets(
   products: Product[],
   { minCount = 2 }: { minCount?: number } = {},
-): SizeFacet[] {
-  const counts = new Map<string, SizeFacet>();
+): SimpleFacet[] {
+  const counts = new Map<string, number>();
   for (const p of products) {
-    const ns = productSize(p);
-    if (!ns || ns.bucket === "other") continue;
-    const key = `${ns.bucket}::${ns.canonical}`;
-    const prev = counts.get(key);
-    if (prev) prev.count += 1;
-    else counts.set(key, { bucket: ns.bucket, canonical: ns.canonical, count: 1 });
+    const v = productVolume(p);
+    if (!v) continue;
+    counts.set(v, (counts.get(v) ?? 0) + 1);
   }
-  const bucketRank: Record<SizeBucket, number> = {
-    oz: 0, rect: 1, inch: 2, diam: 3, other: 4,
-  };
-  return [...counts.values()]
+  return [...counts.entries()]
+    .map(([canonical, count]) => ({ canonical, count }))
     .filter((f) => f.count >= minCount)
     .sort((a, b) => {
-      const r = bucketRank[a.bucket] - bucketRank[b.bucket];
-      if (r !== 0) return r;
       const an = parseFloat(a.canonical);
       const bn = parseFloat(b.canonical);
       if (!Number.isNaN(an) && !Number.isNaN(bn) && an !== bn) return an - bn;
@@ -273,70 +388,62 @@ export function buildSubcategoryFacets(products: Product[]): SubcategoryFacet[] 
 }
 
 /* ------------------------------------------------------------------ */
-/* Smart per-page facet selection                                      */
+/* Per-page facet selection                                            */
 /*                                                                     */
-/* Different categories want different facets. Drinkware buyers want   */
-/* "12 oz / 20 oz / 30 oz", not the bottle's HEIGHT (the inch facet    */
-/* is just bottle-height for that subcategory and adds noise). Frames  */
-/* buyers want "5x7 / 8x10", not the volume of nothing. This planner   */
-/* picks a sensible subset based on what the data actually contains.   */
+/* Volume + Color + Material are the three filter facets a B2B buyer   */
+/* reaches for. Each is hidden when the page doesn't actually have ≥2  */
+/* distinct values to choose from.                                     */
 /* ------------------------------------------------------------------ */
 
 export interface FacetPlan {
-  showOz: boolean;
-  showRect: boolean;
-  showInch: boolean;
-  showDiam: boolean;
+  showVolume: boolean;
   showColor: boolean;
   showMaterial: boolean;
 }
 
 export function planFacets(
-  products: Product[],
-  sizeFacets: SizeFacet[],
+  _products: Product[],
+  volumeFacets: SimpleFacet[],
   colorFacets: SimpleFacet[],
   materialFacets: SimpleFacet[],
 ): FacetPlan {
-  const total = products.length;
-  const ozCovered = sizeFacets
-    .filter((f) => f.bucket === "oz")
-    .reduce((n, f) => n + f.count, 0);
-  const rectCovered = sizeFacets
-    .filter((f) => f.bucket === "rect")
-    .reduce((n, f) => n + f.count, 0);
-  const inchCovered = sizeFacets
-    .filter((f) => f.bucket === "inch")
-    .reduce((n, f) => n + f.count, 0);
-  const diamCovered = sizeFacets
-    .filter((f) => f.bucket === "diam")
-    .reduce((n, f) => n + f.count, 0);
-
-  // If oz is dominant (>30% of products), hide inches/diam — they're
-  // just the bottle's height/circumference, not useful filters.
-  const ozDominant = ozCovered / Math.max(1, total) > 0.3;
-
   return {
-    showOz: ozCovered >= 2,
-    showRect: rectCovered >= 4 && !ozDominant,
-    showInch: inchCovered >= 4 && !ozDominant,
-    showDiam: diamCovered >= 4 && !ozDominant,
+    showVolume: volumeFacets.length >= 2,
     showColor: colorFacets.length >= 2,
     showMaterial: materialFacets.length >= 2,
   };
+}
+
+/* Kept for legacy callers that still ask for sizeFacets — returns the
+ * volume-bucket subset only; the linear / rect / diam buckets are
+ * permanently empty. New code should use buildVolumeFacets() directly. */
+export function buildSizeFacets(
+  products: Product[],
+  opts: { minCount?: number } = {},
+): SizeFacet[] {
+  return buildVolumeFacets(products, opts).map((f) => ({
+    bucket: "oz" as const,
+    canonical: f.canonical,
+    count: f.count,
+  }));
 }
 
 /* ------------------------------------------------------------------ */
 /* Filtering                                                           */
 /* ------------------------------------------------------------------ */
 
-export function filterBySize(products: Product[], allowed: readonly string[]): Product[] {
+export function filterByVolume(products: Product[], allowed: readonly string[]): Product[] {
   if (allowed.length === 0) return products;
   const set = new Set(allowed);
   return products.filter((p) => {
-    const ns = productSize(p);
-    return ns ? set.has(ns.canonical) : false;
+    const v = productVolume(p);
+    return v ? set.has(v) : false;
   });
 }
+
+/** Legacy alias — old callers passed `?size=20+oz`, the canonical form
+ *  is still "20 oz" so the values line up with filterByVolume. */
+export const filterBySize = filterByVolume;
 
 export function filterBySubcategory(products: Product[], allowed: readonly string[]): Product[] {
   if (allowed.length === 0) return products;

@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import type {
   FacetPlan,
   SimpleFacet,
-  SizeFacet,
   SubcategoryFacet,
 } from "@/lib/product-taxonomy";
 
@@ -32,21 +31,6 @@ function buildHref(
   for (const m of next.material) params.append("material", m);
   const qs = params.toString();
   return qs ? `${basePath}?${qs}` : basePath;
-}
-
-function bucketLabel(b: SizeFacet["bucket"]): string {
-  switch (b) {
-    case "oz":
-      return "Volume";
-    case "rect":
-      return "Dimensions";
-    case "inch":
-      return "Length";
-    case "diam":
-      return "Diameter";
-    default:
-      return "Other";
-  }
 }
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
@@ -119,7 +103,7 @@ export interface CatalogFiltersProps {
   basePath: string;
   /** What gets rendered — null/empty arrays = hide that section. */
   plan: FacetPlan;
-  sizeFacets: SizeFacet[];
+  volumeFacets: SimpleFacet[];
   colorFacets: SimpleFacet[];
   materialFacets: SimpleFacet[];
   subFacets: SubcategoryFacet[];
@@ -127,12 +111,16 @@ export interface CatalogFiltersProps {
   activeSubs: readonly string[];
   activeColors: readonly string[];
   activeMaterials: readonly string[];
+  /** When the volume choice is promoted to a first-class
+   *  "Browse by size" nav above the grid, the filter rail hides
+   *  Volume to avoid duplicating the same control. */
+  volumePromoted?: boolean;
 }
 
 export function CatalogFilters({
   basePath,
   plan,
-  sizeFacets,
+  volumeFacets,
   colorFacets,
   materialFacets,
   subFacets,
@@ -140,6 +128,7 @@ export function CatalogFilters({
   activeSubs,
   activeColors,
   activeMaterials,
+  volumePromoted = false,
 }: CatalogFiltersProps) {
   const state = {
     sizes: [...activeSizes],
@@ -150,36 +139,20 @@ export function CatalogFilters({
   const anyActive =
     activeSizes.length + activeSubs.length + activeColors.length + activeMaterials.length > 0;
 
-  // Group size facets by bucket so the UI can label them sensibly.
-  const sizeGroups: Record<string, SizeFacet[]> = {};
-  for (const f of sizeFacets) {
-    if (
-      (f.bucket === "oz" && !plan.showOz) ||
-      (f.bucket === "rect" && !plan.showRect) ||
-      (f.bucket === "inch" && !plan.showInch) ||
-      (f.bucket === "diam" && !plan.showDiam)
-    ) {
-      continue;
-    }
-    (sizeGroups[f.bucket] ??= []).push(f);
-  }
-  const sizeGroupEntries = Object.entries(sizeGroups).filter(([, list]) => list.length >= 1);
-
   // Subcategory facets: only the top N — beyond that the subcategory tiles
   // grid below handles discovery.
   const TOP_SUBS = 10;
   const subs = subFacets.slice(0, TOP_SUBS);
 
-  const colors = plan.showColor ? colorFacets : [];
-  const materials = plan.showMaterial ? materialFacets : [];
+  const volumes = plan.showVolume && !volumePromoted ? volumeFacets : [];
+  // Color and Material were tried as facet sections but the user wants
+  // size to be the single categorization axis. Keep the imports + props
+  // around so removal stays reversible, but render nothing.
+  const colors: SimpleFacet[] = [];
+  const materials: SimpleFacet[] = [];
 
   // Nothing to render at all? Don't show the rail.
-  if (
-    !sizeGroupEntries.length &&
-    !subs.length &&
-    !colors.length &&
-    !materials.length
-  ) {
+  if (!volumes.length && !subs.length && !colors.length && !materials.length) {
     return null;
   }
 
@@ -263,11 +236,11 @@ export function CatalogFilters({
         </section>
       ) : null}
 
-      {sizeGroupEntries.map(([bucket, list]) => (
-        <section key={bucket} className="mt-5 space-y-2">
-          <SectionHeading>{bucketLabel(bucket as SizeFacet["bucket"])}</SectionHeading>
+      {volumes.length > 0 ? (
+        <section className="mt-5 space-y-2">
+          <SectionHeading>Volume</SectionHeading>
           <ul className="flex flex-wrap gap-1.5">
-            {list.map((f) => (
+            {volumes.map((f) => (
               <FilterChip
                 key={f.canonical}
                 active={activeSizes.includes(f.canonical)}
@@ -279,7 +252,7 @@ export function CatalogFilters({
             ))}
           </ul>
         </section>
-      ))}
+      ) : null}
     </aside>
   );
 }

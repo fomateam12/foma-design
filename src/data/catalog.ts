@@ -16,6 +16,7 @@
 
 import rawData from "./products.json";
 import productImagesRaw from "./product-images.json";
+import productWeightsRaw from "./product-weights.json";
 import { fomaProducts, FOMA_CATEGORY } from "./foma-products";
 import type {
   Category,
@@ -508,15 +509,47 @@ const productImagesByUpper = new Map<string, string[]>(
   ),
 );
 
-function withGallery(p: Product): Product {
-  const images = productImagesByUpper.get(p.sku.toUpperCase());
-  return images && images.length > 0 ? { ...p, images } : p;
+// Per-SKU shipping weight (pounds). Source: FOMA's master spreadsheet,
+// stored in src/data/product-weights.json. Surfaced as `Product.weightLb`,
+// rendered on the detail page's spec list, AND appended as a sentence to
+// the product's longDescription so the lb figure shows up in body copy
+// + SEO metadata.
+const productWeightsByUpper = new Map<string, number>(
+  Object.entries(productWeightsRaw as Record<string, number>).map(
+    ([k, v]) => [k.toUpperCase(), v],
+  ),
+);
+
+function formatLbForDescription(lb: number): string {
+  const lbPlaces = lb < 1 ? 2 : lb < 10 ? 1 : 0;
+  const oz = lb * 16;
+  const ozPlaces = oz < 10 ? 1 : 0;
+  return `${lb.toFixed(lbPlaces)} lb (${oz.toFixed(ozPlaces)} oz)`;
+}
+
+function enrich(p: Product): Product {
+  const upper = p.sku.toUpperCase();
+  const images = productImagesByUpper.get(upper);
+  const weightLb = productWeightsByUpper.get(upper);
+  let next = p;
+  if (images && images.length > 0) next = { ...next, images };
+  if (weightLb !== undefined && weightLb > 0) {
+    const weightSentence = ` Approximate shipping weight: ${formatLbForDescription(weightLb)}.`;
+    next = {
+      ...next,
+      weightLb,
+      longDescription: next.longDescription.endsWith(weightSentence)
+        ? next.longDescription
+        : next.longDescription + weightSentence,
+    };
+  }
+  return next;
 }
 
 // FOMA's own inventory (foma-products.ts) is merged in alongside the reseller
-// catalog without altering it. The curated gallery is applied uniformly so any
-// future FOMA SKU can pick up its bindings the same way.
-const allProducts: Product[] = [...jdsProducts, ...fomaProducts].map(withGallery);
+// catalog without altering it. The curated gallery + weight enrichments are
+// applied uniformly so any future FOMA SKU can pick up its bindings the same way.
+const allProducts: Product[] = [...jdsProducts, ...fomaProducts].map(enrich);
 
 const productById = new Map(allProducts.map((p) => [p.id, p]));
 

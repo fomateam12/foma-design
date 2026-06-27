@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight, Tags } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProductGrid } from "@/components/product-grid";
-import { CatalogFilters } from "@/components/catalog-filters";
 import { cn } from "@/lib/utils";
 import {
   getCategories,
@@ -12,13 +11,10 @@ import {
   getProductsBySubcategory,
 } from "@/data/catalog";
 import {
-  buildColorFacets,
-  buildMaterialFacets,
-  buildSizeFacets,
-  filterByColor,
-  filterByMaterial,
-  filterBySize,
-  planFacets,
+  buildSizeTierFacets,
+  buildVolumeFacets,
+  filterBySizeTier,
+  filterByVolume,
 } from "@/lib/product-taxonomy";
 
 function asArray(v: string | string[] | undefined): string[] {
@@ -60,11 +56,7 @@ export default async function SubcategoryPage({
   searchParams,
 }: {
   params: Promise<{ slug: string; subSlug: string }>;
-  searchParams: Promise<{
-    size?: string | string[];
-    color?: string | string[];
-    material?: string | string[];
-  }>;
+  searchParams: Promise<{ size?: string | string[] }>;
 }) {
   const { slug, subSlug } = await params;
   const sp = await searchParams;
@@ -74,24 +66,29 @@ export default async function SubcategoryPage({
   const all = getProductsBySubcategory(category.slug, subcategory.slug);
 
   const activeSizes = asArray(sp.size);
-  const activeColors = asArray(sp.color);
-  const activeMaterials = asArray(sp.material);
-  const filtered = filterByMaterial(
-    filterByColor(filterBySize(all, activeSizes), activeColors),
-    activeMaterials,
-  );
 
-  const sizeFacets = buildSizeFacets(all);
-  const colorFacets = buildColorFacets(all);
-  const materialFacets = buildMaterialFacets(all);
-  const plan = planFacets(all, sizeFacets, colorFacets, materialFacets);
-  const hasAnyFacet =
-    plan.showOz ||
-    plan.showRect ||
-    plan.showInch ||
-    plan.showDiam ||
-    plan.showColor ||
-    plan.showMaterial;
+  // Pick the secondary axis automatically:
+  //   - Drinkware-style subcategories with ≥2 volumes → oz chips.
+  //   - Dimensional goods (frames, portfolios, boards) without a
+  //     volume → Small / Medium / Large tiers from the rect / linear
+  //     / diameter normalization.
+  //   - Single-size collections (one volume or no usable size data) →
+  //     no secondary nav, just the grid.
+  const volumeFacets = buildVolumeFacets(all);
+  const sizeTierFacets = volumeFacets.length >= 2 ? [] : buildSizeTierFacets(all);
+  const sizeAxis: "volume" | "tier" | "none" =
+    volumeFacets.length >= 2
+      ? "volume"
+      : sizeTierFacets.length >= 2
+        ? "tier"
+        : "none";
+  const sizeFacets = sizeAxis === "volume" ? volumeFacets : sizeTierFacets;
+
+  const filtered =
+    sizeAxis === "tier"
+      ? filterBySizeTier(all, activeSizes)
+      : filterByVolume(all, activeSizes);
+
   const basePath = `/category/${category.slug}/${subcategory.slug}`;
 
   return (
@@ -147,51 +144,115 @@ export default async function SubcategoryPage({
         })}
       </nav>
 
-      {hasAnyFacet ? (
-        <div className="mt-8 grid gap-8 lg:grid-cols-[16rem_1fr]">
-          <CatalogFilters
-            basePath={basePath}
-            plan={plan}
-            sizeFacets={sizeFacets}
-            colorFacets={colorFacets}
-            materialFacets={materialFacets}
-            subFacets={[]}
-            activeSizes={activeSizes}
-            activeSubs={[]}
-            activeColors={activeColors}
-            activeMaterials={activeMaterials}
-          />
-          <div className="min-w-0">
-            {activeSizes.length + activeColors.length + activeMaterials.length > 0 ? (
-              <p className="mb-4 text-sm text-muted-foreground">
-                {filtered.length.toLocaleString()}{" "}
-                {filtered.length === 1 ? "match" : "matches"} for{" "}
-                <span className="font-medium text-foreground">
-                  {[...activeColors, ...activeMaterials, ...activeSizes].join(", ")}
-                </span>
-              </p>
-            ) : null}
-            {filtered.length > 0 ? (
-              <ProductGrid products={filtered} priorityCount={4} />
-            ) : (
-              <div className="rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No <strong>{subcategory.name}</strong> match the selected
-                  filters.
-                </p>
-                <Link
-                  href={basePath}
-                  className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand-strong hover:underline"
+      {/* Size sub-navigation. For drinkware-style collections the chips
+          are oz volumes (12 oz Water Bottles, 20 oz …). For dimensional
+          goods (frames, portfolios, cutting boards) the data is bucketed
+          into Small / Medium / Large via area / linear thresholds. The
+          axis is picked automatically based on what the subcategory's
+          products actually carry. */}
+      {sizeAxis !== "none" ? (
+        <nav
+          aria-label={`${subcategory.name} by size`}
+          className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3"
+        >
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            Browse by size
+          </h2>
+          <ul className="no-scrollbar flex gap-1.5 overflow-x-auto pb-1">
+            <li>
+              <Link
+                href={basePath}
+                aria-current={activeSizes.length === 0 ? "page" : undefined}
+                className={cn(
+                  "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors",
+                  activeSizes.length === 0
+                    ? "border-brand-strong bg-brand-strong font-medium text-brand-foreground"
+                    : "border-border text-muted-foreground hover:border-brand-strong/60 hover:text-foreground",
+                )}
+              >
+                All sizes
+                <span
+                  className={cn(
+                    "rounded-full px-1.5 text-[10px] font-semibold",
+                    activeSizes.length === 0
+                      ? "bg-brand-foreground/15"
+                      : "bg-muted text-muted-foreground",
+                  )}
                 >
-                  Clear filters
-                  <ArrowRight className="size-4" />
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
+                  {all.length}
+                </span>
+              </Link>
+            </li>
+            {sizeFacets.map((f) => {
+              const isActive = activeSizes.includes(f.canonical);
+              const params = new URLSearchParams();
+              params.append("size", f.canonical);
+              const labelSuffix =
+                sizeAxis === "volume"
+                  ? ` ${subcategory.name.replace(/^\d+\s*oz\.?\s*/i, "")}`
+                  : "";
+              return (
+                <li key={f.canonical}>
+                  <Link
+                    href={`${basePath}?${params.toString()}`}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors",
+                      isActive
+                        ? "border-brand-strong bg-brand-strong font-medium text-brand-foreground"
+                        : "border-border text-muted-foreground hover:border-brand-strong/60 hover:text-foreground",
+                    )}
+                  >
+                    {f.canonical}
+                    {labelSuffix}
+                    <span
+                      className={cn(
+                        "rounded-full px-1.5 text-[10px] font-semibold",
+                        isActive
+                          ? "bg-brand-foreground/15"
+                          : "bg-muted text-muted-foreground",
+                      )}
+                    >
+                      {f.count}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      ) : null}
+
+      {filtered.length > 0 ? (
+        <>
+          {activeSizes.length > 0 ? (
+            <p className="mt-6 text-sm text-muted-foreground">
+              {filtered.length.toLocaleString()}{" "}
+              {filtered.length === 1 ? "match" : "matches"} for{" "}
+              <span className="font-medium text-foreground">
+                {activeSizes.join(", ")}
+              </span>
+            </p>
+          ) : null}
+          <ProductGrid products={filtered} className="mt-8" priorityCount={4} />
+        </>
       ) : all.length > 0 ? (
-        <ProductGrid products={all} className="mt-8" priorityCount={4} />
+        <div className="mt-8 rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center">
+          <p className="text-sm text-muted-foreground">
+            No <strong>{subcategory.name}</strong> match{" "}
+            <span className="font-medium text-foreground">
+              {activeSizes.join(", ")}
+            </span>
+            .
+          </p>
+          <Link
+            href={basePath}
+            className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand-strong hover:underline"
+          >
+            See all sizes
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
       ) : (
         <p className="mt-10 text-muted-foreground">
           No products in this collection yet.

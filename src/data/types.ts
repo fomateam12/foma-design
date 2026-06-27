@@ -40,6 +40,11 @@ export interface Product {
    *  this SKU. The single `image` / `imageFull` fields above remain the
    *  primary references and stay populated regardless. */
   images?: string[];
+  /** Item weight in pounds (from FOMA's master list — raw xlsx value
+   *  divided by 1000). Used to render the "Weight" line on the product
+   *  detail page and appended to the description text. Optional —
+   *  undefined when the supplier hasn't shipped a weight yet. */
+  weightLb?: number;
   categoryId: string;
   categorySlug: string;
   categoryName: string;
