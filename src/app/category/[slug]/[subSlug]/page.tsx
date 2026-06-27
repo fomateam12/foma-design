@@ -108,6 +108,7 @@ export default async function SubcategoryPage({
             <Link
               key={sc.slug}
               href={`/category/${category.slug}/${sc.slug}`}
+              aria-current={active ? "page" : undefined}
               className={cn(
                 "shrink-0 rounded-full border px-3.5 py-1.5 text-sm transition-colors",
                 active
