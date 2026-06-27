@@ -439,7 +439,66 @@ const ADDED_PRODUCTS: RawProduct[] = [
 
 /* New subcategories the additions introduce, keyed by the (post-merge)
    category slug they belong under. Count is recomputed from products. */
-const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {};
+const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {
+  // Size-based drinkware groups for the DRINKCAT26 pages the user wants placed
+  // strictly by capacity (20 oz already exists as feed subId 24; 30 oz as 23).
+  drinkware: [
+    { subId: "pc12oz", slug: "12-oz-tumblers", name: "Polar Camel 12 oz. Tumblers", count: 0 },
+    { subId: "pc22oz", slug: "22-oz-tumblers", name: "Polar Camel 22 oz. Tumblers", count: 0 },
+    { subId: "pc32oz", slug: "32-oz-tumblers", name: "Polar Camel 32 oz. Tumblers", count: 0 },
+    { subId: "pc40oz", slug: "40-oz-tumblers", name: "Polar Camel 40 oz. Tumblers", count: 0 },
+  ],
+};
+
+/* Force specific feed SKUs into a size-based subcategory regardless of the
+   feed's own categorization (e.g. the ION-plated colorways the feed lumps under
+   one "ion-plated" subcategory). Keyed by SKU -> target subId/subName; applied
+   in normalizeCatalog. Per user: catalog pages 28-39 grouped by actual size. */
+const RECATEGORIZE: Record<string, { subId: string; subName: string }> = {
+  LTM890: { subId: "pc12oz", subName: "Polar Camel 12 oz. Tumblers" },
+  LTM7295: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7065: { subId: "pc22oz", subName: "Polar Camel 22 oz. Tumblers" },
+  LTM7485: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LWB250: { subId: "pc32oz", subName: "Polar Camel 32 oz. Tumblers" },
+  LTM891: { subId: "pc12oz", subName: "Polar Camel 12 oz. Tumblers" },
+  LTM7296: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7066: { subId: "pc22oz", subName: "Polar Camel 22 oz. Tumblers" },
+  LTM7486: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LWB251: { subId: "pc32oz", subName: "Polar Camel 32 oz. Tumblers" },
+  LTM880: { subId: "pc12oz", subName: "Polar Camel 12 oz. Tumblers" },
+  LTM7290: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7050: { subId: "pc22oz", subName: "Polar Camel 22 oz. Tumblers" },
+  LTM7470: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LWB240: { subId: "pc32oz", subName: "Polar Camel 32 oz. Tumblers" },
+  LTM881: { subId: "pc12oz", subName: "Polar Camel 12 oz. Tumblers" },
+  LTM7291: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7051: { subId: "pc22oz", subName: "Polar Camel 22 oz. Tumblers" },
+  LTM7471: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LWB241: { subId: "pc32oz", subName: "Polar Camel 32 oz. Tumblers" },
+  LTM870: { subId: "pc12oz", subName: "Polar Camel 12 oz. Tumblers" },
+  LTM7280: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7030: { subId: "pc22oz", subName: "Polar Camel 22 oz. Tumblers" },
+  LTM7430: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LWB230: { subId: "pc32oz", subName: "Polar Camel 32 oz. Tumblers" },
+  LTM871: { subId: "pc12oz", subName: "Polar Camel 12 oz. Tumblers" },
+  LTM7281: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7031: { subId: "pc22oz", subName: "Polar Camel 22 oz. Tumblers" },
+  LTM7431: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LWB231: { subId: "pc32oz", subName: "Polar Camel 32 oz. Tumblers" },
+  LTM5251: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM5252: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM5253: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM5254: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM5255: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM5256: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7282: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7283: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7284: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7285: { subId: "24", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7432: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LTM7433: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+  LTM7434: { subId: "pc40oz", subName: "Polar Camel 40 oz. Tumblers" },
+};
 
 function stripBrand(text: string): string {
   return text
@@ -506,14 +565,16 @@ function normalizeCatalog(): { products: RawProduct[]; categories: RawCategory[]
 
   const products = sourceProducts.map((p) => {
     const merged = p.categorySlug === MERGE_SOURCE_SLUG;
+    const rc = RECATEGORIZE[p.sku.toUpperCase()];
+    const effSubId = rc ? rc.subId : p.subId;
     return {
       ...p,
       name: stripBrand(p.name),
       categoryId: merged ? MERGE_TARGET.id : p.categoryId,
       categorySlug: merged ? MERGE_TARGET.slug : p.categorySlug,
       categoryName: merged ? MERGE_TARGET.name : p.categoryName,
-      subSlug: subSlugBySubId.get(p.subId) ?? p.subSlug,
-      subName: stripBrand(p.subName),
+      subSlug: subSlugBySubId.get(effSubId) ?? p.subSlug,
+      subName: stripBrand(rc ? rc.subName : p.subName),
     };
   });
 
