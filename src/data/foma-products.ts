@@ -139,8 +139,8 @@ export const fomaProducts: Product[] = [
     // with the user before this goes to production. Hidden from buyers (B2B
     // pricing is gated behind "Add to quote"), but used internally.
     basePrice: 12.99,
-    image: "/foma/tumbler-40oz-engraved.jpg",
-    imageFull: "/foma/tumbler-40oz-engraved.jpg",
+    image: "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
+    imageFull: "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
     categoryId: "foma-best-seller",
     categorySlug: "best-seller",
     categoryName: "Best Sellers",
