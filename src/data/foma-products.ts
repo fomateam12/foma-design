@@ -369,7 +369,7 @@ export const fomaProducts: Product[] = [
   },
   {
     id: "foma-dopp-kit-pu",
-    name: "Vintage Brown PU Leather Travel Dopp Kit – Hanging Toiletry Bag",
+    name: "Vintage Brown PU Leather Travel Dopp Kit – Double-Layer Hanging Toiletry Bag",
     sku: "FOMA-DOPP-PU",
     size: "28 × 13 × 16 cm · 11 × 5.1 × 6.3 in",
     // Wholesale reference price from the Alibaba listing (10–999 pcs tier);
@@ -536,6 +536,57 @@ export const fomaProducts: Product[] = [
         placeholder: "Family name, initial, or date (e.g. ALBERT · EST. 2025)",
         maxLength: 40,
         helpText: "The name, initial or text we'll laser-engrave on the board.",
+      },
+    ],
+  },
+  {
+    id: "foma-toiletry-bag-one-layer",
+    name: "Personalized One-Layer Leather Toiletry Bag for Men – Hanging Travel Dopp Kit",
+    sku: "FOMA-DOPP-1L",
+    size: "10 × 5.12 × 5.12 in",
+    // FOMA's own Amazon listing (ASIN B0G3JFFD7Z) retails at $18.95. basePrice
+    // here is a hidden reference (B2B pricing is gated behind "Add to quote").
+    basePrice: 18.95,
+    image: "/products/FOMA-DOPP-1L/FOMA-DOPP-1L.jpg",
+    imageFull: "/products/FOMA-DOPP-1L/FOMA-DOPP-1L.jpg",
+    images: [
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L.jpg",
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L_2.jpg",
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L_3.jpg",
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L_4.jpg",
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L_5.jpg",
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L_6.jpg",
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L_7.jpg",
+      "/products/FOMA-DOPP-1L/FOMA-DOPP-1L_8.jpg",
+    ],
+    categoryId: "1",
+    categorySlug: "gifts-and-promotions",
+    categoryName: "Gifts & Promotions",
+    subcategorySlug: "travel-items",
+    subcategoryName: "Travel Items",
+    dimensions: "10 × 5.12 × 5.12 in",
+    description:
+      "Personalized one-layer PU leather toiletry bag for men with a built-in hanging hook — a water-resistant Dopp kit for travel, gym or daily grooming, laser-engraved to order. Ships next day.",
+    longDescription:
+      "A sleek single-compartment Dopp kit in durable, water-resistant PU (vegan) leather with reinforced stitching, strong zippers and side carry handles. The built-in hook lets it hang hands-free from a towel bar, while the roomy 10 × 5.12 × 5.12 in main compartment keeps grooming essentials neat and easy to reach at home or on the road. Laser-engraved to order with a name, monogram or design in your choice of finish — Coffee, Brown, Dark Brown or Black. A refined groomsmen, Father's Day or anniversary gift for the modern man. Ships next day.",
+    badges: ["Bestseller"],
+    leadTimeDays: 1,
+    personalization: [
+      {
+        id: "color",
+        label: "Color",
+        type: "select",
+        required: true,
+        options: ["Coffee", "Brown", "Dark Brown", "Black"],
+      },
+      {
+        id: "engraving-text",
+        label: "Engraving text",
+        type: "text",
+        required: true,
+        placeholder: "Name, monogram, or initials (e.g. JACKSON)",
+        maxLength: 40,
+        helpText: "The name or text we'll laser-engrave on the bag.",
       },
     ],
   },
