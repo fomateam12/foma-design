@@ -45,6 +45,21 @@ export interface Product {
    *  detail page and appended to the description text. Optional —
    *  undefined when the supplier hasn't shipped a weight yet. */
   weightLb?: number;
+  /** Shipping/carton weight in pounds (per product type, from the supplier's
+   *  Ürün Kargo bilgileri.xlsx). Distinct from `weightLb` (item weight from
+   *  the FOMA master list) — buyers usually want both numbers when planning
+   *  freight. */
+  shippingWeightLb?: number;
+  /** Product dimensions in inches, formatted as "L × W × H in". Per product
+   *  type from the supplier shipping master. */
+  dimensions?: string;
+  /** Engraving area in mm — either a single dimension ("87.6 mm") or
+   *  rectangular ("63 × 55 mm"). Only populated when the supplier ships a
+   *  value. */
+  engravingArea?: string;
+  /** Bucket label that mapped this SKU to a shipping row. Useful for the
+   *  spec-card label and for QA when reviewing the bucket join. */
+  shippingType?: string;
   categoryId: string;
   categorySlug: string;
   categoryName: string;

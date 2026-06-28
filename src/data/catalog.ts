@@ -768,13 +768,6 @@ const productShippingByUpper = new Map<string, ShippingInfo>(
   ),
 );
 
-function formatLbForDescription(lb: number): string {
-  const lbPlaces = lb < 1 ? 2 : lb < 10 ? 1 : 0;
-  const oz = lb * 16;
-  const ozPlaces = oz < 10 ? 1 : 0;
-  return `${lb.toFixed(lbPlaces)} lb (${oz.toFixed(ozPlaces)} oz)`;
-}
-
 function enrich(p: Product): Product {
   const upper = p.sku.toUpperCase();
   const images = productImagesByUpper.get(upper);
@@ -784,33 +777,29 @@ function enrich(p: Product): Product {
   let next = p;
   if (images && images.length > 0) next = { ...next, images };
 
-  // Weight: exact per-SKU first, fall back to the product-type weight.
-  const weightLb =
-    exactWeightLb !== undefined && exactWeightLb > 0
-      ? exactWeightLb
-      : ship?.fallback_weight_lb ?? undefined;
-  if (weightLb !== undefined && weightLb > 0) {
-    next = { ...next, weightLb };
+  // `weightLb` is the item weight from the per-SKU master list. It is the
+  // value that flows into the existing "Weight" spec chip.
+  if (exactWeightLb !== undefined && exactWeightLb > 0) {
+    next = { ...next, weightLb: exactWeightLb };
   }
 
-  // Build the trailing "spec sentences" only once. Skip any clause whose
-  // source data is missing so the copy doesn't carry placeholders. The
-  // sentences are idempotent — re-running enrich() on an already-enriched
-  // product is a no-op because we look for the exact suffix before appending.
-  const sentences: string[] = [];
-  if (ship?.dim_in) {
-    sentences.push(`Product dimensions: ${ship.dim_in}.`);
-  }
-  if (ship?.engrave_mm) {
-    sentences.push(`Engraving area: ${ship.engrave_mm}.`);
-  }
-  if (weightLb !== undefined && weightLb > 0) {
-    sentences.push(`Approximate shipping weight: ${formatLbForDescription(weightLb)}.`);
-  }
-  if (sentences.length > 0) {
-    const tail = " " + sentences.join(" ");
-    if (!next.longDescription.endsWith(tail)) {
-      next = { ...next, longDescription: next.longDescription + tail };
+  // The supplier shipping xlsx is keyed per product type — every Wine Tumbler
+  // ships the same carton dimensions and the same approximate shipping
+  // weight regardless of color. We expose all three fields so the detail
+  // page can render them as structured spec chips rather than burying them
+  // in description prose.
+  if (ship) {
+    if (ship.fallback_weight_lb !== null && ship.fallback_weight_lb > 0) {
+      next = { ...next, shippingWeightLb: ship.fallback_weight_lb };
+    }
+    if (ship.dim_in) {
+      next = { ...next, dimensions: ship.dim_in };
+    }
+    if (ship.engrave_mm) {
+      next = { ...next, engravingArea: ship.engrave_mm };
+    }
+    if (ship.type) {
+      next = { ...next, shippingType: ship.type };
     }
   }
   return next;

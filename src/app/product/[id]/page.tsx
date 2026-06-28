@@ -11,6 +11,9 @@ import {
   Tags,
   Ruler,
   Package,
+  Box,
+  Boxes,
+  Scan,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProductGrid } from "@/components/product-grid";
@@ -146,10 +149,17 @@ export default async function ProductPage({
             {product.longDescription}
           </p>
 
-          {/* Specifications — surfaced as a compact two-line summary so
-              wholesale buyers can scan the dimensions and approximate
-              shipping weight without scrolling. */}
-          {product.size || product.weightLb ? (
+          {/* Specifications — surfaced as a compact chip grid so wholesale
+              buyers can scan the size, weights, carton dimensions and
+              engraving area without scrolling. Dimensions, shipping
+              weight and engraving area come from the supplier's shipping
+              master keyed by product type; `Weight` is the per-SKU item
+              weight from the FOMA master list. */}
+          {product.size ||
+          product.weightLb ||
+          product.shippingWeightLb ||
+          product.dimensions ||
+          product.engravingArea ? (
             <dl className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {product.size ? (
                 <div className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 text-sm">
@@ -164,6 +174,35 @@ export default async function ProductPage({
                   <dt className="font-medium text-foreground">Weight</dt>
                   <dd className="text-muted-foreground">
                     {formatWeight(product.weightLb)}
+                  </dd>
+                </div>
+              ) : null}
+              {product.dimensions ? (
+                <div className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 text-sm">
+                  <Box className="size-4 shrink-0 text-brand-strong" />
+                  <dt className="font-medium text-foreground">Dimensions</dt>
+                  <dd className="text-muted-foreground">{product.dimensions}</dd>
+                </div>
+              ) : null}
+              {product.shippingWeightLb ? (
+                <div className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 text-sm">
+                  <Boxes className="size-4 shrink-0 text-brand-strong" />
+                  <dt className="font-medium text-foreground">
+                    Shipping weight
+                  </dt>
+                  <dd className="text-muted-foreground">
+                    {formatWeight(product.shippingWeightLb)}
+                  </dd>
+                </div>
+              ) : null}
+              {product.engravingArea ? (
+                <div className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 text-sm">
+                  <Scan className="size-4 shrink-0 text-brand-strong" />
+                  <dt className="font-medium text-foreground">
+                    Engraving area
+                  </dt>
+                  <dd className="text-muted-foreground">
+                    {product.engravingArea}
                   </dd>
                 </div>
               ) : null}
