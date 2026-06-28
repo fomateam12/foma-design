@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Tags } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ProductGrid } from "@/components/product-grid";
+import { SiblingSubcategoryNav } from "@/components/sibling-subcategory-nav";
 import { cn } from "@/lib/utils";
 import {
   getCategories,
@@ -119,30 +120,16 @@ export default async function SubcategoryPage({
         </p>
       </header>
 
-      {/* Sibling subcategories */}
-      <nav
-        aria-label={`More in ${category.name}`}
-        className="no-scrollbar mt-7 flex gap-2 overflow-x-auto pb-1"
-      >
-        {category.subcategories.map((sc) => {
-          const active = sc.slug === subcategory.slug;
-          return (
-            <Link
-              key={sc.slug}
-              href={`/category/${category.slug}/${sc.slug}`}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "shrink-0 rounded-full border px-3.5 py-1.5 text-sm transition-colors",
-                active
-                  ? "border-brand bg-brand-muted font-medium text-brand-strong"
-                  : "border-border text-muted-foreground hover:border-brand/40 hover:text-foreground",
-              )}
-            >
-              {sc.name}
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Sibling subcategories — chip rail with scroll arrows */}
+      <SiblingSubcategoryNav
+        categoryName={category.name}
+        categorySlug={category.slug}
+        siblings={category.subcategories.map((sc) => ({
+          slug: sc.slug,
+          name: sc.name,
+        }))}
+        activeSlug={subcategory.slug}
+      />
 
       {/* Size sub-navigation. For drinkware-style collections the chips
           are oz volumes (12 oz Water Bottles, 20 oz …). For dimensional

@@ -662,15 +662,6 @@ const FONT_OPTIONS = [
 function buildPersonalization(): PersonalizationOption[] {
   return [
     {
-      id: "engraving",
-      label: "Engraving text",
-      type: "text",
-      required: true,
-      placeholder: "Name, date, or short message",
-      helpText: "Up to 40 characters. Add line breaks or extra detail in notes.",
-      maxLength: 40,
-    },
-    {
       id: "font",
       label: "Font style",
       type: "select",
