@@ -132,40 +132,62 @@ export const fomaProducts: Product[] = [
   },
   {
     id: "foma-tumbler-40oz-engraved",
-    name: "Custom Engraved 40oz Stainless Steel Tumbler with Handle",
+    name: "Personalized 40 oz Stainless Steel Tumbler with Handle & Straw – Custom Engraved Name & Birth Flower",
     sku: "FOMA-TMB-40OZ-ENG",
-    size: '40oz · 26.5 × 10 × 7.5 cm',
-    // TODO: placeholder wholesale reference price — confirm the real number
-    // with the user before this goes to production. Hidden from buyers (B2B
-    // pricing is gated behind "Add to quote"), but used internally.
+    size: '40oz · 12 × 6 in',
+    // FOMA's own Amazon listing (ASIN B0DNY7LRFS) retails at $24.95. basePrice
+    // here is a placeholder wholesale ref — hidden from buyers (B2B pricing is
+    // gated behind "Add to quote"). Confirm the real wholesale number.
     basePrice: 12.99,
     image: "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
     imageFull: "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
+    images: [
+      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
+      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_2.jpg",
+      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_3.jpg",
+      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_4.jpg",
+      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_5.jpg",
+      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_6.jpg",
+    ],
     categoryId: "foma-best-seller",
     categorySlug: "best-seller",
     categoryName: "Best Sellers",
     subcategorySlug: "40oz-tumblers",
     subcategoryName: "40oz Tumblers",
     description:
-      "Personalized 40oz stainless steel tumbler with handle — double-wall vacuum insulated and laser-engraved to order with a name, monogram or floral design.",
+      "Personalized 40 oz stainless steel tumbler with handle and straw — double-wall vacuum insulated and laser-engraved to order with a custom name and birth flower. Ships next day.",
     longDescription:
-      "A 40oz double-wall vacuum-insulated stainless steel tumbler with a comfortable handle and spill-resistant lid. Laser-engraved to order with a name, monogram, floral motif or custom design for a crisp, permanent finish that won't fade or peel. Keeps drinks cold for up to 12 hours or hot for up to 6. Available in soft powder-coated colors — Rose Pink, Sage Green and Cream. A thoughtful personalized gift for birthdays, bridesmaids, weddings and the holidays. Made to order in the USA.",
-    badges: ["New"],
-    leadTimeDays: 5,
+      "FOMA FAMILY's 40 oz tumbler in 18/8 stainless steel with double-wall vacuum insulation and a thermal copper lining — keeps drinks cold for up to 12 hours or hot for up to 6. Comfortable ergonomic handle, BPA-free clear sliding lid and a reusable straw for work, gym or travel. Laser-engraved to order with a name, monogram or birth-flower design for a crisp, permanent finish that won't fade or peel. Choose from 13 powder-coated colors — Black, Charcoal, Cream, Lilac, Fog, Rose Quartz, Hot Pink, Forest, Azure, Eucalyptus, Bay Leaf, White and Light Pink. BPA-free and built for reuse. A thoughtful personalized gift for birthdays, bridesmaids, weddings and the holidays — ships next day.",
+    badges: ["Bestseller"],
+    leadTimeDays: 1,
     personalization: [
       {
         id: "color",
         label: "Color",
         type: "select",
         required: true,
-        options: ["Rose Pink", "Sage Green", "Cream"],
+        options: [
+          "Black",
+          "Charcoal",
+          "Cream",
+          "Lilac",
+          "Fog",
+          "Rose Quartz",
+          "Hot Pink",
+          "Forest",
+          "Azure",
+          "Eucalyptus",
+          "Bay Leaf",
+          "White",
+          "Light Pink",
+        ],
       },
       {
         id: "engraving-text",
         label: "Engraving text",
         type: "text",
         required: true,
-        placeholder: "Name, monogram, or short message",
+        placeholder: "Name, monogram, or birth-flower message",
         maxLength: 40,
         helpText: "The name or text we'll laser-engrave on the tumbler.",
       },
