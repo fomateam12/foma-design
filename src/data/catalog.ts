@@ -88,6 +88,66 @@ const MERGE_SOURCE_SLUG = "polar-camel";
 const MERGE_TARGET = { id: "3", slug: "drinkware", name: "Drinkware" } as const;
 
 /* ------------------------------------------------------------------ */
+/* SUB_OVERRIDES — re-home individual SKUs out of the supplier's       */
+/* "ION-Plated Polar Camel Drinkware" lumped subcategory and into the  */
+/* matching size + type subcategory the buyer expects (22 oz Skinny    */
+/* tumblers → Skinny Tumblers, 32 oz water bottles → Water Bottles…).  */
+/* After this override the "ION-Plated Drinkware" subcategory ends up  */
+/* empty and gets dropped from the category nav automatically.         */
+/* ------------------------------------------------------------------ */
+
+interface SubAssignment {
+  subId: string;
+  subSlug: string;
+  subName: string;
+}
+const SUB_OVERRIDES: Record<string, SubAssignment> = {
+  // 22 oz Skinny Tumblers → Skinny Tumblers
+  LTM7030: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
+  LTM7031: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
+  LTM7050: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
+  LTM7051: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
+  LTM7065: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
+  LTM7066: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
+  // 20 oz Ringneck/Tumblers → 20 oz. Tumblers
+  LTM7280: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7281: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7282: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7283: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7284: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7285: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7290: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7291: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7295: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  LTM7296: { subId: "24", subSlug: "polar-camel-20-oz-tumblers", subName: "Polar Camel 20 oz. Tumblers" },
+  // 40 oz Travel Mugs → Mugs/Travel Mugs
+  LTM7430: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7431: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7432: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7433: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7434: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7435: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7470: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7471: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7485: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  LTM7486: { subId: "21", subSlug: "polar-camel-mugs-travel-mugs", subName: "Polar Camel Mugs/Travel Mugs" },
+  // 12 oz Stemless Wine Tumblers → Stemless/Wine Chillers
+  LTM870: { subId: "18", subSlug: "polar-camel-stemless-wine-chillers", subName: "Polar Camel Stemless/Wine Chillers" },
+  LTM871: { subId: "18", subSlug: "polar-camel-stemless-wine-chillers", subName: "Polar Camel Stemless/Wine Chillers" },
+  LTM880: { subId: "18", subSlug: "polar-camel-stemless-wine-chillers", subName: "Polar Camel Stemless/Wine Chillers" },
+  LTM881: { subId: "18", subSlug: "polar-camel-stemless-wine-chillers", subName: "Polar Camel Stemless/Wine Chillers" },
+  LTM890: { subId: "18", subSlug: "polar-camel-stemless-wine-chillers", subName: "Polar Camel Stemless/Wine Chillers" },
+  LTM891: { subId: "18", subSlug: "polar-camel-stemless-wine-chillers", subName: "Polar Camel Stemless/Wine Chillers" },
+  // 32 oz Water Bottles → Water Bottles
+  LWB230: { subId: "14", subSlug: "polar-camel-water-bottles", subName: "Polar Camel Water Bottles" },
+  LWB231: { subId: "14", subSlug: "polar-camel-water-bottles", subName: "Polar Camel Water Bottles" },
+  LWB240: { subId: "14", subSlug: "polar-camel-water-bottles", subName: "Polar Camel Water Bottles" },
+  LWB241: { subId: "14", subSlug: "polar-camel-water-bottles", subName: "Polar Camel Water Bottles" },
+  LWB250: { subId: "14", subSlug: "polar-camel-water-bottles", subName: "Polar Camel Water Bottles" },
+  LWB251: { subId: "14", subSlug: "polar-camel-water-bottles", subName: "Polar Camel Water Bottles" },
+};
+
+/* ------------------------------------------------------------------ */
 /* Catalog curation (FomaPrint assortment, applied over the feed)      */
 /*                                                                     */
 /* The supplier feed is broader than what FOMA actually sells. These   */
@@ -506,14 +566,20 @@ function normalizeCatalog(): { products: RawProduct[]; categories: RawCategory[]
 
   const products = sourceProducts.map((p) => {
     const merged = p.categorySlug === MERGE_SOURCE_SLUG;
+    const override = SUB_OVERRIDES[p.sku.toUpperCase()];
+    const effectiveSubId = override?.subId ?? p.subId;
+    const fallbackSlug = subSlugBySubId.get(effectiveSubId) ?? p.subSlug;
     return {
       ...p,
       name: stripBrand(p.name),
       categoryId: merged ? MERGE_TARGET.id : p.categoryId,
       categorySlug: merged ? MERGE_TARGET.slug : p.categorySlug,
       categoryName: merged ? MERGE_TARGET.name : p.categoryName,
-      subSlug: subSlugBySubId.get(p.subId) ?? p.subSlug,
-      subName: stripBrand(p.subName),
+      subId: effectiveSubId,
+      subSlug: override
+        ? subSlugBySubId.get(override.subId) ?? override.subSlug
+        : fallbackSlug,
+      subName: stripBrand(override?.subName ?? p.subName),
     };
   });
 
