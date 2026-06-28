@@ -345,4 +345,68 @@ export const fomaProducts: Product[] = [
       },
     ],
   },
+  {
+    id: "foma-dopp-kit-pu",
+    name: "Vintage Brown PU Leather Travel Dopp Kit – Hanging Toiletry Bag",
+    sku: "FOMA-DOPP-PU",
+    size: "28 × 13 × 16 cm · 11 × 5.1 × 6.3 in",
+    // Wholesale reference price from the Alibaba listing (10–999 pcs tier);
+    // hidden from buyers (B2B pricing is gated behind "Add to quote"). Confirm
+    // the real landed/wholesale number with the user before relying on it.
+    basePrice: 5.88,
+    image: "/products/FOMA-DOPP-PU/FOMA-DOPP-PU.jpg",
+    imageFull: "/products/FOMA-DOPP-PU/FOMA-DOPP-PU.jpg",
+    images: [
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU.jpg",
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU_2.jpg",
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU_3.jpg",
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU_4.jpg",
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU_5.jpg",
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU_6.jpg",
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU_7.jpg",
+      "/products/FOMA-DOPP-PU/FOMA-DOPP-PU_8.jpg",
+    ],
+    categoryId: "1",
+    categorySlug: "gifts-and-promotions",
+    categoryName: "Gifts & Promotions",
+    subcategorySlug: "travel-items",
+    subcategoryName: "Travel Items",
+    dimensions: "11 × 5.1 × 6.3 in",
+    description:
+      "Double-layer PU leather travel Dopp kit with a built-in hanging hook — a roomy, water-resistant toiletry organizer for men, personalized to order.",
+    longDescription:
+      "A premium vintage-look PU leather Dopp kit built for travel. The double-layer design opens flat for full access, with a built-in sturdy metal hook so it hangs hands-free from a towel bar or hook. Water-resistant lining protects your toiletries from spills, and the large 28 × 13 × 16 cm (11 × 5.1 × 6.3 in) capacity holds a full grooming kit. Zip closure with a carry handle. Available in reddish brown, yellowish-brown, coffee and black, and personalized with laser-engraved or embossed initials, name or logo. Made to order — a refined groomsmen, Father's Day or frequent-traveler gift.",
+    badges: ["New"],
+    leadTimeDays: 7,
+    personalization: [
+      {
+        id: "color",
+        label: "Color",
+        type: "select",
+        required: true,
+        options: ["Reddish Brown", "Yellowish-Brown", "Coffee", "Black"],
+      },
+      {
+        id: "personalization",
+        label: "Personalization",
+        type: "select",
+        required: true,
+        options: [
+          "Laser Engraving (most popular)",
+          "Emboss",
+          "UV Printing",
+          "Blank — no personalization",
+        ],
+      },
+      {
+        id: "engraving-text",
+        label: "Engraving text",
+        type: "text",
+        required: false,
+        placeholder: "Name, monogram, initials, or logo text",
+        maxLength: 40,
+        helpText: "Leave blank if you selected the blank option.",
+      },
+    ],
+  },
 ];
