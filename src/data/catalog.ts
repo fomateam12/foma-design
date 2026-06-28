@@ -273,6 +273,24 @@ const REMOVED_SKUS = new Set<string>([
   "FSK101", "FSK102", "FSK103", "FSK104", "FSK111", "FSK303",
   "FSK309", "FSK312", "FSK628", "FSK651SETA", "GFT014", "GFT015",
   "BR2251", "BR2501",
+  // 2026-06-28 "foma excel en final.xlsx" SIL (x) pass: 79 still-live feed SKUs
+  // marked for removal (flasks, leatherette bottle openers/coasters/mug sleeves/
+  // beverage holders). Boards GFT441-444/GFT485/SLT087 were SIL-marked too but
+  // EXCLUDED by user direction (same wrongly-marked items rolled back on 06-27).
+  "FSK302", "FSK304", "FSK305", "FSK308", "FSK311", "FSK321",
+  "FSK322", "FSK503", "FSK504", "FSK505", "FSK506", "FSK509",
+  "FSK511", "FSK513", "FSK514", "FSK601", "FSK605", "FSK611",
+  "FSK622", "FSK626", "FSK629", "FSK630", "GFT1151", "GFT1152",
+  "GFT1153", "GFT1154", "GFT1155", "GFT1156", "GFT1157", "GFT1158",
+  "GFT1159", "GFT1160", "GFT1161", "GFT1162", "GFT1163", "GFT1164",
+  "GFT1266", "GFT1320", "GFT1321", "GFT1322", "GFT1323", "GFT1325",
+  "GFT1326", "GFT1327", "GFT1328", "GFT210", "GFT211", "GFT2350",
+  "GFT2351", "GFT2352", "GFT2353", "GFT2354", "GFT2355", "GFT2356",
+  "GFT2357", "GFT2358", "GFT2359", "GFT2360", "GFT2361", "GFT2362",
+  "GFT2363", "GFT274", "GFT532A", "GFT543", "GFT553", "GFT764",
+  "GFT765", "GFT767", "GFT769", "GFT770", "GFT771", "GFT772",
+  "GFT774", "GFT775", "GFT814", "GFT837", "GFT867", "GFT875",
+  "GFT876",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
