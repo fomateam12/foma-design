@@ -11,7 +11,6 @@ const PLATFORM_LINKS = [
   { label: "Pricing", href: "/pricing" },
   { label: "Apply to sell", href: "/sell" },
   { label: "Request a quote", href: "/quote" },
-  { label: "Log in", href: "/login" },
 ];
 
 const COMPANY_LINKS = [

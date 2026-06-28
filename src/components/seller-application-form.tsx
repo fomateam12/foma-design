@@ -1,19 +1,19 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
-  sellerApplicationSchema,
+  resellerApplicationSchema,
   BUSINESS_TYPES,
   MONTHLY_VOLUMES,
-  type SellerApplicationInput,
+  type ResellerApplicationInput,
 } from "@/lib/validation";
 
 const FIELD = "h-11";
@@ -26,57 +26,96 @@ function ErrorText({ msg }: { msg?: string }) {
 }
 
 export function SellerApplicationForm() {
+  // Time the form has been on screen — sent to the handler as a cheap bot gate.
+  // Set in an effect (not during render) so it stays out of the render path.
+  const mountedAt = useRef<number>(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    mountedAt.current = Date.now();
+  }, []);
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
-  } = useForm<SellerApplicationInput>({
-    resolver: zodResolver(sellerApplicationSchema),
+  } = useForm<ResellerApplicationInput>({
+    resolver: zodResolver(resellerApplicationSchema),
     defaultValues: {
-      fullName: "",
+      name: "",
       businessName: "",
       email: "",
       phone: "",
       website: "",
       businessType: undefined,
       monthlyVolume: undefined,
-      productInterest: "",
-      message: "",
+      products: "",
+      about: "",
       consent: false,
-      company: "",
+      fax: "",
     },
   });
 
-  async function onSubmit(values: SellerApplicationInput) {
+  async function onSubmit(values: ResellerApplicationInput) {
+    setSubmitError(null);
+    const started = mountedAt.current;
+    const elapsedMs = started > 0 ? Date.now() - started : undefined;
     try {
-      const res = await fetch("/api/seller-application", {
+      const res = await fetch("/api/reseller-application", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, elapsedMs }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? "Something went wrong.");
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error ?? "Something went wrong. Please try again.");
       }
-      toast.success("Application sent! We'll review and follow up soon.");
-      reset();
+      setSubmitted(true);
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Couldn't submit your application.",
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Couldn't submit your application. Please try again.",
       );
     }
   }
 
+  if (submitted) {
+    return (
+      <div className="flex flex-col items-center py-8 text-center">
+        <span className="grid size-14 place-items-center rounded-full bg-brand-muted text-brand-strong">
+          <CheckCircle2 className="size-7" />
+        </span>
+        <h3 className="mt-5 font-heading text-lg font-semibold text-foreground">
+          Application received
+        </h3>
+        <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+          Thanks — check your inbox for a confirmation. We&apos;ll review your
+          application and follow up within two business days with pricing and
+          next steps.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+    <form
+      onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+      className="space-y-5"
+      noValidate
+    >
+      {/* Honeypot — hidden from people, tempting to bots. Must stay empty. */}
       <input
         type="text"
         tabIndex={-1}
         autoComplete="off"
         aria-hidden="true"
         className="hidden"
-        {...register("company")}
+        {...register("fax")}
       />
 
       <div className="grid gap-5 sm:grid-cols-2">
@@ -85,10 +124,10 @@ export function SellerApplicationForm() {
           <Input
             id="se-name"
             className={cn(FIELD, "mt-1.5")}
-            aria-invalid={!!errors.fullName}
-            {...register("fullName")}
+            aria-invalid={!!errors.name}
+            {...register("name")}
           />
-          <ErrorText msg={errors.fullName?.message} />
+          <ErrorText msg={errors.name?.message} />
         </div>
         <div>
           <Label htmlFor="se-business">Business name *</Label>
@@ -186,10 +225,10 @@ export function SellerApplicationForm() {
           id="se-interest"
           placeholder="e.g. tumblers, cutting boards, frames"
           className={cn(FIELD, "mt-1.5")}
-          aria-invalid={!!errors.productInterest}
-          {...register("productInterest")}
+          aria-invalid={!!errors.products}
+          {...register("products")}
         />
-        <ErrorText msg={errors.productInterest?.message} />
+        <ErrorText msg={errors.products?.message} />
       </div>
 
       <div>
@@ -199,7 +238,7 @@ export function SellerApplicationForm() {
           rows={4}
           placeholder="What you sell, who your customers are, and how we can help…"
           className="mt-1.5"
-          {...register("message")}
+          {...register("about")}
         />
       </div>
 
@@ -218,6 +257,15 @@ export function SellerApplicationForm() {
         </label>
         <ErrorText msg={errors.consent?.message} />
       </div>
+
+      {submitError ? (
+        <p
+          role="alert"
+          className="rounded-lg border border-destructive/30 bg-destructive/5 px-3.5 py-2.5 text-sm text-destructive"
+        >
+          {submitError}
+        </p>
+      ) : null}
 
       <Button type="submit" size="lg" disabled={isSubmitting} className="w-full sm:w-auto">
         {isSubmitting ? (

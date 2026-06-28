@@ -184,13 +184,6 @@ export function HeaderNav({
                   >
                     Become a Seller
                   </Link>
-                  <Link
-                    href="/login"
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-                  >
-                    Log in
-                  </Link>
                 </div>
               </nav>
 
@@ -315,16 +308,6 @@ export function HeaderNav({
             <SearchBox className="hidden w-44 md:block lg:w-56 xl:w-64" />
 
             <QuoteIndicator />
-
-            <Link
-              href="/login"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "sm" }),
-                "hidden lg:inline-flex",
-              )}
-            >
-              Log in
-            </Link>
 
             <Link
               href="/sell"

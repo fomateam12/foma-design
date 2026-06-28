@@ -165,15 +165,15 @@ export default function AboutPage() {
             <p className="mt-3 leading-relaxed text-muted-foreground">
               Behind the catalog sits FomaFlow — our fulfillment engine that
               routes your orders, tracks production and hands you blind tracking
-              numbers. Seller accounts launch soon; preview it any time.
+              numbers. Seller accounts launch soon; apply now to be first in line.
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
             <Link
-              href="/seller"
+              href="/sell"
               className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
             >
-              Preview the workspace
+              Apply to sell
             </Link>
           </div>
         </Reveal>

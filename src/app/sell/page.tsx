@@ -23,6 +23,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getCategories, getProductCount } from "@/data/catalog";
 import { site } from "@/lib/site";
+import { ORDER_CUTOFF, TURNAROUND_SHORT } from "@/lib/site-copy";
 
 export const metadata: Metadata = {
   title: "Become a Reseller",
@@ -49,8 +50,8 @@ const BENEFITS = [
   },
   {
     icon: Rocket,
-    title: "Fast U.S. production",
-    body: "Made to order in our American studio with quick turnaround, even on bulk runs.",
+    title: TURNAROUND_SHORT,
+    body: `Made to order in our American studio — we print and ship most orders the same day on orders placed before ${ORDER_CUTOFF}, even on bulk runs.`,
   },
   {
     icon: Truck,

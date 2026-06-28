@@ -4,6 +4,7 @@ import { Gauge, MapPin, PackageCheck, ShieldCheck, Sparkles } from "lucide-react
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Reveal } from "@/components/reveal";
 import { site } from "@/lib/site";
+import { ORDER_CUTOFF } from "@/lib/site-copy";
 
 export const metadata: Metadata = {
   title: "Shipping & turnaround",
@@ -21,8 +22,9 @@ const CARDS = [
     title: "Turnaround",
     body: (
       <>
-        Standard production is 1–3 business days depending on the product (see{" "}
-        <Link href="/categories">catalog</Link>). Transit time is additional.
+        We print and ship most orders the same day — place an order before{" "}
+        {ORDER_CUTOFF} and it goes out that day from our US print center.
+        Transit time is additional.
       </>
     ),
   },

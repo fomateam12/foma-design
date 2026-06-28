@@ -35,6 +35,7 @@ import {
   getProductCount,
 } from "@/data/catalog";
 import { site } from "@/lib/site";
+import { ORDER_CUTOFF, TURNAROUND_SHORT } from "@/lib/site-copy";
 
 const CHANNELS = [
   "Etsy",
@@ -135,7 +136,7 @@ export default function HomePage() {
           <Reveal className="flex flex-col items-center">
             <span className="eyebrow inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1 text-brand-strong backdrop-blur-sm">
               <MapPin className="size-3.5" />
-              Made in the USA · Ships next day
+              Made in the USA · {TURNAROUND_SHORT}
             </span>
             <h1 className="mt-5 max-w-4xl text-display text-foreground">
               Print under your brand.{" "}
@@ -160,7 +161,7 @@ export default function HomePage() {
             </div>
 
             <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-medium text-muted-foreground">
-              {["White-label", "Next-day production", "No MOQ"].map((chip) => (
+              {["White-label", TURNAROUND_SHORT, "No MOQ"].map((chip) => (
                 <li key={chip} className="flex items-center gap-1.5">
                   <BadgeCheck className="size-4 text-brand-strong" />
                   {chip}
@@ -295,8 +296,8 @@ export default function HomePage() {
             />
             <BentoCard
               icon={<Zap className="size-5" />}
-              title="Next-day production"
-              description="Most orders enter production within a business day at our US print center — your customers aren't left waiting."
+              title={TURNAROUND_SHORT}
+              description={`Place an order before ${ORDER_CUTOFF} and we print and ship it the same day from our US print center — your customers aren't left waiting.`}
             />
             <BentoCard
               icon={<Boxes className="size-5" />}
@@ -393,15 +394,9 @@ export default function HomePage() {
               ))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
-                <LayoutDashboard className="size-4" />
-                Preview the dashboard
-              </Link>
-              <Link
-                href="/sell"
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-              >
+              <Link href="/sell" className={cn(buttonVariants({ size: "lg" }))}>
                 Apply to sell
+                <ArrowRight className="size-4" />
               </Link>
             </div>
           </Reveal>

@@ -54,6 +54,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/custom-order", destination: "/quote", permanent: true },
+      // FomaFlow seller auth is not launching yet. The login page and the
+      // dashboard preview were removed; their entry point is now the reseller
+      // application. 308 = permanent, method-preserving.
+      { source: "/login", destination: "/sell", permanent: true },
+      { source: "/seller", destination: "/sell", permanent: true },
     ];
   },
 };

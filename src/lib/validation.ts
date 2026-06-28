@@ -15,8 +15,8 @@ export const MONTHLY_VOLUMES = [
   "1,000+ items",
 ] as const;
 
-export const sellerApplicationSchema = z.object({
-  fullName: z.string().trim().min(2, "Please enter your name."),
+export const resellerApplicationSchema = z.object({
+  name: z.string().trim().min(2, "Please enter your name."),
   businessName: z.string().trim().min(2, "Please enter your business name."),
   email: z.string().trim().email("Enter a valid email address."),
   phone: z.string().trim().min(7, "Enter a valid phone number.").max(40),
@@ -27,19 +27,24 @@ export const sellerApplicationSchema = z.object({
   monthlyVolume: z.enum(MONTHLY_VOLUMES, {
     message: "Select an estimated volume.",
   }),
-  productInterest: z
+  products: z
     .string()
     .trim()
     .min(2, "Which products are you interested in?")
     .max(400),
-  message: z.string().trim().max(4000).optional().or(z.literal("")),
+  about: z.string().trim().max(4000).optional().or(z.literal("")),
   consent: z.boolean().refine((v) => v === true, {
     message: "Please agree so we can follow up with you.",
   }),
-  company: z.string().optional(),
+  // Honeypot — must stay empty. A bot that fills every field trips this.
+  fax: z.string().optional(),
+  // Anti-spam: ms the form was on screen before submit. The handler rejects
+  // suspiciously fast submissions. Optional so a missing value never blocks a
+  // real applicant.
+  elapsedMs: z.number().nonnegative().optional(),
 });
 
-export type SellerApplicationInput = z.infer<typeof sellerApplicationSchema>;
+export type ResellerApplicationInput = z.infer<typeof resellerApplicationSchema>;
 
 /* ------------------------------ quote (RFQ) ------------------------------- */
 

@@ -1,6 +1,6 @@
 import nodemailer, { type Transporter } from "nodemailer";
 import { site } from "@/lib/site";
-import type { SellerApplicationInput, QuoteInput } from "@/lib/validation";
+import type { QuoteInput } from "@/lib/validation";
 
 /**
  * Lead delivery — free, self-hosted. No paid third-party sender.
@@ -233,61 +233,8 @@ async function dispatch(opts: {
 
 /* ------------------------------- public API ------------------------------- */
 
-export async function sendSellerApplicationEmails(
-  data: SellerApplicationInput,
-): Promise<DeliveryResult> {
-  const adminInner = `
-    <table style="width:100%;border-collapse:collapse;border:1px solid #e7e1d8;border-radius:8px">
-      ${row("Name", data.fullName)}
-      ${row("Business", data.businessName)}
-      ${row("Email", data.email)}
-      ${row("Phone", data.phone)}
-      ${row("Website", data.website)}
-      ${row("Business type", data.businessType)}
-      ${row("Monthly volume", data.monthlyVolume)}
-      ${row("Product interest", data.productInterest)}
-      ${row("Message", data.message)}
-    </table>
-    <p style="font-size:12px;color:#8a8175;margin-top:12px">A CSV copy of this lead is attached.</p>`;
-
-  const customerInner = `
-    <p style="font-size:14px;color:#2a2620;line-height:1.6">Hi ${esc(
-      data.fullName,
-    )},</p>
-    <p style="font-size:14px;color:#544c40;line-height:1.6">Thank you for applying to become a ${esc(
-      site.name,
-    )} reseller. We've received your application for <strong>${esc(
-      data.businessName,
-    )}</strong> and will review it and follow up within two business days.</p>
-    <p style="font-size:14px;color:#544c40;line-height:1.6;margin-top:16px">Best,<br/>The ${esc(
-      site.name,
-    )} team</p>`;
-
-  return dispatch({
-    kind: "seller-application",
-    logData: {
-      fullName: data.fullName,
-      businessName: data.businessName,
-      email: data.email,
-      phone: data.phone,
-      website: data.website,
-      businessType: data.businessType,
-      monthlyVolume: data.monthlyVolume,
-      productInterest: data.productInterest,
-      message: data.message,
-    },
-    admin: {
-      subject: `New reseller application — ${data.businessName}`,
-      html: shell("New reseller application", adminInner),
-      replyTo: data.email,
-    },
-    customer: {
-      to: data.email,
-      subject: `Your reseller application was received — ${site.name}`,
-      html: shell("Application received!", customerInner),
-    },
-  });
-}
+// Note: reseller-application delivery moved to `@/lib/reseller-email` (Resend).
+// This module now serves the quote (RFQ) flow only.
 
 export async function sendQuoteRequestEmails(
   data: QuoteInput,
