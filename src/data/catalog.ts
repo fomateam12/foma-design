@@ -103,21 +103,6 @@ interface SubAssignment {
   subName: string;
 }
 const SUB_OVERRIDES: Record<string, SubAssignment> = {
-  // Leatherette 3-ring binders → their own "Leatherette 3 Ring Binder"
-  // subcategory under Office, Tech (moved out of Leatherette and Cork
-  // Portfolios, user request). subSlug resolves from ADDED_SUBCATEGORIES subId 90.
-  GFT1251: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1252: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1253: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1254: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1256: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1257: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1341: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1342: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1343: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1344: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1346: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
-  GFT1347: { subId: "90", subSlug: "leatherette-3-ring-binder", subName: "Leatherette 3 Ring Binder" },
   // 22 oz Skinny Tumblers → Skinny Tumblers
   LTM7030: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
   LTM7031: { subId: "17", subSlug: "polar-camel-skinny-tumblers", subName: "Polar Camel Skinny Tumblers" },
@@ -306,6 +291,10 @@ const REMOVED_SKUS = new Set<string>([
   "GFT765", "GFT767", "GFT769", "GFT770", "GFT771", "GFT772",
   "GFT774", "GFT775", "GFT814", "GFT837", "GFT867", "GFT875",
   "GFT876",
+  // 2026-06-29: user removed the "Leatherette 3 Ring Binder" subcategory and
+  // marked its products SIL — hide the 12 binders (GFT1257 already above).
+  "GFT1251", "GFT1252", "GFT1253", "GFT1254", "GFT1256", "GFT1341",
+  "GFT1342", "GFT1343", "GFT1344", "GFT1346", "GFT1347",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
@@ -571,19 +560,7 @@ const ADDED_PRODUCTS: RawProduct[] = [
 
 /* New subcategories the additions introduce, keyed by the (post-merge)
    category slug they belong under. Count is recomputed from products. */
-const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {
-  // New subcategory under Office, Tech: the 12 leatherette 3-ring binders are
-  // moved out of "Leatherette and Cork Portfolios" into their own tile
-  // (user request). productCount is recomputed from actual products.
-  "office-tech": [
-    {
-      subId: "90",
-      slug: "leatherette-3-ring-binder",
-      name: "Leatherette 3 Ring Binder",
-      count: 0,
-    },
-  ],
-};
+const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {};
 
 function stripBrand(text: string): string {
   return text
