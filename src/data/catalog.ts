@@ -495,6 +495,8 @@ const REMOVED_SKUS = new Set<string>([
   "GFT444",
   // color-sync passport/jewelry to leather palette
   "GFT888", "GFT935", "GFT2307", "GFT2337", "GFT2339", "GFT2407", "GFT2409",
+  // remove entire Business Card Holders/Desk Wedges section (user request)
+  "GFT183", "GFT184", "GFT235", "GFT259A", "GFT266", "GFT280", "GFT372", "GFT401", "GFT404", "GFT419", "GFT606", "GFT705", "GFT804", "GFT834", "GFT904", "GFT924", "LLW5210", "LLW528", "LLW5310",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
