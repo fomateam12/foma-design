@@ -441,6 +441,7 @@ const SUB_OVERRIDES: Record<string, SubAssignment> = {
 /* ------------------------------------------------------------------ */
 
 const REMOVED_SKUS = new Set<string>([
+  "PTF446",
   "ADW10BK", "ADW8BK", "ADW8CL", "APF446B", "APF446GY",
   "APF457B", "APF457GY", "APF4810B", "APF4810GY", "BBQ01A", "BBQ02A",
   "BBQ03B", "BBQ11B", "BBQ12B", "BBQ13B", "BBQ14B", "BR2252",
@@ -593,6 +594,21 @@ const REMOVED_SKUS = new Set<string>([
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
+  {
+    id: "ptf646d",
+    name: "Genuine Red Alder Dual Picture Frame – 4\" x 6\"",
+    sku: "PTF646D",
+    size: "11 1/4\" x 7 1/2\"",
+    price: 20.4,
+    image: "/products/PTF646D/PTF646D.jpg",
+    imageFull: "/products/PTF646D/PTF646D.jpg",
+    categoryId: "4",
+    categorySlug: "frames-and-decor",
+    categoryName: "Frames & Decor",
+    subId: "44",
+    subSlug: "solid-wood-photo-frames",
+    subName: "Solid Wood Photo Frames",
+  },
   // Creekside Collection leatherette wallets (Wallet with Strap, RFID) from the
   // JDS master CSV (not in the scraped feed). Self-hosted on R2.
   {
