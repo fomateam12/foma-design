@@ -41,7 +41,9 @@ export function normalizeSize(raw: string | null | undefined): NormalizedSize | 
     return { raw, canonical: `${n} oz`, bucket: "oz" };
   }
 
-  if (/^[\d\s/.]+"\s*x\s*[\d\s/.]+"$/i.test(s)) {
+  // Trailing inch-mark optional: the feed sometimes drops it (e.g. '9 1/2" x 12'),
+  // which previously fell through to the "other" bucket and lost its size tier.
+  if (/^[\d\s/.]+"\s*x\s*[\d\s/.]+"?$/i.test(s)) {
     return { raw, canonical: s.replace(/\s*x\s*/i, " x "), bucket: "rect" };
   }
 
@@ -119,7 +121,7 @@ function rawSizeTier(product: Product): SizeTier | null {
   const ns = productSize(product);
   if (!ns) return null;
   if (ns.bucket === "rect") {
-    const m = ns.canonical.match(/^([\d\s/.]+)"\s*x\s*([\d\s/.]+)"$/);
+    const m = ns.canonical.match(/^([\d\s/.]+)"\s*x\s*([\d\s/.]+)"?$/);
     if (!m) return null;
     const a = parseInchToken(m[1]);
     const b = parseInchToken(m[2]);
