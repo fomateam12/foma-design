@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import { quoteSchema } from "@/lib/validation";
 import { sendQuoteRequestEmails } from "@/lib/email";
+import { isSameOrigin } from "@/lib/security";
 
 export async function POST(request: Request) {
+  // CSRF: reject cross-site POSTs (browsers always send Origin on those).
+  if (!isSameOrigin(request)) {
+    return NextResponse.json({ error: "Invalid request." }, { status: 403 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();

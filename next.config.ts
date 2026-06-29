@@ -1,6 +1,49 @@
 import type { NextConfig } from "next";
 
+/**
+ * Content-Security-Policy. Shipped as REPORT-ONLY first (see headers() below) so
+ * it can never blank the live site — violations surface in the browser console
+ * on Preview/prod; once that window is clean, switch the header name to the
+ * enforcing `Content-Security-Policy`. Sources mirror next.config images
+ * (R2 / Cloudinary) + next/font (self-hosted) + same-origin API/fetch.
+ * `'unsafe-inline'` on script/style is the report-only baseline; tighten to
+ * nonce/hash before enforcing.
+ */
+const CSP = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https://*.r2.dev https://res.cloudinary.com https://fomafamilyllc.com",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "worker-src 'self' blob:",
+  "upgrade-insecure-requests",
+].join("; ");
+
+/** Static security headers applied to every response. */
+const SECURITY_HEADERS = [
+  // Report-only for now — never enforce a blind CSP on a live site.
+  { key: "Content-Security-Policy-Report-Only", value: CSP },
+  // HSTS: short max-age to start (1 day), no preload (preload is irreversible),
+  // no includeSubDomains until every subdomain is confirmed HTTPS.
+  { key: "Strict-Transport-Security", value: "max-age=86400" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), usb=(), payment=(), browsing-topics=()",
+  },
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+];
+
 const nextConfig: NextConfig = {
+  // Don't advertise the framework.
+  poweredByHeader: false,
   images: {
     // Custom loader — see src/lib/cloudinary-loader.ts. Required because
     // the default Vercel optimizer doesn't traverse next.config rewrites
@@ -50,6 +93,9 @@ const nextConfig: NextConfig = {
         pathname: "/image/**",
       },
     ],
+  },
+  async headers() {
+    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
   },
   async redirects() {
     return [

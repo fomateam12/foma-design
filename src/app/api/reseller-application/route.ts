@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { resellerApplicationSchema } from "@/lib/validation";
 import { sendResellerApplicationEmails } from "@/lib/reseller-email";
+import { isSameOrigin } from "@/lib/security";
 
 export const runtime = "nodejs";
 
@@ -10,6 +11,11 @@ const MIN_FILL_MS = 2500;
 type ApiResponse = { ok: true } | { ok: false; error: string };
 
 export async function POST(request: Request): Promise<NextResponse<ApiResponse>> {
+  // CSRF: reject cross-site POSTs (browsers always send Origin on those).
+  if (!isSameOrigin(request)) {
+    return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 403 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();

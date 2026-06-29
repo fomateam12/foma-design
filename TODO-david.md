@@ -1,3 +1,38 @@
+# TODO(david) — SECURITY (platform/account tasks Claude can't do)
+
+These require dashboard/account access. **Do the URGENT ones first.**
+
+## 🔴 URGENT
+- [ ] **Rotate the Resend API key** (was pasted in chat — treat as compromised). New key → Vercel env only, then redeploy. Old key → delete in Resend.
+- [ ] **Change the `info@fomaprint.com` mailbox password** (Namecheap Private Email) — also exposed.
+- [ ] **MFA on everything** (authenticator app or hardware key, **not SMS**): GitHub, Vercel, Cloudflare, Namecheap, Resend, Google/email, Etsy, Amazon.
+
+## DNS / mail (do NOT let code touch these — manual only)
+- [ ] **DMARC ramp:** currently `p=none`. After ~2 clean weeks → `p=quarantine`, then `p=reject`.
+- [ ] **Registrar lock + DNSSEC** re-enabled on each domain after any Cloudflare transfer completes.
+- [ ] **Parked brand domains** (`fomaprint.net/.org`, `fomafamily.*`): add null-MX + SPF `-all` + DMARC `p=reject` so they can't be spoofed.
+- [ ] Keep mail records (MX/DKIM/SPF/DMARC) **DNS-only** in Cloudflare (never proxied).
+
+## Cloudflare (edge shield)
+- [ ] SSL/TLS = **Full (strict)** for any proxied web record (or keep web DNS-only and let Vercel do SSL).
+- [ ] WAF managed rules **ON**, Bot Fight Mode **ON**, rate-limiting rules on `/api/quote` + `/api/reseller-application`.
+- [ ] Create **Turnstile** keys → give me the site key + set the secret key in Vercel env; I'll wire the widget into both forms.
+- [ ] "Under Attack Mode" = emergency only.
+
+## Platform
+- [ ] **GitHub:** branch protection on `main` (require PR review), enable **secret scanning + push protection**, review collaborators / deploy keys / OAuth apps.
+- [ ] **Vercel:** set **spend/usage caps** (DDoS-of-wallet protection), protect production, review team access.
+- [ ] Add **Upstash Redis** (Vercel marketplace) for per-IP rate limiting → set its env vars; I'll add `@upstash/ratelimit` to the form routes.
+- [ ] Run a full **gitleaks**/**trufflehog** history scan (I did a pattern scan — clean — but the full tools are more thorough). Rotate anything found.
+- [ ] Stand up **monitoring**: Sentry (errors) + an uptime monitor with alerts.
+
+## N/A for this project (noted so they're not chased)
+- Supabase / RLS — **not used** (no database).
+- "Allow only Cloudflare IPs at origin" — origin is Vercel-managed, N/A.
+- Next.js upgrade — already on **16.2.9** (patched/supported).
+
+---
+
 # TODO(david) — UI/UX elevation pass
 
 Open decisions and content gaps from the elevation work on
