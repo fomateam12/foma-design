@@ -601,9 +601,10 @@ export const fomaProducts: Product[] = [
     // from buyers (B2B pricing is gated behind "Add to quote"). Confirm the
     // real wholesale number with the user before relying on it internally.
     basePrice: 19.95,
-    image: "/products/FOMA-SERV-MARB/FOMA-SERV-MARB.jpg",
-    imageFull: "/products/FOMA-SERV-MARB/FOMA-SERV-MARB.jpg",
+    image: "/products/FOMA-SERV-MARB/FOMA-SERV-MARB_hero.jpg",
+    imageFull: "/products/FOMA-SERV-MARB/FOMA-SERV-MARB_hero.jpg",
     images: [
+      "/products/FOMA-SERV-MARB/FOMA-SERV-MARB_hero.jpg",
       "/products/FOMA-SERV-MARB/FOMA-SERV-MARB.jpg",
       "/products/FOMA-SERV-MARB/FOMA-SERV-MARB_2.jpg",
       "/products/FOMA-SERV-MARB/FOMA-SERV-MARB_3.jpg",
