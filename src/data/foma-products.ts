@@ -139,15 +139,24 @@ export const fomaProducts: Product[] = [
     // here is a placeholder wholesale ref — hidden from buyers (B2B pricing is
     // gated behind "Add to quote"). Confirm the real wholesale number.
     basePrice: 12.99,
-    image: "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
-    imageFull: "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
+    image: "/products/TM-FOMA-ROS/TM-FOMA-ROS.jpg",
+    imageFull: "/products/TM-FOMA-ROS/TM-FOMA-ROS.jpg",
+    // One studio shot per powder-coated color. Each color is also tracked as
+    // its own inventory SKU (TM-FOMA-{color}) in the master list / Excel; the
+    // site keeps a single listing with a color selector.
     images: [
-      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG.jpg",
-      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_2.jpg",
-      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_3.jpg",
-      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_4.jpg",
-      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_5.jpg",
-      "/products/FOMA-TMB-40OZ-ENG/FOMA-TMB-40OZ-ENG_6.jpg",
+      "/products/TM-FOMA-ROS/TM-FOMA-ROS.jpg",
+      "/products/TM-FOMA-BLK/TM-FOMA-BLK.jpg",
+      "/products/TM-FOMA-WHT/TM-FOMA-WHT.jpg",
+      "/products/TM-FOMA-CRM/TM-FOMA-CRM.jpg",
+      "/products/TM-FOMA-CHA/TM-FOMA-CHA.jpg",
+      "/products/TM-FOMA-FOG/TM-FOMA-FOG.jpg",
+      "/products/TM-FOMA-AZR/TM-FOMA-AZR.jpg",
+      "/products/TM-FOMA-FRS/TM-FOMA-FRS.jpg",
+      "/products/TM-FOMA-EUC/TM-FOMA-EUC.jpg",
+      "/products/TM-FOMA-BAY/TM-FOMA-BAY.jpg",
+      "/products/TM-FOMA-LIL/TM-FOMA-LIL.jpg",
+      "/products/TM-FOMA-HPK/TM-FOMA-HPK.jpg",
     ],
     categoryId: "foma-best-seller",
     categorySlug: "best-seller",
@@ -157,7 +166,7 @@ export const fomaProducts: Product[] = [
     description:
       "Personalized 40 oz stainless steel tumbler with handle and straw — double-wall vacuum insulated and laser-engraved to order with a custom name and birth flower. Ships next day.",
     longDescription:
-      "FOMA FAMILY's 40 oz tumbler in 18/8 stainless steel with double-wall vacuum insulation and a thermal copper lining — keeps drinks cold for up to 12 hours or hot for up to 6. Comfortable ergonomic handle, BPA-free clear sliding lid and a reusable straw for work, gym or travel. Laser-engraved to order with a name, monogram or birth-flower design for a crisp, permanent finish that won't fade or peel. Choose from 13 powder-coated colors — Black, Charcoal, Cream, Lilac, Fog, Rose Quartz, Hot Pink, Forest, Azure, Eucalyptus, Bay Leaf, White and Light Pink. BPA-free and built for reuse. A thoughtful personalized gift for birthdays, bridesmaids, weddings and the holidays — ships next day.",
+      "FOMA FAMILY's 40 oz tumbler in 18/8 stainless steel with double-wall vacuum insulation and a thermal copper lining — keeps drinks cold for up to 12 hours or hot for up to 6. Comfortable ergonomic handle, BPA-free clear sliding lid and a reusable straw for work, gym or travel. Laser-engraved to order with a name, monogram or birth-flower design for a crisp, permanent finish that won't fade or peel. Choose from 12 powder-coated colors — Black, White, Cream, Charcoal, Fog, Azure, Forest, Eucalyptus, Bay Leaf, Lilac, Hot Pink and Rose. BPA-free and built for reuse. A thoughtful personalized gift for birthdays, bridesmaids, weddings and the holidays — ships next day.",
     badges: ["Bestseller"],
     leadTimeDays: 1,
     personalization: [
@@ -168,18 +177,17 @@ export const fomaProducts: Product[] = [
         required: true,
         options: [
           "Black",
-          "Charcoal",
+          "White",
           "Cream",
-          "Lilac",
+          "Charcoal",
           "Fog",
-          "Rose Quartz",
-          "Hot Pink",
-          "Forest",
           "Azure",
+          "Forest",
           "Eucalyptus",
           "Bay Leaf",
-          "White",
-          "Light Pink",
+          "Lilac",
+          "Hot Pink",
+          "Rose",
         ],
       },
       {
