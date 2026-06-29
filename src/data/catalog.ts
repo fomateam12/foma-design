@@ -503,6 +503,7 @@ const REMOVED_SKUS = new Set<string>([
   "GFT210", "GFT211", "GFT274", "GFT713",
   // remove leatherette Slim Beverage Holders (user request)
   "GFT2350", "GFT2351", "GFT2352", "GFT2353", "GFT2354", "GFT2355", "GFT2356", "GFT2357", "GFT2358", "GFT2359", "GFT2361", "GFT2363",
+  "GFT385",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
