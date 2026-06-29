@@ -508,7 +508,6 @@ const REMOVED_SKUS = new Set<string>([
   // remove leatherette Slim Beverage Holders (user request)
   "GFT2350", "GFT2351", "GFT2352", "GFT2353", "GFT2354", "GFT2355", "GFT2356", "GFT2357", "GFT2358", "GFT2359", "GFT2361", "GFT2363",
   "GFT385",
-  "GFT281", "GFT282", "GFT283", "GFT284", "GFT720", "GFT721",
   // color-sync Personal Items
   "GFT2043", "GFT2045", "GFT2046", "GFT2123", "GFT2125",
   // Personal Items: keep only Snap Up Trays
