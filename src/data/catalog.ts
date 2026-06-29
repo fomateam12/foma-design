@@ -103,6 +103,7 @@ interface SubAssignment {
   subName: string;
 }
 const SUB_OVERRIDES: Record<string, SubAssignment> = {
+  LLF157: { subId: "104", subSlug: "photo-frames-medium", subName: "Medium Photo Frames (5x7)" },
   // Wallets split into 3 type subcategories (Strap / Bifold+FlipID / Bifold).
   GFT1285: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
   GFT1286: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
