@@ -387,6 +387,8 @@ const REMOVED_SKUS = new Set<string>([
   "GFT1342", "GFT1343", "GFT1344", "GFT1346", "GFT1347",
   // 2026-06-29: removed Cork from "Leatherette and Cork Journals" — SIL the 2 cork journals.
   "GFT2244", "GFT785",
+  // 2026-06-29: user removal batch (17 leatherette portfolios).
+  "GFT391", "GFT388", "GFT907", "GFT389", "GFT883", "GFT347", "GFT807", "GFT881", "GFT885", "GFT806", "GFT355", "GFT961", "GFT971", "GFT357", "GFT212", "GFT808", "GFT1223",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
