@@ -359,3 +359,70 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* =====================================================================
+   Phase 2 — proposed design-token formalization (pending Gate 2)
+   ---------------------------------------------------------------------
+   ADDITIVE ONLY. New token names + utilities used by /styleguide so the
+   direction can be approved visually. Nothing here changes existing
+   components until it is rolled out in Phase 3.
+   ===================================================================== */
+@theme inline {
+  /* Dual radius: tighter for controls (inputs/buttons), softer for cards */
+  --radius-control: 0.5rem;
+  --radius-card: 1rem;
+
+  /* Refined 3-step elevation — hairline-first, less "floaty" than the
+     uniform soft shadow currently used on every card. */
+  --shadow-e1: 0 1px 2px oklch(0.2 0.02 60 / 0.05);
+  --shadow-e2: 0 2px 4px oklch(0.2 0.02 60 / 0.05),
+    0 8px 20px -8px oklch(0.2 0.02 60 / 0.1);
+  --shadow-e3: 0 4px 10px -2px oklch(0.2 0.02 60 / 0.08),
+    0 24px 48px -16px oklch(0.2 0.02 60 / 0.16);
+}
+
+:root {
+  /* Layout shell + readable measure (the "wide shell, narrow words" system) */
+  --container-wide: 90rem; /* 1440px — proposed wider shell vs. current 80rem */
+  --measure: 68ch; /* comfortable prose column inside the wide shell */
+
+  /* Z-index scale — replaces ad-hoc z-50 / z-[100] literals */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 40;
+  --z-header: 50;
+  --z-overlay: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+  --z-max: 100;
+}
+
+@layer components {
+  /* Proposed wider page shell. Demoed in /styleguide; .container-px stays the
+     site-wide default until Phase 3 rolls this in. Gutters scale with
+     viewport: 16 → 24 → 40px. */
+  .shell {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-10;
+    max-width: var(--container-wide);
+  }
+
+  /* Keep prose readable even inside a wide shell. */
+  .measure {
+    max-width: var(--measure);
+  }
+
+  /* Caption / overline tokens to round out the type ramp. */
+  .text-caption {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+  .overline {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+}
