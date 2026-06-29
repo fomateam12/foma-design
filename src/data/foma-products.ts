@@ -454,8 +454,8 @@ export const fomaProducts: Product[] = [
     categoryId: "1",
     categorySlug: "gifts-and-promotions",
     categoryName: "Gifts & Promotions",
-    subcategorySlug: "personal-items",
-    subcategoryName: "Personal Items",
+    subcategorySlug: "travel-jewelry-boxes",
+    subcategoryName: "Travel Jewelry Boxes",
     weightLb: 0.11,
     dimensions: "3 × 2.6 × 1.5 in",
     description:
