@@ -50,3 +50,9 @@ settings.local.json
 
 # local file backups (agent edits)
 .backups/
+
+# local email render previews (not committed)
+.email-preview/
+
+# stray nested clone (accidental — belongs outside this repo)
+FOMAETSYAUTOMATION/

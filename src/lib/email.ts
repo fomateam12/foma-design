@@ -67,20 +67,30 @@ function row(label: string, value?: string | number | null): string {
 }
 
 function shell(title: string, inner: string): string {
-  return `<div style="background:#f6f3ee;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
-  <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e7e1d8;border-radius:14px;overflow:hidden">
-    <div style="background:#2a2620;padding:18px 24px">
-      <span style="color:#fff;font-size:18px;font-weight:700">Foma<span style="color:#d2703c">Print</span></span>
-    </div>
-    <div style="padding:24px">
-      <h1 style="margin:0 0 12px;font-size:18px;color:#2a2620">${esc(title)}</h1>
-      ${inner}
-    </div>
-    <div style="padding:16px 24px;border-top:1px solid #e7e1d8;color:#8a8175;font-size:12px">
-      ${esc(site.legalName)} · ${esc(site.email)} · ${esc(site.phoneDisplay)}
-    </div>
-  </div>
-</div>`;
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="x-apple-disable-message-reformatting"></head>
+<body style="margin:0;padding:0;background:#f3ede3;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3ede3;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <tr><td align="center" style="padding:28px 16px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e7e1d8;border-radius:16px;overflow:hidden;">
+        <tr><td style="background:#1c2430;padding:22px 28px;">
+          <span style="color:#ffffff;font-size:19px;font-weight:700;letter-spacing:-0.01em;">Foma<span style="color:#c05a28;">Print</span></span>
+        </td></tr>
+        <tr><td style="height:3px;background:linear-gradient(90deg,#a8481e,#c05a28);font-size:0;line-height:0;">&nbsp;</td></tr>
+        <tr><td style="padding:28px 28px 8px;">
+          <h1 style="margin:0 0 16px;font-size:20px;line-height:1.3;color:#1c2430;font-weight:700;">${esc(title)}</h1>
+          ${inner}
+        </td></tr>
+        <tr><td style="padding:20px 28px;border-top:1px solid #e7e1d8;background:#faf6ef;">
+          <p style="margin:0;color:#8a8175;font-size:12px;line-height:1.7;">
+            <strong style="color:#6b6257;">${esc(site.legalName)}</strong> · Made to order in the USA<br>
+            <a href="mailto:${esc(site.email)}" style="color:#a8481e;text-decoration:none;">${esc(site.email)}</a> · ${esc(site.phoneDisplay)}
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`;
 }
 
 /* --------------------------------- CSV ------------------------------------ */
