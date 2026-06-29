@@ -441,6 +441,10 @@ const SUB_OVERRIDES: Record<string, SubAssignment> = {
 /* ------------------------------------------------------------------ */
 
 const REMOVED_SKUS = new Set<string>([
+  "PTF1810",
+  "GFT906",
+  "GFT961",
+  "GFT357",
   "PTF446",
   "ADW10BK", "ADW8BK", "ADW8CL", "APF446B", "APF446GY",
   "APF457B", "APF457GY", "APF4810B", "APF4810GY", "BBQ01A", "BBQ02A",
