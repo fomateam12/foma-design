@@ -103,6 +103,35 @@ interface SubAssignment {
   subName: string;
 }
 const SUB_OVERRIDES: Record<string, SubAssignment> = {
+  // Wallets split into 3 type subcategories (Strap / Bifold+FlipID / Bifold).
+  GFT1285: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
+  GFT1286: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
+  GFT1287: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
+  GFT1288: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
+  GFT1289: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
+  GFT1290: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
+  GFT1291: { subId: "107", subSlug: "wallets-bifold-flip-id", subName: "Leatherette Bifold Wallet with Flip ID" },
+  GFT189: { subId: "108", subSlug: "wallets-bifold", subName: "Leatherette Bifold Wallet" },
+  GFT190: { subId: "108", subSlug: "wallets-bifold", subName: "Leatherette Bifold Wallet" },
+  GFT2135: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2136: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2137: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2138: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2139: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2140: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2141: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2142: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2143: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2144: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2145: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2146: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2147: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT2148: { subId: "106", subSlug: "wallets-with-strap", subName: "Leatherette Wallet with Strap" },
+  GFT248A: { subId: "108", subSlug: "wallets-bifold", subName: "Leatherette Bifold Wallet" },
+  GFT269: { subId: "108", subSlug: "wallets-bifold", subName: "Leatherette Bifold Wallet" },
+  GFT373: { subId: "108", subSlug: "wallets-bifold", subName: "Leatherette Bifold Wallet" },
+  GFT607: { subId: "108", subSlug: "wallets-bifold", subName: "Leatherette Bifold Wallet" },
+  GFT708: { subId: "108", subSlug: "wallets-bifold", subName: "Leatherette Bifold Wallet" },
   // Photo frames split into Small/Medium/Large size subcategories (was the
   // single "Leatherette and Cork Photo Frames" subId 43).
   LLF1046: { subId: "103", subSlug: "photo-frames-small", subName: "Small Photo Frames (4x6)" },
@@ -576,9 +605,9 @@ const ADDED_PRODUCTS: RawProduct[] = [
     categoryId: "1",
     categorySlug: "gifts-and-promotions",
     categoryName: "Gifts & Promotions",
-    subId: "61",
-    subSlug: "wallets",
-    subName: "Wallets",
+    subId: "106",
+    subSlug: "wallets-with-strap",
+    subName: "Leatherette Wallet with Strap",
   },
   {
     id: "gft2146",
@@ -591,9 +620,9 @@ const ADDED_PRODUCTS: RawProduct[] = [
     categoryId: "1",
     categorySlug: "gifts-and-promotions",
     categoryName: "Gifts & Promotions",
-    subId: "61",
-    subSlug: "wallets",
-    subName: "Wallets",
+    subId: "106",
+    subSlug: "wallets-with-strap",
+    subName: "Leatherette Wallet with Strap",
   },
   {
     id: "gft2147",
@@ -606,9 +635,9 @@ const ADDED_PRODUCTS: RawProduct[] = [
     categoryId: "1",
     categorySlug: "gifts-and-promotions",
     categoryName: "Gifts & Promotions",
-    subId: "61",
-    subSlug: "wallets",
-    subName: "Wallets",
+    subId: "106",
+    subSlug: "wallets-with-strap",
+    subName: "Leatherette Wallet with Strap",
   },
   {
     id: "gft2148",
@@ -621,9 +650,9 @@ const ADDED_PRODUCTS: RawProduct[] = [
     categoryId: "1",
     categorySlug: "gifts-and-promotions",
     categoryName: "Gifts & Promotions",
-    subId: "61",
-    subSlug: "wallets",
-    subName: "Wallets",
+    subId: "106",
+    subSlug: "wallets-with-strap",
+    subName: "Leatherette Wallet with Strap",
   },
   // Leatherette cord/tech organizer cases from the JDS master CSV (not in the
   // scraped feed). Self-hosted on R2 under products/{SKU}/.
@@ -1311,6 +1340,11 @@ const ADDED_PRODUCTS: RawProduct[] = [
 /* New subcategories the additions introduce, keyed by the (post-merge)
    category slug they belong under. Count is recomputed from products. */
 const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {
+  "gifts-and-promotions": [
+    { subId: "106", slug: "wallets-with-strap", name: "Leatherette Wallet with Strap", count: 0 },
+    { subId: "107", slug: "wallets-bifold-flip-id", name: "Leatherette Bifold Wallet with Flip ID", count: 0 },
+    { subId: "108", slug: "wallets-bifold", name: "Leatherette Bifold Wallet", count: 0 },
+  ],
   "frames-and-decor": [
     { subId: "101", slug: "glass-frames-and-decor", name: "Glass Frames & Decor", count: 0 },
     { subId: "103", slug: "photo-frames-small", name: "Small Photo Frames (4x6)", count: 0 },
