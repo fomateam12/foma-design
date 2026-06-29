@@ -590,4 +590,60 @@ export const fomaProducts: Product[] = [
       },
     ],
   },
+  {
+    id: "foma-charcuterie-board-drawers",
+    name: "Personalized Bamboo Charcuterie Board Set with Drawers & Cheese Tools",
+    sku: "FOMA-CHAR-DRAWER",
+    size: "14.25 × 14.25 × 1.5 in",
+    // FOMA's own Amazon listing (ASIN B0GM2KCR5Z) retails at $34.95. basePrice
+    // here is a hidden reference (B2B pricing is gated behind "Add to quote").
+    basePrice: 34.95,
+    image: "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER.jpg",
+    imageFull: "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER.jpg",
+    images: [
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER.jpg",
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER_2.jpg",
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER_3.jpg",
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER_4.jpg",
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER_5.jpg",
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER_6.jpg",
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER_7.jpg",
+      "/products/FOMA-CHAR-DRAWER/FOMA-CHAR-DRAWER_8.jpg",
+    ],
+    categoryId: "1",
+    categorySlug: "gifts-and-promotions",
+    categoryName: "Gifts & Promotions",
+    subcategorySlug: "cutting-boards-cake-pans-kitchen",
+    subcategoryName: "Cutting Boards, Cake Pans, Kitchen",
+    dimensions: "14.25 × 14.25 × 1.5 in",
+    description:
+      "Personalized bamboo charcuterie & cheese board set with slide-out drawers and four cheese tools — an extra-large serving board laser-engraved to order. Ships next day.",
+    longDescription:
+      "An extra-large 14.25 × 14.25 × 1.5 in bamboo charcuterie board with two slide-out drawers that hold the included four-piece cheese tool set. The 9.5 × 9.5 in main serving surface is framed by a deep rim to keep food in place, and the smooth bamboo is laser-engraved to order with a family name, monogram, date or design — choose from a full design chart. Doubles as a cutting and serving board. A standout wedding, anniversary, housewarming or holiday gift for him or her.",
+    badges: ["Bestseller"],
+    leadTimeDays: 1,
+    personalization: [
+      {
+        id: "design",
+        label: "Engraving design",
+        type: "select",
+        required: true,
+        options: [
+          "Family name",
+          "Monogram / initial",
+          "Names & date",
+          "Custom logo or text",
+        ],
+      },
+      {
+        id: "engraving-text",
+        label: "Engraving text",
+        type: "text",
+        required: true,
+        placeholder: "Family name, names & date, or monogram",
+        maxLength: 40,
+        helpText: "The name, names+date or text we'll laser-engrave on the board.",
+      },
+    ],
+  },
 ];
