@@ -396,6 +396,8 @@ const REMOVED_SKUS = new Set<string>([
   "GFT2250",
   // 2026-06-29: color-sync with Leatherette Journals — remove non-ref colors.
   "GFT783", "GFT950", "GFT972", "GFT356", "GFT359", "GFT886", "GFT960", "GFT962", "GFT963", "GFT879", "GFT980",
+  // 2026-06-29: remove batch.
+  "GFT1295", "GFT200", "GFT703",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
