@@ -108,7 +108,7 @@ export default function FaqPage() {
               href="/sell"
               className={cn(buttonVariants({ variant: "brand", size: "lg" }))}
             >
-              Become a Seller
+              Apply to sell
               <ArrowRight className="size-4" />
             </Link>
           </div>

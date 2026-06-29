@@ -17,6 +17,9 @@ export function QuoteIndicator({ className }: { className?: string }) {
       aria-label={
         show ? `Request a quote — ${count} item${count === 1 ? "" : "s"}` : "Request a quote"
       }
+      title={
+        show ? `Request a quote — ${count} item${count === 1 ? "" : "s"}` : "Request a quote"
+      }
       className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "relative", className)}
     >
       <FileText className="size-4" />

@@ -27,7 +27,7 @@ import {
   getRelatedProducts,
 } from "@/data/catalog";
 import { site } from "@/lib/site";
-import { ORDER_CUTOFF } from "@/lib/site-copy";
+import { DISPATCH_NOTE } from "@/lib/site-copy";
 
 export function generateStaticParams() {
   return getAllProducts().map((p) => ({ id: p.id }));
@@ -271,11 +271,7 @@ export default async function ProductPage({
             <div className="flex items-start gap-2.5">
               <Truck className="mt-0.5 size-5 text-brand-strong" />
               <p className="text-xs leading-relaxed text-muted-foreground">
-                {/* TODO(david): reintroduce a per-SKU transit estimate once the
-                    §9.2 same-day-dispatch wording is locked. Framing now matches
-                    the Shipping page (dispatch vs. transit) so they can't drift. */}
-                Made to order · same-day dispatch on orders before {ORDER_CUTOFF};
-                transit time additional
+                Made to order · {DISPATCH_NOTE}
               </p>
             </div>
             <div className="flex items-start gap-2.5">

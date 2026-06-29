@@ -46,7 +46,7 @@ export interface NavCategory {
   subcategories: { name: string; slug: string }[];
 }
 
-// Header nav: How It Works · Catalog · Shipping · FAQ (+ Become a Seller CTA).
+// Header nav: How It Works · Catalog · Shipping · FAQ (+ Apply to sell CTA).
 // Catalog is the mega-menu trigger rendered between item 0 and items 1..n.
 const NAV_LINKS = [
   { label: "How it works", href: "/how-it-works" },
@@ -182,7 +182,7 @@ export function HeaderNav({
                     onClick={() => setMobileOpen(false)}
                     className={cn(buttonVariants({ variant: "brand", size: "lg" }))}
                   >
-                    Become a Seller
+                    Apply to sell
                   </Link>
                 </div>
               </nav>
@@ -316,7 +316,7 @@ export function HeaderNav({
                 "hidden sm:inline-flex",
               )}
             >
-              Become a Seller
+              Apply to sell
             </Link>
           </div>
         </div>

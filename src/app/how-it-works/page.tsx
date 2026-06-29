@@ -103,7 +103,7 @@ export default function HowItWorksPage() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted-light">
+          <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             During the first wave, orders are entered manually. ShipStation
             automation is coming.
           </p>
@@ -112,7 +112,7 @@ export default function HowItWorksPage() {
               href="/sell"
               className={cn(buttonVariants({ variant: "brand", size: "lg" }))}
             >
-              Apply to Sell
+              Apply to sell
               <ArrowRight className="size-4" />
             </Link>
           </div>

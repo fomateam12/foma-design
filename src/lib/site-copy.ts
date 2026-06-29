@@ -19,3 +19,8 @@ export const SHIPPING_PROMISE = `Same-day shipping on orders placed before ${ORD
 
 /** Compact version for hero eyebrows, chips and badges. */
 export const TURNAROUND_SHORT = "Same-day printing & shipping";
+
+/** Canonical dispatch-vs-transit line. Single source for the standardized
+ *  shipping wording used on the Shipping page and product pages so the
+ *  production/dispatch promise and the delivery window never contradict. */
+export const DISPATCH_NOTE = `Same-day dispatch on orders before ${ORDER_CUTOFF} — transit time additional`;

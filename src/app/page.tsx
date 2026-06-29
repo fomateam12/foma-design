@@ -126,7 +126,7 @@ export default function HomePage() {
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link href="/sell" className={cn(buttonVariants({ variant: "brand", size: "lg" }))}>
-                Apply to Sell
+                Apply to sell
                 <ArrowRight className="size-4" />
               </Link>
               <Link
