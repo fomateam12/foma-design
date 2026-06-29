@@ -493,6 +493,8 @@ const REMOVED_SKUS = new Set<string>([
   "GFT1295", "GFT200", "GFT703",
   "GFT923",
   "GFT444",
+  // color-sync passport/jewelry to leather palette
+  "GFT888", "GFT935", "GFT2307", "GFT2337", "GFT2339", "GFT2407", "GFT2409",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
