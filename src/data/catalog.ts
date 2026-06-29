@@ -496,6 +496,7 @@ const REMOVED_SKUS = new Set<string>([
   "PTF257",
   // color-sync Leatherette Mug Sleeve & Beverage Holder
   "GFT375", "GFT376", "GFT780", "GFT868", "GFT942", "GFT943",
+  "GFT1177", "GFT1181",
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
