@@ -44,9 +44,9 @@ export const resellerApplicationSchema = z.object({
     .min(2, "Which products are you interested in?")
     .max(400),
   about: z.string().trim().max(4000).optional().or(z.literal("")),
-  hearAboutUs: z.enum(HEAR_ABOUT_US, {
-    message: "Let us know how you found us.",
-  }),
+  // Optional on purpose: a new field must never break submissions from an
+  // older/cached version of the form that doesn't send it (client/server skew).
+  hearAboutUs: z.enum(HEAR_ABOUT_US).optional().or(z.literal("")),
   hearAboutUsOther: z.string().trim().max(200).optional().or(z.literal("")),
   consent: z.boolean().refine((v) => v === true, {
     message: "Please agree so we can follow up with you.",

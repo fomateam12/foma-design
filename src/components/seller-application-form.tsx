@@ -249,7 +249,7 @@ export function SellerApplicationForm() {
       </div>
 
       <div>
-        <Label htmlFor="se-hear">How did you hear about us? *</Label>
+        <Label htmlFor="se-hear">How did you hear about us?</Label>
         <select
           id="se-hear"
           className={cn(SELECT, "mt-1.5")}
