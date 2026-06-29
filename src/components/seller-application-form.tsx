@@ -13,6 +13,7 @@ import {
   resellerApplicationSchema,
   BUSINESS_TYPES,
   MONTHLY_VOLUMES,
+  HEAR_ABOUT_US,
   type ResellerApplicationInput,
 } from "@/lib/validation";
 
@@ -39,6 +40,7 @@ export function SellerApplicationForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<ResellerApplicationInput>({
     resolver: zodResolver(resellerApplicationSchema),
@@ -52,10 +54,14 @@ export function SellerApplicationForm() {
       monthlyVolume: undefined,
       products: "",
       about: "",
+      hearAboutUs: undefined,
+      hearAboutUsOther: "",
       consent: false,
       fax: "",
     },
   });
+
+  const hearAboutUs = watch("hearAboutUs");
 
   async function onSubmit(values: ResellerApplicationInput) {
     setSubmitError(null);
@@ -240,6 +246,35 @@ export function SellerApplicationForm() {
           className="mt-1.5"
           {...register("about")}
         />
+      </div>
+
+      <div>
+        <Label htmlFor="se-hear">How did you hear about us? *</Label>
+        <select
+          id="se-hear"
+          className={cn(SELECT, "mt-1.5")}
+          defaultValue=""
+          aria-invalid={!!errors.hearAboutUs}
+          {...register("hearAboutUs")}
+        >
+          <option value="" disabled>
+            Select…
+          </option>
+          {HEAR_ABOUT_US.map((h) => (
+            <option key={h} value={h}>
+              {h}
+            </option>
+          ))}
+        </select>
+        <ErrorText msg={errors.hearAboutUs?.message} />
+        {hearAboutUs === "Other" ? (
+          <Input
+            placeholder="How did you find us?"
+            className={cn(FIELD, "mt-2")}
+            aria-label="How did you hear about us — other"
+            {...register("hearAboutUsOther")}
+          />
+        ) : null}
       </div>
 
       <div>

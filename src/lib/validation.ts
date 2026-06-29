@@ -15,6 +15,17 @@ export const MONTHLY_VOLUMES = [
   "1,000+ items",
 ] as const;
 
+export const HEAR_ABOUT_US = [
+  "Google / search",
+  "Instagram",
+  "Facebook",
+  "TikTok",
+  "Etsy or Amazon",
+  "Referral / word of mouth",
+  "Trade show",
+  "Other",
+] as const;
+
 export const resellerApplicationSchema = z.object({
   name: z.string().trim().min(2, "Please enter your name."),
   businessName: z.string().trim().min(2, "Please enter your business name."),
@@ -33,6 +44,10 @@ export const resellerApplicationSchema = z.object({
     .min(2, "Which products are you interested in?")
     .max(400),
   about: z.string().trim().max(4000).optional().or(z.literal("")),
+  hearAboutUs: z.enum(HEAR_ABOUT_US, {
+    message: "Let us know how you found us.",
+  }),
+  hearAboutUsOther: z.string().trim().max(200).optional().or(z.literal("")),
   consent: z.boolean().refine((v) => v === true, {
     message: "Please agree so we can follow up with you.",
   }),

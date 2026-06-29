@@ -96,6 +96,8 @@ function internalHtml(data: ResellerApplicationInput, submittedAt: string): stri
       ${row("Monthly volume", data.monthlyVolume)}
       ${row("Products", data.products)}
       ${row("About", data.about)}
+      ${row("Heard via", data.hearAboutUs)}
+      ${row("Heard via (other)", data.hearAboutUsOther)}
       ${row("Submitted", submittedAt)}
     </table>`;
   return shell("New reseller application", inner);
