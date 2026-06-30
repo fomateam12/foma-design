@@ -28,12 +28,46 @@ export function Logo({
     >
       <span
         aria-hidden="true"
-        className="relative grid size-8 place-items-center overflow-hidden rounded-[0.55rem] shadow-sm ring-1 ring-[oklch(0.4_0.04_60/0.25)] transition-transform duration-300 ease-premium group-hover:-rotate-3"
-        style={{ background: "var(--metallic)" }}
+        className="shrink-0 transition-transform duration-300 ease-premium group-hover:-rotate-3"
       >
-        {/* engraved diagonal hairline */}
-        <span className="block h-px w-4 -rotate-45 bg-[oklch(0.25_0.02_56/0.7)]" />
-        <span className="absolute inset-0 rounded-[0.55rem] shadow-[inset_0_1px_0_oklch(1_0_0/0.4)]" />
+        {/* Engraved F monogram — the brand mark: an "F" laser-incised into a
+            rust tile (matches app/icon.svg). */}
+        <svg viewBox="0 0 64 64" className="size-8 drop-shadow-sm" fill="none">
+          <defs>
+            <linearGradient
+              id="foma-logo-tile"
+              x1="32"
+              y1="3"
+              x2="32"
+              y2="61"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#c2592a" />
+              <stop offset="1" stopColor="#8d3a17" />
+            </linearGradient>
+          </defs>
+          <rect x="3" y="3" width="58" height="58" rx="16" fill="url(#foma-logo-tile)" />
+          <rect
+            x="3.75"
+            y="3.75"
+            width="56.5"
+            height="56.5"
+            rx="15.25"
+            stroke="#ffffff"
+            strokeOpacity="0.16"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M24 18 H41.5 V24.6 H30.7 V29.9 H39.5 V36.3 H30.7 V44 H24 Z"
+            fill="#000000"
+            fillOpacity="0.15"
+            transform="translate(0 0.9)"
+          />
+          <path
+            d="M24 18 H41.5 V24.6 H30.7 V29.9 H39.5 V36.3 H30.7 V44 H24 Z"
+            fill="#f8f2e7"
+          />
+        </svg>
       </span>
       <span
         className={cn(
