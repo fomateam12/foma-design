@@ -244,3 +244,39 @@ yazmadan önce node_modules/next/dist/docs/ oku) + Tailwind.
   kalmış, src/ + config + .well-known + tüm dosyalarda **0 referans**
   (kapsamlı grep ile triple-verified). Pick: sil. PR #36. Build ✓,
   public/ artık sadece anlamlı asset'lere ev sahipliği yapıyor.
+
+### Loop summary (final)
+
+- **Start**: 2026-06-30 00:54 local · **Halt**: 03:28 local · **Wall**:
+  2h 34m (6h budget'in %43'ü) · **Ticks**: 6 (5 fix + 1 summary)
+- **Halt nedeni**: hard-stop "5 open chore/overnight-* PRs" eşiği.
+- **Outcome (sabah)**:
+  - **PR #32** (Tick #1 — REMOVED_SKUS cleanup): **operator tarafından
+    kapatıldı**. 5 dead entry (GFT2071/2081/2091/2101/2102) deny-list'te
+    kaldı; site'de etkisi yok (supplier feed'de zaten yok).
+  - **PR #33** (Tick #2 — dead site-copy exports): **merged**.
+  - **PR #34** (Tick #3 — JSON parse logging): **merged**.
+  - **PR #35** (Tick #4 — Node engines + lint scope): **merged**.
+  - **PR #36** (Tick #5 — orphan boilerplate SVGs): **merged**.
+  - **PR #37** (bu morning summary): merge edildiğinde tamamlanır.
+- **Top 5 unactioned findings** (operator day-time backlog için):
+  1. Bento.tsx external link aria-label (Agent B, Tick #1) — 0 live
+     impact, future-proofing.
+  2. Meta titles 9 sayfada <30 char, descriptions 3 sayfada >160
+     (Agent B, Tick #1) — SEO content rewrite, brand voice judgment.
+  3. Hardcoded same-day strings page.tsx + shipping/page.tsx içinde
+     (Agent C, Tick #2) — multi-file refactor.
+  4. eslint.config.mjs globalIgnores eksik (Agent A, Tick #4) — PR #35
+     `eslint src/` zaten etkin ignore.
+  5. 5 extraneous npm packages (`@emnapi/*` ailesi — Agent A, Tick #4)
+     — `npm prune` lock-file değişimi gerektirir.
+- **Agent-başına özet**:
+  - **Agent A** (data integrity + config/tooling): manifest ↔ R2 temiz,
+    package.json + public/ asset'lerinde iki dead-weight surface etti
+    (#35, #36 fix); "29 LLF photo frames missing" false positive çıktı.
+  - **Agent B** (frontend quality): next/image hygiene sıfır violation,
+    a11y compliant, JSON-LD valid; 9+3 meta length nit'i flag'ledi.
+  - **Agent C** (backend / API): PR #31 baseline'a sadakat tam; 4 dead
+    export + JSON parse logging gap'i fix'lendi (#33, #34); TODO debt 0.
+- **Failed ticks**: 0 · **Build green at every checkpoint**: ✓ · **Cron
+  job `fcbfcbe7`**: CronDelete ile durduruldu, loop done.
