@@ -36,7 +36,10 @@ export function ProductImage({
   seed,
   icon = "gift",
   width = 600,
-  sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw",
+  // The product grid goes 2 → 3 → 4 → 5 columns across breakpoints
+  // (mobile / sm / lg / 2xl). Each step gets the matching viewport
+  // fraction so the optimizer doesn't fetch oversized variants.
+  sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 20vw",
   priority = false,
   className,
   imgClassName,

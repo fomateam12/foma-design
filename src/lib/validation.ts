@@ -1,5 +1,18 @@
 import { z } from "zod";
 
+/**
+ * Defense-in-depth predicate for any field that ever ends up in an email
+ * subject line, header, or other newline-sensitive context. Both Nodemailer
+ * and Resend strip CR/LF from the header layer, but we reject the input at
+ * the boundary so we never depend on downstream sanitisation.
+ */
+const NO_LINE_BREAKS = {
+  re: /[\r\n]/,
+  msg: "Line breaks are not allowed in this field.",
+};
+const noBreaks = <T extends z.ZodString>(s: T) =>
+  s.refine((v) => !NO_LINE_BREAKS.re.test(v), NO_LINE_BREAKS.msg);
+
 export const BUSINESS_TYPES = [
   "Retail store",
   "Online shop",
@@ -27,10 +40,17 @@ export const HEAR_ABOUT_US = [
 ] as const;
 
 export const resellerApplicationSchema = z.object({
-  name: z.string().trim().min(2, "Please enter your name."),
-  businessName: z.string().trim().min(2, "Please enter your business name."),
+  // `name` + `businessName` end up in the email subject line — reject CR/LF
+  // to neutralise any chance of header injection if a downstream layer
+  // stopped stripping (defense-in-depth).
+  name: noBreaks(z.string().trim().min(2, "Please enter your name.").max(160)),
+  businessName: noBreaks(
+    z.string().trim().min(2, "Please enter your business name.").max(160),
+  ),
   email: z.string().trim().email("Enter a valid email address."),
-  phone: z.string().trim().min(7, "Enter a valid phone number.").max(40),
+  phone: noBreaks(
+    z.string().trim().min(7, "Enter a valid phone number.").max(40),
+  ),
   website: z.string().trim().max(200).optional().or(z.literal("")),
   businessType: z.enum(BUSINESS_TYPES, {
     message: "Select your business type.",
@@ -94,10 +114,14 @@ export const quoteItemSchema = z.object({
 
 /** Contact + brief fields collected by the on-page form (no line items). */
 export const quoteFormSchema = z.object({
-  fullName: z.string().trim().min(2, "Please enter your name."),
-  businessName: z.string().trim().max(160).optional().or(z.literal("")),
+  // `fullName` + `businessName` end up in the email subject — see comment on
+  // resellerApplicationSchema.name for the rationale.
+  fullName: noBreaks(z.string().trim().min(2, "Please enter your name.").max(160)),
+  businessName: noBreaks(z.string().trim().max(160))
+    .optional()
+    .or(z.literal("")),
   email: z.string().trim().email("Enter a valid email address."),
-  phone: z.string().trim().max(40).optional().or(z.literal("")),
+  phone: noBreaks(z.string().trim().max(40)).optional().or(z.literal("")),
   website: z.string().trim().max(200).optional().or(z.literal("")),
   channels: z.array(z.enum(SALES_CHANNELS)).max(SALES_CHANNELS.length).optional(),
   monthlyVolume: z.enum(MONTHLY_VOLUMES).optional().or(z.literal("")),

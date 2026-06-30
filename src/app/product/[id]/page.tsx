@@ -29,9 +29,32 @@ import {
 import { site } from "@/lib/site";
 import { DISPATCH_NOTE } from "@/lib/site-copy";
 
+/**
+ * ISR window. Catalog data is updated occasionally (supplier scrape, manual
+ * curation), so a static page can serve from the edge cache for a day before
+ * the optimizer regenerates it. New product pages skipped by
+ * `generateStaticParams` fall through to on-demand SSG on first visit and
+ * land in the edge cache there.
+ */
+export const revalidate = 86400;
+
+/**
+ * Pre-render only the first slice of product pages at build time — the rest
+ * are generated on demand via ISR. This shaves a couple of minutes off CI
+ * (805 pages × prerender ≈ 3 minutes cold-build cost) and lets new SKUs go
+ * live without a full rebuild. The slice is deterministic (catalog order),
+ * so consecutive deploys hit the same prebuilt set + edge cache.
+ */
+const PREBUILT_PRODUCT_COUNT = 120;
+
 export function generateStaticParams() {
-  return getAllProducts().map((p) => ({ id: p.id }));
+  return getAllProducts()
+    .slice(0, PREBUILT_PRODUCT_COUNT)
+    .map((p) => ({ id: p.id }));
 }
+
+/** Allow on-demand rendering of product IDs that weren't pre-built. */
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,

@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { searchProducts } from "@/data/catalog";
 import type { SearchResult } from "@/data/types";
+import { getTraceId, TRACE_HEADER } from "@/lib/trace";
 
 export function GET(request: Request) {
+  const traceId = getTraceId(request);
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q") ?? "";
   const limit = Math.min(
@@ -23,6 +25,14 @@ export function GET(request: Request) {
 
   return NextResponse.json(
     { results },
-    { headers: { "Cache-Control": "public, max-age=300" } },
+    {
+      headers: {
+        "content-type": "application/json",
+        // Short edge cache — catalog rarely changes inside the window but a
+        // fresh client request gets a fresh response.
+        "cache-control": "public, max-age=300, stale-while-revalidate=600",
+        [TRACE_HEADER]: traceId,
+      },
+    },
   );
 }

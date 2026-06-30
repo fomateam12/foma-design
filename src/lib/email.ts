@@ -1,6 +1,7 @@
 import nodemailer, { type Transporter } from "nodemailer";
 import { site } from "@/lib/site";
 import type { QuoteInput } from "@/lib/validation";
+import { log, maskPii } from "@/lib/log";
 
 /**
  * Lead delivery — free, self-hosted. No paid third-party sender.
@@ -114,18 +115,23 @@ function buildCsv(at: string, data: Record<string, unknown>): string {
 
 /* ------------------------------- channels --------------------------------- */
 
-/** Always-on durable capture: one greppable JSON line per lead. */
-function logLead(kind: string, payload: Record<string, unknown>): void {
-  try {
-    console.log(`[LEAD] ${kind} ${JSON.stringify(payload)}`);
-  } catch {
-    console.log(`[LEAD] ${kind} (unserializable payload)`);
-  }
+/** Always-on durable capture: structured JSON, PII masked at the boundary. */
+function logLead(
+  kind: string,
+  payload: Record<string, unknown>,
+  traceId?: string,
+): void {
+  log.info({
+    traceId,
+    event: `lead.${kind}`,
+    payload: maskPii(payload),
+  });
 }
 
 /** Optional cumulative CSV: POST the lead to a URL you control. */
 async function postWebhook(
   payload: Record<string, unknown>,
+  traceId?: string,
 ): Promise<ChannelState> {
   if (!WEBHOOK_URL) return "off";
   try {
@@ -136,12 +142,21 @@ async function postWebhook(
       signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) {
-      console.error(`[lead] webhook failed: ${res.status} ${res.statusText}`);
+      log.error({
+        traceId,
+        event: "lead.webhook_failed",
+        status: res.status,
+        statusText: res.statusText,
+      });
       return "fail";
     }
     return "ok";
   } catch (err) {
-    console.error("[lead] webhook error:", err);
+    log.error({
+      traceId,
+      event: "lead.webhook_error",
+      message: err instanceof Error ? err.message : String(err),
+    });
     return "fail";
   }
 }
@@ -167,6 +182,8 @@ async function sendEmail(args: {
   html: string;
   replyTo?: string;
   attachments?: { filename: string; content: string; contentType?: string }[];
+  traceId?: string;
+  channel: "admin" | "customer";
 }): Promise<ChannelState> {
   if (!smtpReady) return "off";
   try {
@@ -180,7 +197,12 @@ async function sendEmail(args: {
     });
     return "ok";
   } catch (err) {
-    console.error("[email] smtp send failed:", err);
+    log.error({
+      traceId: args.traceId,
+      event: "email.smtp_failed",
+      channel: args.channel,
+      message: err instanceof Error ? err.message : String(err),
+    });
     return "fail";
   }
 }
@@ -198,16 +220,17 @@ async function dispatch(opts: {
   logData: Record<string, unknown>;
   admin: { subject: string; html: string; replyTo?: string };
   customer: { to: string; subject: string; html: string };
+  traceId?: string;
 }): Promise<DeliveryResult> {
   const at = new Date().toISOString();
   const payload = { kind: opts.kind, at, ...opts.logData };
 
-  logLead(opts.kind, payload);
+  logLead(opts.kind, payload, opts.traceId);
 
   const csv = buildCsv(at, opts.logData);
   const csvFilename = `${opts.kind}-${at.slice(0, 19).replace(/[:T]/g, "-")}.csv`;
 
-  const webhook = await postWebhook(payload);
+  const webhook = await postWebhook(payload, opts.traceId);
 
   const email = await sendEmail({
     to: TO,
@@ -215,14 +238,27 @@ async function dispatch(opts: {
     html: opts.admin.html,
     replyTo: opts.admin.replyTo,
     attachments: [{ filename: csvFilename, content: csv, contentType: "text/csv" }],
+    traceId: opts.traceId,
+    channel: "admin",
   });
+  // Customer confirmation is best-effort; never gates the result, but a
+  // failure to send IS surfaced as a warn so the operator can spot
+  // systematic deliverability issues (e.g. reputational SMTP block).
   if (email === "ok") {
-    // Confirmation to the applicant is best-effort; never gates the result.
-    await sendEmail({
+    const customerState = await sendEmail({
       to: opts.customer.to,
       subject: opts.customer.subject,
       html: opts.customer.html,
+      traceId: opts.traceId,
+      channel: "customer",
     });
+    if (customerState === "fail") {
+      log.warn({
+        traceId: opts.traceId,
+        event: "lead.customer_confirmation_failed",
+        kind: opts.kind,
+      });
+    }
   }
 
   const configured = (WEBHOOK_URL ? 1 : 0) + (smtpReady ? 1 : 0);
@@ -248,6 +284,7 @@ async function dispatch(opts: {
 
 export async function sendQuoteRequestEmails(
   data: QuoteInput,
+  ctx?: { traceId?: string },
 ): Promise<DeliveryResult> {
   const totalQty = data.items.reduce((sum, it) => sum + it.quantity, 0);
   const itemsSummary = data.items
@@ -319,6 +356,7 @@ export async function sendQuoteRequestEmails(
 
   return dispatch({
     kind: "quote-request",
+    traceId: ctx?.traceId,
     logData: {
       fullName: data.fullName,
       businessName: data.businessName,

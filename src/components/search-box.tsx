@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/format";
@@ -153,13 +154,18 @@ export function SearchBox({
                   onClick={handleNavigate}
                   className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm outline-none transition-colors hover:bg-muted focus-visible:bg-muted"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={r.image}
-                    alt=""
-                    loading="lazy"
-                    className="size-9 shrink-0 rounded-md border border-border bg-muted object-contain"
-                  />
+                  <div className="relative size-9 shrink-0 overflow-hidden rounded-md border border-border bg-muted">
+                    {r.image ? (
+                      <Image
+                        src={r.image}
+                        alt=""
+                        aria-hidden="true"
+                        fill
+                        sizes="36px"
+                        className="object-contain"
+                      />
+                    ) : null}
+                  </div>
                   <span className="line-clamp-1 flex-1 font-medium text-foreground">
                     {r.name}
                   </span>
