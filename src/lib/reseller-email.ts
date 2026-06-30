@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import { site } from "@/lib/site";
 import { ORDER_CUTOFF } from "@/lib/site-copy";
 import type { ResellerApplicationInput } from "@/lib/validation";
+import { log } from "@/lib/log";
 
 /**
  * Reseller-application email delivery via Resend.
@@ -261,7 +262,9 @@ function nyTimestamp(): string {
  */
 export async function sendResellerApplicationEmails(
   data: ResellerApplicationInput,
+  ctx?: { traceId?: string },
 ): Promise<ResellerEmailResult> {
+  const traceId = ctx?.traceId;
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESELLER_FROM_EMAIL;
   const notify = process.env.RESELLER_NOTIFICATION_EMAIL;
@@ -274,6 +277,11 @@ export async function sendResellerApplicationEmails(
     ]
       .filter(Boolean)
       .join(", ");
+    log.error({
+      traceId,
+      event: "reseller.email_not_configured",
+      missing,
+    });
     return {
       ok: false,
       internalSent: false,
@@ -320,14 +328,22 @@ export async function sendResellerApplicationEmails(
       internal.status === "rejected"
         ? String(internal.reason)
         : JSON.stringify(internal.value.error);
-    console.error("[reseller-application] internal notification failed:", reason);
+    log.error({
+      traceId,
+      event: "reseller.internal_email_failed",
+      reason,
+    });
   }
   if (!applicantSent) {
     const reason =
       applicant.status === "rejected"
         ? String(applicant.reason)
         : JSON.stringify(applicant.value.error);
-    console.error("[reseller-application] applicant confirmation failed:", reason);
+    log.warn({
+      traceId,
+      event: "reseller.applicant_confirmation_failed",
+      reason,
+    });
   }
 
   return {

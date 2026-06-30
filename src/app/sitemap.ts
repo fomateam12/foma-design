@@ -2,6 +2,13 @@ import type { MetadataRoute } from "next";
 import { getAllProducts, getCategories } from "@/data/catalog";
 import { site } from "@/lib/site";
 
+/**
+ * Regenerate the sitemap on the same ISR cadence as product pages so a
+ * supplier scrape that lands between deploys eventually surfaces the new
+ * SKUs to search engines instead of waiting for the next code push.
+ */
+export const revalidate = 86400;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = site.url.replace(/\/$/, "");
   const now = new Date();
