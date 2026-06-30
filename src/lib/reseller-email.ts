@@ -285,10 +285,18 @@ export async function sendResellerApplicationEmails(
   const resend = new Resend(apiKey);
   const submittedAt = nyTimestamp();
 
+  // RESELLER_NOTIFICATION_EMAIL may be a comma-separated list so the lead lands
+  // in more than one inbox (e.g. info@fomaprint.com + a reliable Gmail). This
+  // makes lead delivery robust even if one recipient's mail server is delayed.
+  const notifyList = notify
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   const [internal, applicant] = await Promise.allSettled([
     resend.emails.send({
       from,
-      to: notify,
+      to: notifyList,
       replyTo: data.email,
       subject: `New reseller application — ${data.businessName}`,
       html: internalHtml(data, submittedAt),
