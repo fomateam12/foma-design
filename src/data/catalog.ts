@@ -488,7 +488,12 @@ const REMOVED_SKUS = new Set<string>([
   "GFT159", "GFT169", "GFT170", "GFT171", "GFT173",
   "GFT174", "GFT198", "GFT2023", "GFT2024",
   "GFT2032", "GFT2033", "GFT2048",
-  "GFT2049", "GFT2071", "GFT2081", "GFT2091", "GFT2101", "GFT2102",
+  // 2026-06-30 overnight tick — GFT2071/2081/2091/2101/2102 were once silicone-
+  // grip-coaster removals; supplier later dropped them from the source feed
+  // entirely so the deny-list lines became dead. Removed; the ADDED_PRODUCTS
+  // restoration mentioned in the line ~1122 comment is unaffected since those
+  // five SKUs were never re-added there either.
+  "GFT2049",
   "GFT219", "GFT221", "GFT2213",
   "GFT223", "GFT2316", "GFT2317", "GFT2318", "GFT2319", "GFT2320",
   "GFT2321", "GFT236", "GFT2364", "GFT2365", "GFT245A",
