@@ -65,7 +65,7 @@ export default function HowItWorksPage() {
               How it works
             </span>
             <h1 className="mt-5 text-display text-foreground">
-              How <span className="font-serif italic text-metallic">FomaPrint</span>{" "}
+              How <span className="text-metallic">FomaPrint</span>{" "}
               works
             </h1>
             <p className="mt-5 max-w-2xl text-lead text-muted-foreground">

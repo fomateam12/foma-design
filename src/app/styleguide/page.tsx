@@ -126,21 +126,21 @@ export default function StyleguidePage() {
       {/* SIGNATURE */}
       <Section id="signature" kicker="Identity" title="Engraved-craft signature">
         <p className="measure mb-6 text-caption">
-          The one memorable thing, true to the product (laser engraving). Spend
-          boldness here; keep everything else quiet. One disciplined rule: the
-          serif accent is always italic Fraunces, incised into the surface.
+          The one memorable thing, true to the product (laser engraving) — kept
+          in the logo mark and the scribe rules, not in running text. Accent
+          words stay a calm rust on the regular sans, so the page reads easy.
         </p>
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="rounded-card border border-border bg-card p-6">
-            <span className="overline">Incised serif accent</span>
+            <span className="overline">Rust accent</span>
             <p className="mt-3 text-h2 text-foreground">
               We{" "}
-              <span className="font-serif italic text-metallic">make &amp; ship</span>{" "}
+              <span className="text-metallic">make &amp; ship</span>{" "}
               it.
             </p>
             <p className="mt-3 text-caption">
-              <code className="font-mono">font-serif italic text-metallic</code> —
-              a hairline of light catches the groove (inverts on ink surfaces).
+              <code className="font-mono">text-metallic</code> — a calm rust
+              emphasis on the heading sans. No serif or italic on running text.
             </p>
           </div>
           <div className="rounded-card border border-border bg-card p-6">
@@ -196,8 +196,8 @@ export default function StyleguidePage() {
             </div>
           ))}
           <div className="grid gap-1 sm:grid-cols-[10rem_1fr] sm:gap-6">
-            <span className="overline pt-1">Serif accent · Fraunces</span>
-            <p className="font-serif text-2xl italic text-metallic">make &amp; ship it</p>
+            <span className="overline pt-1">Rust accent</span>
+            <p className="text-2xl font-semibold text-metallic">make &amp; ship it</p>
           </div>
           <div className="grid gap-1 sm:grid-cols-[10rem_1fr] sm:gap-6">
             <span className="overline pt-1">Mono · SKU / specs</span>
@@ -403,7 +403,7 @@ export default function StyleguidePage() {
                 <span className="overline text-brand-strong">Wholesale POD · blind-ship</span>
                 <h3 className="mt-2 text-h2 text-foreground">
                   Print under your brand.{" "}
-                  <span className="font-serif italic text-metallic">We make &amp; ship it.</span>
+                  <span className="text-metallic">We make &amp; ship it.</span>
                 </h3>
                 <p className="measure mt-3 text-sm text-muted-foreground">
                   You sell — we engrave, produce and blind-ship to your customer

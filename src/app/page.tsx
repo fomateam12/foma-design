@@ -117,7 +117,7 @@ export default function HomePage() {
             </span>
             <h1 className="mt-5 max-w-4xl text-display text-foreground">
               Print under your brand.{" "}
-              <span className="block font-serif italic text-metallic">
+              <span className="block text-metallic">
                 We make and ship it.
               </span>
             </h1>

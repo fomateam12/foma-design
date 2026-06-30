@@ -82,7 +82,7 @@ export default function ShippingPage() {
             </span>
             <h1 className="mt-5 text-display text-foreground">
               Shipping &amp;{" "}
-              <span className="font-serif italic text-metallic">turnaround</span>
+              <span className="text-metallic">turnaround</span>
             </h1>
             <p className="mt-5 max-w-2xl text-lead text-muted-foreground">
               Every order is produced to order and blind-shipped from our U.S.

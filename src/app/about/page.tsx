@@ -82,7 +82,7 @@ export default function AboutPage() {
             </span>
             <h1 className="mt-5 text-display text-foreground">
               The production partner{" "}
-              <span className="font-serif italic text-metallic">behind your store</span>
+              <span className="text-metallic">behind your store</span>
             </h1>
             <p className="mt-5 max-w-2xl text-lead text-muted-foreground">
               {site.name} is the print-on-demand and laser-engraving arm of{" "}
