@@ -123,6 +123,53 @@ export default function StyleguidePage() {
         </p>
       </header>
 
+      {/* SIGNATURE */}
+      <Section id="signature" kicker="Identity" title="Engraved-craft signature">
+        <p className="measure mb-6 text-caption">
+          The one memorable thing, true to the product (laser engraving). Spend
+          boldness here; keep everything else quiet. One disciplined rule: the
+          serif accent is always italic Fraunces, incised into the surface.
+        </p>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="rounded-card border border-border bg-card p-6">
+            <span className="overline">Incised serif accent</span>
+            <p className="mt-3 text-h2 text-foreground">
+              We{" "}
+              <span className="font-serif italic text-metallic">make &amp; ship</span>{" "}
+              it.
+            </p>
+            <p className="mt-3 text-caption">
+              <code className="font-mono">font-serif italic text-metallic</code> —
+              a hairline of light catches the groove (inverts on ink surfaces).
+            </p>
+          </div>
+          <div className="rounded-card border border-border bg-card p-6">
+            <span className="overline">Scribe mark</span>
+            <div className="mt-5 flex items-center gap-3">
+              <span aria-hidden="true" className="scribe-rule" />
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-strong">
+                Section eyebrow
+              </span>
+            </div>
+            <p className="mt-4 text-caption">
+              <code className="font-mono">.scribe-rule</code> — a dimension line
+              off the engraving-area diagrams; structure carries the craft, not
+              just type.
+            </p>
+          </div>
+          <div className="rounded-card border border-border bg-card p-6">
+            <span className="overline">View-all hover</span>
+            <a className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand-strong transition-colors hover:text-rust-bright">
+              All categories →
+            </a>
+            <p className="mt-4 text-caption">
+              Standalone nav links shift to brighter rust on hover (calm, not an
+              underline snap). In-text links keep their underline.
+            </p>
+          </div>
+        </div>
+      </Section>
+
       {/* COLORS */}
       <Section id="color" kicker="Tokens" title="Color roles">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
