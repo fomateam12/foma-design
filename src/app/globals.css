@@ -283,9 +283,29 @@
     opacity: 0.9;
   }
 
-  /* Accent words & numerals — solid rust (no gold foil) */
+  /* Accent words & numerals — laser-ENGRAVED into the warm surface. This is the
+     site's signature: the serif accent reads as incised, a hairline of light
+     catching the bottom of the groove over a whisper of shadow above. Subtle by
+     design (it carries the brand's craft, never glare); only ever set on light
+     surfaces. */
   .text-metallic {
     color: var(--rust);
+    text-shadow:
+      0 1px 0 color-mix(in oklch, white 58%, transparent),
+      0 -1px 1px color-mix(in oklch, var(--ink) 8%, transparent);
+  }
+  /* On dark/ink surfaces the incised highlight inverts (light groove on dark
+     metal) so the engraving reads instead of glowing. */
+  .bg-ink .text-metallic,
+  .grain .text-metallic {
+    text-shadow:
+      0 1px 0 color-mix(in oklch, black 35%, transparent),
+      0 -1px 1px color-mix(in oklch, white 14%, transparent);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .text-metallic {
+      transition: text-shadow 0.4s var(--ease-premium);
+    }
   }
 
   /* Film-grain / noise overlay for dark sections */

@@ -168,7 +168,7 @@ export default function PricingPage() {
             </span>
             <h1 className="mt-5 text-display text-foreground">
               Pricing built for{" "}
-              <span className="font-serif text-metallic">reseller margins</span>
+              <span className="font-serif italic text-metallic">reseller margins</span>
             </h1>
             <p className="mt-4 max-w-xl text-lead text-muted-foreground">
               No public price list. We quote wholesale, per-unit rates across all{" "}

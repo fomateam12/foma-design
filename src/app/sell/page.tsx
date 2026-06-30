@@ -119,7 +119,7 @@ export default function SellPage() {
             </span>
             <h1 className="mt-5 text-display text-foreground">
               Add personalized products to your store — we&apos;ll{" "}
-              <span className="font-serif text-metallic">make and ship</span>{" "}
+              <span className="font-serif italic text-metallic">make and ship</span>{" "}
               them.
             </h1>
             <p className="mt-5 max-w-2xl text-lead text-muted-foreground">
