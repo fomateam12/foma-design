@@ -102,7 +102,7 @@ export function QuoteRequest() {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error ?? "Something went wrong.");
       }
-      toast.success("Quote request sent! We'll reply within one business day.");
+      toast.success("Quote request sent! We'll reply the same business day.");
       reset();
       clear();
     } catch (err) {
@@ -478,7 +478,7 @@ export function QuoteRequest() {
 
               <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
                 <ShieldCheck className="size-3.5 text-brand-strong" />
-                No account needed · We reply within one business day
+                No account needed · Same-day reply on every quote
               </p>
             </div>
           </div>

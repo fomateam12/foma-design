@@ -186,7 +186,7 @@ function applicantHtml(data: ResellerApplicationInput): string {
   const firstName = data.name.trim().split(/\s+/)[0] || data.name.trim();
   const steps = [
     "We review your application and prepare wholesale pricing for the products you listed.",
-    "We reply within two business days with rates, personalization options and next steps.",
+    "We reply the same business day with rates, personalization options and next steps.",
     "You list our products under your brand — we engrave, produce and blind-ship every order from the USA.",
   ];
   const stepsHtml = steps
@@ -233,7 +233,7 @@ function applicantHtml(data: ResellerApplicationInput): string {
       <span style="color:${C.faint};">${esc(site.legalName)}</span>
     </p>`;
   return layout({
-    preheader: `We received your application for ${data.businessName} — we'll reply within two business days.`,
+    preheader: `We received your application for ${data.businessName} — we'll reply the same business day.`,
     eyebrow: "Application received",
     heading: "We've got your application",
     body,

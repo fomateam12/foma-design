@@ -24,3 +24,12 @@ export const TURNAROUND_SHORT = "Same-day printing & shipping";
  *  shipping wording used on the Shipping page and product pages so the
  *  production/dispatch promise and the delivery window never contradict. */
 export const DISPATCH_NOTE = `Same-day dispatch on orders before ${ORDER_CUTOFF} — transit time additional`;
+
+/** Same-day reply promise — used in body copy, quote acknowledgement,
+ *  reseller pages, value props. Replaces the legacy "free design proof"
+ *  positioning (we do not run a per-order proof-approval step; see
+ *  Terms of Service §5). */
+export const REPLY_PROMISE = "Same-day reply on quote requests";
+
+/** Compact three-promise rail used in banners + value-prop chips. */
+export const SAME_DAY_TRIO = "Same-day printing · Same-day shipping · Same-day reply";

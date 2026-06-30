@@ -59,7 +59,7 @@ export default function PrivacyPage() {
               How we use your information
             </h2>
             <ul className="mt-3 list-disc space-y-2 pl-5">
-              <li>To respond to your inquiries and prepare quotes and proofs.</li>
+              <li>To respond to your inquiries and prepare quotes.</li>
               <li>To produce, personalize and ship your orders.</li>
               <li>
                 To review reseller applications and set up wholesale accounts.

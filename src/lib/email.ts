@@ -309,7 +309,7 @@ export async function sendQuoteRequestEmails(
     <p style="font-size:14px;color:#2a2620;line-height:1.6">Hi ${esc(
       data.fullName,
     )},</p>
-    <p style="font-size:14px;color:#544c40;line-height:1.6">Thanks for your quote request! Our team will reply within one business day with wholesale pricing, lead times and a free design proof. Here's what we received:</p>
+    <p style="font-size:14px;color:#544c40;line-height:1.6">Thanks for your quote request! Our team will reply the same business day with wholesale pricing and lead times. Production then runs same-day on orders placed before 2pm ET. Here's what we received:</p>
     <table style="width:100%;border-collapse:collapse;border:1px solid #e7e1d8;border-radius:8px;margin-top:8px">
       ${customerItems}
     </table>

@@ -6,12 +6,12 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Request a quote",
   description:
-    "Build a list of the products you want to resell and request tiered wholesale pricing from FomaPrint. No account required — we reply within one business day with rates, lead times and a free design proof.",
+    "Build a list of the products you want to resell and request tiered wholesale pricing from FomaPrint. No account required — same-day reply with rates and lead times, then same-day printing and shipping on orders placed before 2pm ET.",
   alternates: { canonical: "/quote" },
   openGraph: {
     title: "Request a wholesale quote · FomaPrint",
     description:
-      "Build a product list and get tiered reseller pricing within one business day.",
+      "Build a product list and get tiered reseller pricing the same business day.",
   },
 };
 
@@ -29,9 +29,9 @@ export default function QuotePage() {
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
           Tell us what you&apos;d like to resell and how you fulfill. We&apos;ll
-          send tiered pricing, lead times and a free design proof within one
-          business day — engraved, produced and blind-shipped from the USA under
-          your brand. Prefer to talk?{" "}
+          send tiered pricing and lead times the same business day — engraved,
+          produced and blind-shipped from the USA under your brand, same-day on
+          orders placed before 2pm ET. Prefer to talk?{" "}
           <a
             href={site.phoneHref}
             className="font-medium text-brand-strong hover:underline"

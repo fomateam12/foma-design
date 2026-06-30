@@ -61,7 +61,7 @@ const BENEFITS = [
   {
     icon: Headset,
     title: "Dedicated support",
-    body: "A real person to help with proofs, rush orders and large projects when you need it.",
+    body: "A real person to help with rush orders, large projects and same-day questions when you need it.",
   },
   {
     icon: DollarSign,
@@ -81,7 +81,7 @@ const APPLY_STEPS = [
     n: "02",
     icon: Tags,
     title: "Get wholesale pricing",
-    body: "We review and reply within two business days with tiered reseller rates.",
+    body: "We review and reply the same business day with tiered reseller rates.",
   },
   {
     n: "03",
@@ -250,15 +250,15 @@ export default function SellPage() {
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Tell us a little about your business and we&apos;ll review your
-              application and follow up within two business days with pricing and
+              application and follow up the same business day with pricing and
               next steps.
             </p>
 
             <ul className="mt-7 space-y-3">
               {[
-                { icon: ShieldCheck, label: "Free digital proof on every order" },
+                { icon: Clock, label: "Same-day printing, shipping & reply" },
                 { icon: Truck, label: "Blind drop-ship from the USA" },
-                { icon: Clock, label: "Reply within two business days" },
+                { icon: ShieldCheck, label: "Files printed as submitted — accuracy is yours" },
                 { icon: MapPin, label: "Made to order in the USA" },
               ].map((item) => (
                 <li

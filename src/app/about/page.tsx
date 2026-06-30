@@ -131,7 +131,8 @@ export default function AboutPage() {
               U.S. studio and a catalog of over {productCount.toLocaleString()}{" "}
               personalizable products — drinkware, gifts, frames and office goods —
               all ready to engrave to order and blind-ship under your brand,
-              backed by a free design proof on every order.
+              with same-day printing and shipping on orders placed before 2pm ET
+              and a same-day reply on every quote request.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -160,7 +161,7 @@ export default function AboutPage() {
           <div className="max-w-xl">
             <span className="eyebrow text-brand-strong">FomaFlow · Soon</span>
             <h2 className="mt-2 text-h3 text-foreground">
-              One workspace for orders, proofs &amp; shipping
+              One workspace for orders &amp; shipping
             </h2>
             <p className="mt-3 leading-relaxed text-muted-foreground">
               Behind the catalog sits FomaFlow — our fulfillment engine that
@@ -193,8 +194,8 @@ export default function AboutPage() {
               Ready to sell under your brand?
             </h2>
             <p className="mt-4 text-lead text-ink-muted">
-              Browse the catalog or apply to sell — we&apos;ll send wholesale
-              pricing and a free proof before anything is engraved.
+              Browse the catalog or apply to sell — same-day reply on quotes,
+              same-day printing and shipping on orders placed before 2pm ET.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

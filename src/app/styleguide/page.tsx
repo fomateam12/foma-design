@@ -57,7 +57,7 @@ const TYPE_SAMPLES: { cls: string; label: string; sample: string }[] = [
   { cls: "text-h3", label: "H3", sample: "Same-day printing & shipping" },
   { cls: "text-lead", label: "Lead / intro", sample: "You sell — we engrave, make and ship under your brand." },
   { cls: "text-base text-foreground", label: "Body", sample: "Wholesale pricing on thousands of laser-engravable products, made to order in the USA and blind-shipped to your customer." },
-  { cls: "text-caption", label: "Caption", sample: "Free digital proof on every order." },
+  { cls: "text-caption", label: "Caption", sample: "Same-day printing, shipping & reply." },
 ];
 
 /* ------------------------------- primitives ------------------------------ */
