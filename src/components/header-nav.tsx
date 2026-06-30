@@ -79,7 +79,7 @@ export function HeaderNav({
           <Sparkles className="size-3.5 text-brand" aria-hidden="true" />
           <span>
             Wholesale POD &amp; laser engraving · Blind drop-ship from the USA ·
-            Free design proof on every order
+            Same-day printing · Same-day shipping · Same-day reply
           </span>
         </div>
       </div>

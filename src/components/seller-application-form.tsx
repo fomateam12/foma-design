@@ -101,7 +101,7 @@ export function SellerApplicationForm() {
         </h3>
         <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
           Thanks — check your inbox for a confirmation. We&apos;ll review your
-          application and follow up within two business days with pricing and
+          application and follow up the same business day with pricing and
           next steps.
         </p>
       </div>

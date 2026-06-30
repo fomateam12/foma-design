@@ -78,7 +78,7 @@ export default function ContactPage() {
         <p className="mt-4 text-lead text-muted-foreground">
           Questions about a product, wholesale pricing or becoming a reseller?
           Reach out and a real person from the {site.name} team will get back to
-          you — usually within one business day.
+          you — typically the same business day.
         </p>
       </Reveal>
 

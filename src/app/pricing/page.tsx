@@ -5,6 +5,7 @@ import {
   BadgeCheck,
   Boxes,
   Check,
+  Clock,
   MessageCircle,
   Package,
   Palette,
@@ -23,12 +24,12 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Wholesale Pricing",
-  description: `How ${site.name} wholesale pricing works for resellers — quote-based per-unit rates with personalization, blind drop-shipping and a free design proof included. Request pricing from ${site.legalName}.`,
+  description: `How ${site.name} wholesale pricing works for resellers — quote-based per-unit rates with personalization, blind drop-shipping, same-day reply on quotes and same-day printing + shipping on orders placed before 2pm ET. Request pricing from ${site.legalName}.`,
   alternates: { canonical: "/pricing" },
   openGraph: {
     title: `Wholesale pricing · ${site.name}`,
     description:
-      "Quote-based wholesale pricing for resellers — personalization, blind drop-ship and a free proof included.",
+      "Quote-based wholesale pricing for resellers — personalization, blind drop-ship, same-day reply and same-day printing & shipping included.",
   },
 };
 
@@ -44,9 +45,9 @@ const INCLUDED = [
     body: "We ship straight to your buyer, branded as you. Your cost never appears on the packing slip.",
   },
   {
-    icon: BadgeCheck,
-    title: "Free design proof",
-    body: "Every order gets a digital proof before we engrave — you approve it, then we produce.",
+    icon: Clock,
+    title: "Same-day printing & shipping",
+    body: "Orders placed before 2pm ET are engraved, packed and handed to the carrier the same day.",
   },
   {
     icon: Boxes,
@@ -76,7 +77,7 @@ const STEPS = [
     n: "02",
     icon: Tag,
     title: "Get your wholesale rates",
-    body: "We reply within two business days with per-unit pricing, personalization options and turnaround for your list.",
+    body: "Same-day reply with per-unit pricing, personalization options and turnaround for your list.",
   },
   {
     n: "03",
@@ -93,7 +94,7 @@ const TIERS = [
     points: [
       "Wholesale per-unit pricing",
       "Low order minimums",
-      "Free design proof per order",
+      "Same-day printing & shipping (before 2pm ET)",
       "Blind drop-ship from the USA",
     ],
     cta: { label: "Request a quote", href: "/quote" },
@@ -140,7 +141,7 @@ const FAQ = [
   },
   {
     q: "How fast will I get a quote?",
-    a: `We reply to quote and reseller requests within two business days. Need it sooner? Email ${site.email} or message us on WhatsApp.`,
+    a: `We reply to quote and reseller requests the same business day. Need it sooner? Email ${site.email} or message us on WhatsApp.`,
   },
 ];
 
@@ -173,7 +174,8 @@ export default function PricingPage() {
             <p className="mt-4 max-w-xl text-lead text-muted-foreground">
               No public price list. We quote wholesale, per-unit rates across all{" "}
               {productCount.toLocaleString()} products — with personalization,
-              blind drop-shipping and a free design proof built in.
+              blind drop-shipping, same-day reply on every quote and same-day
+              printing & shipping on orders placed before 2pm ET.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -390,7 +392,7 @@ export default function PricingPage() {
             </h2>
             <p className="mt-4 text-lead text-ink-muted">
               Tell us what you want to sell and we&apos;ll send pricing,
-              personalization options and turnaround within two business days.
+              personalization options and turnaround the same business day.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

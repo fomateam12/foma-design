@@ -52,7 +52,7 @@ const STEPS = [
     n: "03",
     icon: PenTool,
     title: "We engrave & make it",
-    body: "We laser-engrave and produce it to order in our U.S. studio — with a free proof.",
+    body: "We laser-engrave and produce it to order in our U.S. studio — same-day printing on orders placed before 2pm ET.",
   },
   {
     n: "04",
@@ -66,7 +66,7 @@ const TOOL_FEATURES = [
   {
     icon: LayoutDashboard,
     title: "One order dashboard",
-    body: "Every order, proof and shipment in a single workspace.",
+    body: "Every order and shipment in a single workspace.",
   },
   {
     icon: Gauge,
@@ -75,8 +75,8 @@ const TOOL_FEATURES = [
   },
   {
     icon: Palette,
-    title: "Design proofs in-app",
-    body: "Approve digital proofs before anything is engraved.",
+    title: "Same-day reply",
+    body: "Quote requests and order questions get a reply the same business day.",
   },
   {
     icon: PackageCheck,
@@ -333,7 +333,7 @@ export default function HomePage() {
             <SectionHeader
               eyebrow="Seller tools"
               title="A workspace for your whole operation"
-              description="Route orders, approve proofs and track production from one dashboard. Connected to our FomaFlow fulfillment engine — rolling out to sellers soon."
+              description="Route orders, reply same-day to your buyers and track production from one dashboard. Connected to our FomaFlow fulfillment engine — rolling out to sellers soon."
             />
             <ul className="mt-8 grid gap-5 sm:grid-cols-2">
               {TOOL_FEATURES.map((f) => (
@@ -398,7 +398,7 @@ export default function HomePage() {
               <div className="mt-4 space-y-2.5">
                 {[
                   { id: "#FP-2041", s: "Engraving", tone: "bg-brand/15 text-brand-strong" },
-                  { id: "#FP-2040", s: "Proof sent", tone: "bg-secondary text-muted-foreground" },
+                  { id: "#FP-2040", s: "Reply sent", tone: "bg-secondary text-muted-foreground" },
                   { id: "#FP-2039", s: "Shipped", tone: "bg-evergreen/15 text-evergreen" },
                 ].map((r) => (
                   <div
@@ -434,7 +434,7 @@ export default function HomePage() {
             { counter: true, v: productCount, suffix: "+", display: "", label: "Products to sell" },
             { counter: true, v: categories.length, suffix: "", display: "", label: "Product categories" },
             { counter: false, v: 0, suffix: "", display: "USA", label: "Made to order" },
-            { counter: false, v: 0, suffix: "", display: "24h", label: "Proof turnaround" },
+            { counter: false, v: 0, suffix: "", display: "Same day", label: "Printing & shipping" },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i * 0.06}>
               <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-card">
@@ -470,8 +470,8 @@ export default function HomePage() {
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lead text-ink-muted">
               Apply to become a reseller or send us a quote. We&apos;ll reply
-              within one business day with wholesale pricing and a free design
-              proof.
+              the same business day with wholesale pricing — then ship same-day
+              on orders placed before 2pm ET.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

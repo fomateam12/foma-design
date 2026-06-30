@@ -144,7 +144,7 @@ export default async function ProductPage({
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               Tiered reseller pricing with personalization included — add this
-              item to a quote and we&apos;ll send rates within one business day.
+              item to a quote and we&apos;ll send rates the same business day.
             </p>
           </div>
 
@@ -268,7 +268,7 @@ export default async function ProductPage({
             <div className="flex items-start gap-2.5">
               <ShieldCheck className="mt-0.5 size-5 text-brand-strong" />
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Free digital proof before we engrave
+                Same-day reply on every quote request
               </p>
             </div>
             <div className="flex items-start gap-2.5">
