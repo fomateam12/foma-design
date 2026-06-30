@@ -205,3 +205,19 @@ yazmadan önce node_modules/next/dist/docs/ oku) + Tailwind.
 - Prod'a giden yol: `DEPLOY-CHECKLIST.md` "Commands to ship" bloğu —
   human çalıştırır, agent değil (`vercel --prod` + `git push *`
   ikisi de deny rule'da).
+
+## Gece durumu — 2026-06-30 (overnight loop)
+
+- **Tick #2** (start 01:28 local, ~10 min wall) — Agent C koştu (önceki
+  skip telafi). Bulguları: (a) 4 dead export `src/lib/site-copy.ts`
+  içinde (PRINTING_PROMISE, SHIPPING_PROMISE, REPLY_PROMISE, SAME_DAY_TRIO
+  — hepsi PR #29'da eklenmişti ama hiç import edilmemiş; triple-verify
+  ettim, 0 ref); (b) `/api/quote` + `/api/reseller-application` JSON parse
+  catch'leri `log.warn` emit etmiyor (observability gap, low); (c) API
+  routes, email dispatcher'lar, middleware hepsi PR #31 baseline'a sadık,
+  başka boşluk yok. Pick: dead-exports cleanup (en katı single-file +
+  zero-risk + zero-ref kanıtlanmış). PR #33 açıldı: `chore(site-copy):
+  remove 4 unused exports`. Build ✓, file 36 → 21 LOC, ORDER_CUTOFF +
+  TURNAROUND_SHORT + DISPATCH_NOTE survived (active refs). Merge
+  bekleniyor. (Tick #1'in entry'si PR #32'de — operator merge sırası:
+  önce #32, sonra #33 → AGENTS.md log'u kronolojik kalır.)
