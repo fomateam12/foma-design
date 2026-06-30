@@ -205,3 +205,19 @@ yazmadan önce node_modules/next/dist/docs/ oku) + Tailwind.
 - Prod'a giden yol: `DEPLOY-CHECKLIST.md` "Commands to ship" bloğu —
   human çalıştırır, agent değil (`vercel --prod` + `git push *`
   ikisi de deny rule'da).
+
+## Gece durumu — 2026-06-30 (overnight loop)
+
+- **Tick #1** (start 00:54 local, ~12 min wall) — 3 paralel Explore agent
+  spawn edildi: A=data integrity, B=frontend quality, C=skipped this tick
+  (token budget; runs next tick). Agent A surfaced "29 LLF photo frames
+  missing on R2" — verify ettim, **bu SKU'lar zaten REMOVED_SKUS'ta**
+  (listing'lerden gizli, direct-URL erişimi Cloudinary supplier feed'e
+  fall back ediyor); Agent A yanlış pozitif. Pivot: Agent A'nın ikinci
+  bulgusunu (dead REMOVED_SKUS entries) doğruladım → 5 gerçek dead
+  (GFT2071/2081/2091/2101/2102; supplier feed'inden tamamen düşmüş).
+  Agent B build temiz dedi + 1 a11y nit (bento.tsx external link aria-label,
+  0 live usage). Pick: dead-entries cleanup (verifiable, reversible,
+  high-confidence). PR #32 açıldı: `chore(catalog): drop 5 dead entries
+  from REMOVED_SKUS`. Build ✓, REMOVED_SKUS count 782 → 777, dead count
+  5 → 0. Merge bekleniyor (operator only).
