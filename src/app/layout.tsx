@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Hanken_Grotesk, Fraunces } from "next/font/google";
+import { Inter, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { QuoteProvider } from "@/components/quote-provider";
@@ -17,14 +17,6 @@ const hankenGrotesk = Hanken_Grotesk({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
-});
-
-const fraunces = Fraunces({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  display: "swap",
-  style: ["normal", "italic"],
-  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -83,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${hankenGrotesk.variable} ${fraunces.variable} h-full`}
+      className={`${inter.variable} ${hankenGrotesk.variable} h-full`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
