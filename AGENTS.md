@@ -208,6 +208,7 @@ yazmadan önce node_modules/next/dist/docs/ oku) + Tailwind.
 
 ## Gece durumu — 2026-06-30 (overnight loop)
 
+<<<<<<< HEAD
 - **Tick #2** (start 01:28 local, ~10 min wall) — Agent C koştu (önceki
   skip telafi). Bulguları: (a) 4 dead export `src/lib/site-copy.ts`
   içinde (PRINTING_PROMISE, SHIPPING_PROMISE, REPLY_PROMISE, SAME_DAY_TRIO
@@ -227,3 +228,13 @@ yazmadan önce node_modules/next/dist/docs/ oku) + Tailwind.
   değişiklik. Fix: her iki route'a `log.warn` ekledi
   (`event: "quote.invalid_json"` + `"reseller.invalid_json"`).
   Build ✓, smoke test (grep yeni event isimleri) ✓. PR #34.
+
+- **Tick #4** (start 02:28 local, ~7 min wall) — Agent A fresh çalıştı
+  (config/tooling angle; daha önce dokunulmamış alan). B+C bu tick'te
+  skip (token budget). Bulguları: (a) package.json `engines` alanı yok
+  → Node sürüm pinlemesi yok; (b) `"lint": "eslint"` bare script tüm
+  repo'yu tarıyor, `.scrape/` + Python venv'inden fake errors üretiyor;
+  (c) prettier config eksik, 5 orphan boilerplate SVG public/'da
+  (low priority). Pick: package.json (engines + lint scope). PR #35.
+  Build ✓, lint clean (0 errors + 4 pre-existing react-hooks warnings
+  src/ içinde — backlog için flag).
