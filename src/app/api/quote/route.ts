@@ -23,7 +23,15 @@ export async function POST(request: Request) {
   let body: unknown;
   try {
     body = await request.json();
-  } catch {
+  } catch (err) {
+    // Malformed JSON is the only way we hit this branch — surface it so
+    // a sudden uptick in 400s on this endpoint shows up in log filters
+    // instead of being silent.
+    log.warn({
+      traceId,
+      event: "quote.invalid_json",
+      message: err instanceof Error ? err.message : String(err),
+    });
     return NextResponse.json(
       { error: "Invalid request body." },
       { status: 400, headers: { [TRACE_HEADER]: traceId } },

@@ -216,8 +216,14 @@ yazmadan önce node_modules/next/dist/docs/ oku) + Tailwind.
   catch'leri `log.warn` emit etmiyor (observability gap, low); (c) API
   routes, email dispatcher'lar, middleware hepsi PR #31 baseline'a sadık,
   başka boşluk yok. Pick: dead-exports cleanup (en katı single-file +
-  zero-risk + zero-ref kanıtlanmış). PR #33 açıldı: `chore(site-copy):
-  remove 4 unused exports`. Build ✓, file 36 → 21 LOC, ORDER_CUTOFF +
-  TURNAROUND_SHORT + DISPATCH_NOTE survived (active refs). Merge
-  bekleniyor. (Tick #1'in entry'si PR #32'de — operator merge sırası:
-  önce #32, sonra #33 → AGENTS.md log'u kronolojik kalır.)
+  zero-risk + zero-ref kanıtlanmış). PR #33 merge edildi.
+
+- **Tick #3** (start 01:58 local, ~8 min wall) — fresh agent koşmadan
+  Agent C'nin Tick #2'de surface ettiği act edilmemiş bulguya gittim:
+  `/api/quote` + `/api/reseller-application` JSON parse catch'leri
+  hiç log emit etmiyordu (3am'de "endpoint neden 400 atıyor?" debug'ı
+  imkansız). Loop kontratı strictly "single file edit" diyor ama
+  paralel routes'a aynı 8-satırlık ekleme yapmak bence tek tutarlı
+  değişiklik. Fix: her iki route'a `log.warn` ekledi
+  (`event: "quote.invalid_json"` + `"reseller.invalid_json"`).
+  Build ✓, smoke test (grep yeni event isimleri) ✓. PR #34.
