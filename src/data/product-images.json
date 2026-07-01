@@ -6576,12 +6576,10 @@
   ],
   "TM-FOMA-BAY": [
     "/products/TM-FOMA-BAY/TM-FOMA-BAY_engraved.png",
-    "/products/TM-FOMA-BAY/TM-FOMA-BAY_p.jpg",
-    "/products/TM-FOMA-BAY/TM-FOMA-BAY_studio.png"
+    "/products/TM-FOMA-BAY/TM-FOMA-BAY_p.jpg"
   ],
   "TM-FOMA-BLK": [
-    "/products/TM-FOMA-BLK/TM-FOMA-BLK_p.jpg",
-    "/products/TM-FOMA-BLK/TM-FOMA-BLK_studio.png"
+    "/products/TM-FOMA-BLK/TM-FOMA-BLK_p.jpg"
   ],
   "TM-FOMA-CHA": [
     "/products/TM-FOMA-CHA/TM-FOMA-CHA_engraved.png",
@@ -6589,42 +6587,34 @@
   ],
   "TM-FOMA-CRM": [
     "/products/TM-FOMA-CRM/TM-FOMA-CRM_engraved.png",
-    "/products/TM-FOMA-CRM/TM-FOMA-CRM_p.jpg",
-    "/products/TM-FOMA-CRM/TM-FOMA-CRM_studio.png"
+    "/products/TM-FOMA-CRM/TM-FOMA-CRM_p.jpg"
   ],
   "TM-FOMA-EUC": [
     "/products/TM-FOMA-EUC/TM-FOMA-EUC_engraved.png",
-    "/products/TM-FOMA-EUC/TM-FOMA-EUC_p.jpg",
-    "/products/TM-FOMA-EUC/TM-FOMA-EUC_studio.png"
+    "/products/TM-FOMA-EUC/TM-FOMA-EUC_p.jpg"
   ],
   "TM-FOMA-FOG": [
     "/products/TM-FOMA-FOG/TM-FOMA-FOG_engraved.png",
-    "/products/TM-FOMA-FOG/TM-FOMA-FOG_p.jpg",
-    "/products/TM-FOMA-FOG/TM-FOMA-FOG_studio.png"
+    "/products/TM-FOMA-FOG/TM-FOMA-FOG_p.jpg"
   ],
   "TM-FOMA-FRS": [
     "/products/TM-FOMA-FRS/TM-FOMA-FRS_engraved.png",
-    "/products/TM-FOMA-FRS/TM-FOMA-FRS_p.jpg",
-    "/products/TM-FOMA-FRS/TM-FOMA-FRS_studio.png"
+    "/products/TM-FOMA-FRS/TM-FOMA-FRS_p.jpg"
   ],
   "TM-FOMA-HPK": [
     "/products/TM-FOMA-HPK/TM-FOMA-HPK_engraved.png",
-    "/products/TM-FOMA-HPK/TM-FOMA-HPK_p.jpg",
-    "/products/TM-FOMA-HPK/TM-FOMA-HPK_studio.png"
+    "/products/TM-FOMA-HPK/TM-FOMA-HPK_p.jpg"
   ],
   "TM-FOMA-LIL": [
     "/products/TM-FOMA-LIL/TM-FOMA-LIL_engraved.png",
-    "/products/TM-FOMA-LIL/TM-FOMA-LIL_p.jpg",
-    "/products/TM-FOMA-LIL/TM-FOMA-LIL_studio.png"
+    "/products/TM-FOMA-LIL/TM-FOMA-LIL_p.jpg"
   ],
   "TM-FOMA-ROS": [
     "/products/TM-FOMA-ROS/TM-FOMA-ROS_engraved.png",
-    "/products/TM-FOMA-ROS/TM-FOMA-ROS_p.jpg",
-    "/products/TM-FOMA-ROS/TM-FOMA-ROS_studio.png"
+    "/products/TM-FOMA-ROS/TM-FOMA-ROS_p.jpg"
   ],
   "TM-FOMA-WHT": [
     "/products/TM-FOMA-WHT/TM-FOMA-WHT_engraved.png",
-    "/products/TM-FOMA-WHT/TM-FOMA-WHT_p.jpg",
-    "/products/TM-FOMA-WHT/TM-FOMA-WHT_studio.png"
+    "/products/TM-FOMA-WHT/TM-FOMA-WHT_p.jpg"
   ]
 }
