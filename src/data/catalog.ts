@@ -474,16 +474,14 @@ const REMOVED_SKUS = new Set<string>([
   "CDL1016", "CDL1017", "CDL1061", "CDL1062", "CDL1063", "CDL1064",
   "CDL1065", "CDL1066", "CDL1067", "FNL01", "FSK633", "FSK634", "FSK655SETA",
   "FSK661SETA", "FSK671SET", "FSK675SET", "GFT008", "GFT010",
-  "GFT024", "GFT048", "GFT049", "GFT1001", "GFT1002",
-  "GFT1003", "GFT1004", "GFT1005", "GFT1006", "GFT1007", "GFT1008",
-  "GFT1009", "GFT1010", "GFT1011", "GFT1012", "GFT1046", "GFT1047",
+  "GFT024", "GFT048", "GFT049", "GFT1046", "GFT1047",
   "GFT1048", "GFT1049", "GFT105", "GFT1050", "GFT1051", "GFT1052",
   "GFT1053", "GFT1054", "GFT1055", "GFT1056", "GFT1057", "GFT1058",
   "GFT106", "GFT1141C",
   "GFT1143C", "GFT1144C", "GFT1146C", "GFT1147C", "GFT1165", "GFT1176",
   "GFT1178", "GFT1179", "GFT1183", "GFT1186", "GFT1188", "GFT1189",
   "GFT1190", "GFT1191", "GFT1244", "GFT1245", "GFT1246", "GFT1247",
-  "GFT125", "GFT1257", "GFT126", "GFT127", "GFT1304", "GFT1311",
+  "GFT125", "GFT126", "GFT127", "GFT1304", "GFT1311",
   "GFT1312", "GFT1313", "GFT1315", "GFT1316", "GFT1317", "GFT1318",
   "GFT159", "GFT169", "GFT170", "GFT171", "GFT173",
   "GFT174", "GFT198", "GFT2023", "GFT2024",
@@ -577,8 +575,9 @@ const REMOVED_SKUS = new Set<string>([
   "GFT775", "GFT814", "GFT867", "GFT875",
   "GFT876",
   // 2026-06-29: user removed the "Leatherette 3 Ring Binder" subcategory and
-  // marked its products SIL — hide the 12 binders (GFT1257 already above).
-  "GFT1251", "GFT1252", "GFT1253", "GFT1254", "GFT1256", "GFT1341",
+  // marked its products SIL. 2026-07-02: restored GFT1251-1254/1256/1257 (the
+  // 6 Slant D Ring binder colors) — GFT1341-1347 remain hidden (different binder line).
+  "GFT1341",
   "GFT1342", "GFT1343", "GFT1344", "GFT1346", "GFT1347",
   // 2026-06-29: removed Cork from "Leatherette and Cork Journals" — SIL the 2 cork journals.
   "GFT2244", "GFT785",
@@ -619,6 +618,39 @@ const REMOVED_SKUS = new Set<string>([
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
+  // 3 Ring Binder with 1" Slant D Rings, Laserable Leatherette (JDS master
+  // CSV, not in the scraped feed). Same family + subcategory as the
+  // restored GFT1251-1254/1256/1257 colors. Self-hosted on R2.
+  {
+    id: "gft1255",
+    name: "Teal Laserable Leatherette 3 Ring Binder with 1\" Slant D Rings",
+    sku: "GFT1255",
+    size: "10 1/2\" x 11 1/2\"",
+    price: 13.1,
+    image: "/products/GFT1255/GFT1255.jpg",
+    imageFull: "/products/GFT1255/GFT1255.jpg",
+    categoryId: "6",
+    categorySlug: "office-tech",
+    categoryName: "Office, Tech",
+    subId: "49",
+    subSlug: "leatherette-and-cork-portfolios",
+    subName: "Leatherette and Cork Portfolios",
+  },
+  {
+    id: "gft1258",
+    name: "Purple/Black Laserable Leatherette 3 Ring Binder with 1\" Slant D Rings",
+    sku: "GFT1258",
+    size: "10 1/2\" x 11 1/2\" x 1 1/2\"",
+    price: 13.1,
+    image: "/products/GFT1258/GFT1258.jpg",
+    imageFull: "/products/GFT1258/GFT1258.jpg",
+    categoryId: "6",
+    categorySlug: "office-tech",
+    categoryName: "Office, Tech",
+    subId: "49",
+    subSlug: "leatherette-and-cork-portfolios",
+    subName: "Leatherette and Cork Portfolios",
+  },
   {
     id: "ptf646d",
     name: "Genuine Red Alder Dual Picture Frame – 4\" x 6\"",
