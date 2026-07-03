@@ -116,13 +116,6 @@ export default function PrivacyPage() {
                 className="font-medium text-brand-strong hover:underline"
               >
                 {site.email}
-              </a>{" "}
-              or call{" "}
-              <a
-                href={site.phoneHref}
-                className="font-medium text-brand-strong hover:underline"
-              >
-                {site.phoneDisplay}
               </a>
               .
             </p>

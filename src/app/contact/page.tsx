@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Clock,
+  Factory,
   FileText,
   Mail,
   MapPin,
   MessageCircle,
-  Phone,
   Store,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -17,7 +17,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Get in touch with ${site.name}. Email ${site.email}, call ${site.phoneDisplay} or message us on WhatsApp for wholesale pricing, quotes and reseller inquiries.`,
+  description: `Get in touch with ${site.name}. Email ${site.email} or message us on WhatsApp for wholesale pricing, quotes and reseller inquiries.`,
   alternates: { canonical: "/contact" },
   openGraph: {
     title: `Contact · ${site.name}`,
@@ -40,13 +40,6 @@ const CHANNELS = [
     value: site.whatsappDisplay,
     href: site.whatsappHref,
     external: true,
-  },
-  {
-    icon: Phone,
-    title: "Call us",
-    body: "Mon–Fri, 9am–5pm ET.",
-    value: site.phoneDisplay,
-    href: site.phoneHref,
   },
 ];
 
@@ -82,7 +75,7 @@ export default function ContactPage() {
         </p>
       </Reveal>
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-3">
+      <div className="mt-10 grid gap-6 sm:grid-cols-2">
         {CHANNELS.map((c, i) => (
           <Reveal key={c.title} delay={Math.min(i * 0.06, 0.18)}>
             <a
@@ -157,10 +150,18 @@ export default function ContactPage() {
             <div className="flex items-start gap-3">
               <MapPin className="mt-0.5 size-4 shrink-0 text-brand-strong" />
               <div>
-                <dt className="text-muted-foreground">Production</dt>
+                <dt className="text-muted-foreground">Address</dt>
                 <dd className="font-medium text-foreground">
-                  {site.location} · {site.madeIn}
+                  {site.address.street}, {site.address.city},{" "}
+                  {site.address.state}
                 </dd>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Factory className="mt-0.5 size-4 shrink-0 text-brand-strong" />
+              <div>
+                <dt className="text-muted-foreground">Production</dt>
+                <dd className="font-medium text-foreground">{site.madeIn}</dd>
               </div>
             </div>
           </dl>

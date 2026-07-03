@@ -104,8 +104,8 @@ export default function HowItWorksPage() {
 
         <Reveal delay={0.1}>
           <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            During the first wave, orders are entered manually. ShipStation
-            automation is coming.
+            Every order routes through FomaFlow, our fulfillment workspace —
+            from submission to blind-ship tracking, all in one place.
           </p>
           <div className="mt-6">
             <Link

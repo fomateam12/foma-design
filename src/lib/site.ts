@@ -7,8 +7,15 @@ export const site = {
   legalName: "FOMA FAMILY LLC",
   /** Year the parent company was founded — used in trust copy and the footer. */
   foundedYear: 2021,
-  /** Public location granularity: state-level only until a street address is published. */
-  location: "Georgia, USA",
+  /** Short display form (city, state) — see `address` for the full street address. */
+  location: "Alpharetta, GA",
+  /** Physical business address — used in structured data and business-detail UI. */
+  address: {
+    street: "9370 Industrial Trce",
+    city: "Alpharetta",
+    state: "GA",
+    country: "US",
+  },
   tagline: "Print-on-demand & laser engraving for resellers",
   description:
     "FomaPrint is a U.S. print-on-demand and laser-engraving partner for online resellers. You sell — we personalize, produce and blind-ship drinkware, gifts and décor under your brand. Made to order in the USA by FOMA FAMILY LLC.",
@@ -27,10 +34,12 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://fomaprint.com",
   /**
    * Social profiles. Only verified, live channels should be listed here so the
-   * footer never renders a dead link. Add real FOMA FAMILY LLC handles when
-   * confirmed (see deploy punch list).
+   * footer never renders a dead link.
    */
-  social: [] as { label: string; href: string }[],
+  social: [
+    { label: "Facebook", href: "https://www.facebook.com/fomafamily/" },
+    { label: "Instagram", href: "https://www.instagram.com/foma.family/" },
+  ] as { label: string; href: string }[],
 } as const;
 
 export const legalLinks = [

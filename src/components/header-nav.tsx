@@ -6,7 +6,6 @@ import {
   Menu,
   ChevronRight,
   ArrowRight,
-  Phone,
   FileText,
   Sparkles,
 } from "lucide-react";
@@ -23,7 +22,6 @@ import {
   SheetContent,
   SheetTrigger,
   SheetHeader,
-  SheetFooter,
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -33,7 +31,6 @@ import { Logo } from "@/components/logo";
 import { ProductImage } from "@/components/product-image";
 import { CategoryIcon } from "@/components/category-icon";
 import { cn } from "@/lib/utils";
-import { site } from "@/lib/site";
 import type { IconKey } from "@/data/types";
 
 export interface NavCategory {
@@ -186,16 +183,6 @@ export function HeaderNav({
                   </Link>
                 </div>
               </nav>
-
-              <SheetFooter className="border-t border-border">
-                <a
-                  href={site.phoneHref}
-                  className="flex items-center gap-2 text-sm font-medium text-foreground"
-                >
-                  <Phone className="size-4 text-brand-strong" />
-                  {site.phoneDisplay}
-                </a>
-              </SheetFooter>
             </SheetContent>
           </Sheet>
 

@@ -119,7 +119,7 @@ const TIERS = [
       "Best per-unit pricing",
       "Custom catalog & SKUs",
       "Named account manager",
-      "Store integrations (soon)",
+      "Store integrations",
     ],
     cta: { label: "Talk to us", href: "/contact" },
     featured: false,

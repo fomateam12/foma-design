@@ -31,14 +31,7 @@ export default function QuotePage() {
           Tell us what you&apos;d like to resell and how you fulfill. We&apos;ll
           send tiered pricing and lead times the same business day — engraved,
           produced and blind-shipped from the USA under your brand, same-day on
-          orders placed before 2pm ET. Prefer to talk?{" "}
-          <a
-            href={site.phoneHref}
-            className="font-medium text-brand-strong hover:underline"
-          >
-            {site.phoneDisplay}
-          </a>
-          .
+          orders placed before 2pm ET.
         </p>
       </div>
 

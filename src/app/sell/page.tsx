@@ -171,7 +171,7 @@ export default function SellPage() {
               <div className="border-l border-border pl-8">
                 <dt className="sr-only">Pricing turnaround</dt>
                 <dd className="font-heading text-2xl font-bold text-foreground">
-                  2-day
+                  Same-day
                 </dd>
                 <p className="text-xs text-muted-foreground">pricing reply</p>
               </div>
@@ -280,13 +280,6 @@ export default function SellPage() {
                 className="font-medium text-brand-strong hover:underline"
               >
                 {site.email}
-              </a>{" "}
-              or call{" "}
-              <a
-                href={site.phoneHref}
-                className="font-medium text-brand-strong hover:underline"
-              >
-                {site.phoneDisplay}
               </a>
               .
             </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { Mail, MapPin, ArrowRight } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
 import { getCategories } from "@/data/catalog";
@@ -22,7 +22,7 @@ const COMPANY_LINKS = [
 
 export function SiteFooter() {
   const categories = getCategories();
-  const year = new Date().getFullYear();
+  const year = site.foundedYear;
 
   return (
     <footer className="mt-24 border-t border-border bg-secondary/40">
@@ -45,18 +45,9 @@ export function SiteFooter() {
                   {site.email}
                 </a>
               </li>
-              <li>
-                <a
-                  href={site.phoneHref}
-                  className="flex items-center gap-2.5 transition-colors hover:text-foreground"
-                >
-                  <Phone className="size-4 text-brand-strong" />
-                  {site.phoneDisplay}
-                </a>
-              </li>
               <li className="flex items-center gap-2.5">
                 <MapPin className="size-4 text-brand-strong" />
-                {site.madeIn}
+                {site.address.street}, {site.address.city}, {site.address.state}
               </li>
             </ul>
             {site.social.length > 0 ? (

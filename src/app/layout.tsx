@@ -82,9 +82,12 @@ const orgJsonLd = {
   telephone: "+1-404-934-8917",
   address: {
     "@type": "PostalAddress",
-    addressRegion: "GA",
-    addressCountry: "US",
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.state,
+    addressCountry: site.address.country,
   },
+  sameAs: site.social.map((s) => s.href),
   description: site.description,
 };
 

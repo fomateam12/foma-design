@@ -167,14 +167,14 @@ export default function AboutPage() {
       <section className="container-px py-12">
         <Reveal className="flex flex-col items-start gap-6 rounded-3xl border border-border bg-card p-8 shadow-card sm:flex-row sm:items-center sm:justify-between lg:p-10">
           <div className="max-w-xl">
-            <span className="eyebrow text-brand-strong">FomaFlow · Soon</span>
+            <span className="eyebrow text-brand-strong">FomaFlow</span>
             <h2 className="mt-2 text-h3 text-foreground">
               One workspace for orders &amp; shipping
             </h2>
             <p className="mt-3 leading-relaxed text-muted-foreground">
               Behind the catalog sits FomaFlow — our fulfillment engine that
               routes your orders, tracks production and hands you blind tracking
-              numbers. Seller accounts launch soon; apply now to be first in line.
+              numbers. Seller accounts are open now — apply to get started.
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
