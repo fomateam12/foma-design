@@ -550,7 +550,10 @@ const REMOVED_SKUS = new Set<string>([
   // LTM7002–LTM7018: legacy 22 oz Polar Camel Skinny Tumblers (colored
   // PNG + BLANK template, no third image variant). Restored — the
   // min-3 image gate was over-aggressive for this single-color line.
-  "LTM7319", "LTM7352", "LTM7353", "LTM7354",
+  "LTM7219", "LTM7252", "LTM7253", "LTM7254", "LTM7255",
+  "LTM7256", "LTM7257", "LTM7258", "LTM7259", "LTM7260", "LTM7261",
+  "LTM7262", "LTM7263", "LTM7264", "LTM7265", "LTM7266", "LTM7267",
+  "LTM7268", "LTM7269", "LTM7319", "LTM7352", "LTM7353", "LTM7354",
   "LTM7355", "LTM7356", "LTM7357", "LTM7358", "LTM7359", "LTM7360",
   "LTM7361", "LTM7362", "LTM7363", "LTM7364", "LTM7365", "LTM7366",
   "LTM7367", "LTM7368", "LTM7369", "LTM768", "LTM833", "LTM834",
@@ -2103,7 +2106,7 @@ const ADDED_PRODUCTS: RawProduct[] = [
     categoryName: "Polar Camel",
     subId: "121",
     subSlug: "20-oz-tumblers-all",
-    subName: "Ringneck Tumbler with Slider Lid",
+    subName: "Ringneck Tumbler with Clear Lid",
   },
   {
     id: "stm631",

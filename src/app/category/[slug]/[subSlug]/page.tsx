@@ -80,7 +80,10 @@ export default async function SubcategoryPage({
   //   - Single-size collections (one volume or no usable size data) →
   //     no secondary nav, just the grid.
   const volumeFacets = buildVolumeFacets(all);
-  const sizeTierFacets = volumeFacets.length >= 2 ? [] : buildSizeTierFacets(all);
+  // A single detected volume (e.g. this collection is uniformly "20 oz")
+  // still means the products carry usable size data — tier chips are only
+  // for products with NO oz/volume info at all (frames, portfolios, boards).
+  const sizeTierFacets = volumeFacets.length === 0 ? buildSizeTierFacets(all) : [];
   const sizeAxis: "volume" | "tier" | "none" =
     volumeFacets.length >= 2
       ? "volume"
