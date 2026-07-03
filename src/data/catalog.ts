@@ -1605,23 +1605,6 @@ const ADDED_PRODUCTS: RawProduct[] = [
     subName: "Bamboo, Cork & Slate Coasters",
   },
   {
-    id: "ws125",
-    name: "Lazerburst Whiskey Set with Two 9 oz. Glasses",
-    sku: "WS125",
-    size: "9 1/2\" x 8 1/4\" x 4 3/4\"",
-    price: 17.95,
-    image:
-      "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1732637937/products/images/large/WS125--995c94c2.png",
-    imageFull:
-      "https://res.cloudinary.com/business-products/image/upload/q_auto/v1732637937/products/images/large/WS125--995c94c2.png",
-    categoryId: "1",
-    categorySlug: "gifts-and-promotions",
-    categoryName: "Gifts & Promotions",
-    subId: "110",
-    subSlug: "bar-gift-sets",
-    subName: "Whiskey & Beer Set",
-  },
-  {
     id: "fc11",
     name: "Flame Facet Glass on Black Base \u2013 8 1/2\"",
     sku: "FC11",
