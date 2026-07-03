@@ -2260,15 +2260,6 @@ const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {
   "kitchen-and-bar": [
     { subId: "110", slug: "bar-gift-sets", name: "Bar Gift Sets", count: 0 },
   ],
-  // 20 oz. Polar Camel Tumblers split into 5 type subcategories (user
-  // request), replacing the single "Polar Camel 20 oz. Tumblers" tile.
-  "polar-camel": [
-    { subId: "116", slug: "ringneck-tumbler-clear-lid", name: "Ringneck Tumbler with Clear Lid", count: 0 },
-    { subId: "117", slug: "ringneck-tumbler-slider-lid", name: "Ringneck Tumbler with Slider Lid", count: 0 },
-    { subId: "118", slug: "ion-plated-ringneck-tumbler-slider-lid", name: "ION-Plated Ringneck Tumbler with Slider Lid", count: 0 },
-    { subId: "119", slug: "gold-ion-tumbler", name: "Gold ION Tumbler", count: 0 },
-    { subId: "120", slug: "golf-tumbler", name: "Golf Tumbler", count: 0 },
-  ],
   "personal-accessories": [
     { subId: "106", slug: "wallets-with-strap", name: "Leatherette Wallet with Strap", count: 0 },
     { subId: "107", slug: "wallets-bifold-flip-id", name: "Leatherette Bifold Wallet with Flip ID", count: 0 },
@@ -2280,9 +2271,20 @@ const ADDED_SUBCATEGORIES: Record<string, RawCategory["subcategories"]> = {
     { subId: "104", slug: "photo-frames-medium", name: "Medium Photo Frames (5x7)", count: 0 },
     { subId: "105", slug: "photo-frames-large", name: "Large Photo Frames (8x10)", count: 0 },
   ],
+  // 20 oz. Polar Camel Tumblers split into 5 type subcategories (user
+  // request), replacing the single "Polar Camel 20 oz. Tumblers" tile.
+  // Keyed under "drinkware" (not "polar-camel") because ADDED_SUBCATEGORIES
+  // is looked up by the POST-MERGE category slug — Polar Camel (categoryId 2)
+  // merges into Drinkware (MERGE_SOURCE_SLUG/MERGE_TARGET), so "polar-camel"
+  // never matches any real category by the time this lookup runs.
   drinkware: [
     { subId: "100", slug: "bamboo-cork-slate-coasters", name: "Bamboo, Cork & Slate Coasters", count: 0 },
     { subId: "102", slug: "40-oz-tumblers", name: "40 oz. Tumblers", count: 0 },
+    { subId: "116", slug: "ringneck-tumbler-clear-lid", name: "Ringneck Tumbler with Clear Lid", count: 0 },
+    { subId: "117", slug: "ringneck-tumbler-slider-lid", name: "Ringneck Tumbler with Slider Lid", count: 0 },
+    { subId: "118", slug: "ion-plated-ringneck-tumbler-slider-lid", name: "ION-Plated Ringneck Tumbler with Slider Lid", count: 0 },
+    { subId: "119", slug: "gold-ion-tumbler", name: "Gold ION Tumbler", count: 0 },
+    { subId: "120", slug: "golf-tumbler", name: "Golf Tumbler", count: 0 },
   ],
   "travel-accessories": [
     { subId: "96", slug: "passport-holders", name: "Passport Holders", count: 0 },
