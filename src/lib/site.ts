@@ -39,6 +39,7 @@ export const site = {
   social: [
     { label: "Facebook", href: "https://www.facebook.com/fomafamily/" },
     { label: "Instagram", href: "https://www.instagram.com/foma.family/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/fomaprint/" },
   ] as { label: string; href: string }[],
 } as const;
 
