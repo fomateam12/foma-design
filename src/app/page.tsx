@@ -333,7 +333,7 @@ export default function HomePage() {
             <SectionHeader
               eyebrow="Seller tools"
               title="A workspace for your whole operation"
-              description="Route orders, reply same-day to your buyers and track production from one dashboard. Connected to our FomaFlow fulfillment engine — live for every seller account."
+              description="Route orders, reply same-day to your buyers and track production from one dashboard. Connected to our fulfillment platform — live for every seller account."
             />
             <ul className="mt-8 grid gap-5 sm:grid-cols-2">
               {TOOL_FEATURES.map((f) => (
@@ -372,7 +372,7 @@ export default function HomePage() {
                   <span className="size-2.5 rounded-full bg-brand/50" />
                   <span className="size-2.5 rounded-full bg-evergreen/50" />
                   <span className="ml-2 font-heading text-sm font-semibold text-foreground">
-                    FomaFlow
+                    Seller Portal
                   </span>
                 </div>
                 <span className="rounded-full bg-evergreen/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-evergreen">

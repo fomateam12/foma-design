@@ -34,7 +34,7 @@ const FAQS = [
   },
   {
     q: "How do I send orders?",
-    a: "Enter orders and upload print files in FomaFlow per our file specs (ShipStation automation coming).",
+    a: "Enter orders and upload print files in your seller portal per our file specs (ShipStation automation coming).",
   },
   {
     q: "How do I pay?",

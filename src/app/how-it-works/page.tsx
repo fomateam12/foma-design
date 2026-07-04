@@ -24,7 +24,7 @@ const STEPS = [
   },
   {
     title: "Get your store account.",
-    body: "We create your FomaFlow account; you only see your own orders.",
+    body: "We create your seller portal account; you only see your own orders.",
   },
   {
     title: "Load a prepaid balance.",
@@ -32,7 +32,7 @@ const STEPS = [
   },
   {
     title: "Submit orders + files.",
-    body: "Enter the order in FomaFlow and upload the print file per our file specs.",
+    body: "Enter the order in your seller portal and upload the print file per our file specs.",
   },
   {
     title: "We produce + QC.",
@@ -104,7 +104,7 @@ export default function HowItWorksPage() {
 
         <Reveal delay={0.1}>
           <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every order routes through FomaFlow, our fulfillment workspace —
+            Every order routes through your seller portal — our fulfillment workspace —
             from submission to blind-ship tracking, all in one place.
           </p>
           <div className="mt-6">
