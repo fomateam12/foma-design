@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ClipboardList, PackageCheck, Scale, Truck } from "lucide-react";
+import { ArrowRight, ClipboardList, PackageCheck, Scale, Truck } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import {
-  formatPrice,
   getAllProducts,
   getCategories,
-  type Product,
+  getProductsByCategory,
 } from "@/data/catalog";
-import { cloudinary, formatWeight } from "@/lib/format";
+import { cloudinary } from "@/lib/format";
+import { ENGRAVING_FEES } from "@/lib/partner-prices";
 import { site } from "@/lib/site";
-import printifyPricesRaw from "@/data/printify-prices.json";
 
 /**
- * Full wholesale catalog on a single page — built for partner/platform
- * applications (print-on-demand marketplaces, fulfillment networks) that ask
- * for one link covering every product with pricing, weights and visuals.
+ * Partner catalog index — first page of the unlisted, page-per-category
+ * wholesale catalog built for partner/platform applications (Printify).
+ * Structure: /catalog (categories) → /catalog/[slug] (subcategories) →
+ * /catalog/[slug]/[subSlug] (products with prices).
  *
  * Deliberately UNLISTED: not in the nav, not in the sitemap, noindex, and
  * disallowed in robots.txt — the storefront keeps B2B pricing gated behind
- * quotes, so this page exists only as a shareable link for vetted partners.
+ * quotes, so these pages exist only as a shareable link for vetted partners.
  */
 
 export const metadata: Metadata = {
@@ -28,82 +28,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-/** Authoritative wholesale prices from the operator's Printify price list
- *  (FomaPrint-Product-List xlsx): per-SKU blank price plus flat engraving
- *  fees. SKUs absent from that list are quoted individually — the scraped
- *  feed's price field is NOT a real price and is never shown here. */
-interface PartnerPrice {
-  blank: number;
-  front: number;
-  back: number;
-  other: number;
-  total: number;
-}
-const partnerPrices = new Map<string, PartnerPrice>(
-  Object.entries(printifyPricesRaw as Record<string, PartnerPrice>),
-);
-
-function thumb(p: Product): string {
-  return cloudinary(p.image, { width: 96 });
-}
-
-function ProductRow({ p }: { p: Product }) {
-  const price = partnerPrices.get(p.sku.toUpperCase());
-  return (
-    <tr className="border-b border-border/60 last:border-0">
-      <td className="py-2 pr-3">
-        <Link
-          href={`/product/${p.id}`}
-          className="flex items-center gap-3 hover:text-brand-strong"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={thumb(p)}
-            alt={p.name}
-            loading="lazy"
-            decoding="async"
-            width={48}
-            height={48}
-            className="size-12 shrink-0 rounded-md border border-border bg-background object-contain"
-          />
-          <span>
-            <span className="block font-medium text-foreground">{p.name}</span>
-            <span className="block text-xs text-muted-foreground">
-              SKU {p.sku}
-            </span>
-          </span>
-        </Link>
-      </td>
-      <td className="whitespace-nowrap py-2 pr-3 text-muted-foreground">
-        {p.size ?? "—"}
-      </td>
-      <td className="whitespace-nowrap py-2 pr-3 text-muted-foreground">
-        {p.weightLb ? formatWeight(p.weightLb) : "—"}
-      </td>
-      <td className="whitespace-nowrap py-2 pr-3 text-muted-foreground">
-        {p.shippingWeightLb ? formatWeight(p.shippingWeightLb) : "—"}
-      </td>
-      <td className="whitespace-nowrap py-2 pr-3 text-muted-foreground">
-        {p.dimensions ?? "—"}
-      </td>
-      <td className="whitespace-nowrap py-2 pr-3 text-right text-muted-foreground">
-        {price ? formatPrice(price.blank) : "—"}
-      </td>
-      <td className="whitespace-nowrap py-2 text-right font-medium text-foreground">
-        {price ? formatPrice(price.total) : "Quote"}
-      </td>
-    </tr>
-  );
-}
-
-export default function CatalogPage() {
+export default function CatalogIndexPage() {
   const categories = getCategories();
   const products = getAllProducts();
-  const bySub = new Map<string, Product[]>();
-  for (const p of products) {
-    const key = `${p.categorySlug}/${p.subcategorySlug}`;
-    (bySub.get(key) ?? bySub.set(key, []).get(key)!).push(p);
-  }
   const withWeight = products.filter(
     (p) => p.weightLb || p.shippingWeightLb,
   ).length;
@@ -126,12 +53,11 @@ export default function CatalogPage() {
             <p className="mt-4 text-lead text-muted-foreground">
               Every product we personalize and blind drop-ship from Alpharetta,
               Georgia (USA) — {products.length.toLocaleString()} SKUs across{" "}
-              {categories.length} categories, with wholesale pricing, sizes,
-              item and carton weights, and shipping dimensions. Click any
-              product for full specs, engraving area, additional photos, and
-              color options; colors, materials and brand lines (e.g. Polar
-              Camel drinkware) are stated in each product&apos;s name and
-              detail page.
+              {categories.length} categories. Pick a category below; each
+              subcategory has its own page with photos, sizes, weights, carton
+              dimensions and wholesale prices for every product. Colors,
+              materials and brand lines (e.g. Polar Camel drinkware) are stated
+              in each product&apos;s name and detail page.
             </p>
             <dl className="mt-8 grid gap-4 text-sm sm:grid-cols-3">
               <div className="flex items-center gap-3 rounded-xl border border-border bg-background/60 p-4">
@@ -166,9 +92,10 @@ export default function CatalogPage() {
               <strong className="font-medium text-foreground">Pricing:</strong>{" "}
               &quot;Blank&quot; is the undecorated unit price;
               &quot;Engraved&quot; is the all-in price per personalized unit
-              (blank + $4.00 front engraving + $1.00 handling). Back-side
-              engraving adds $2.00. Products marked &quot;Quote&quot; are
-              priced per order.{" "}
+              (blank + ${ENGRAVING_FEES.front.toFixed(2)} front engraving + $
+              {ENGRAVING_FEES.handling.toFixed(2)} handling). Back-side
+              engraving adds ${ENGRAVING_FEES.back.toFixed(2)}. Products marked
+              &quot;Quote&quot; are priced per order.{" "}
               <a
                 href="/FomaPrint-Price-List.xlsx"
                 className="font-medium text-brand-strong underline underline-offset-2"
@@ -179,8 +106,9 @@ export default function CatalogPage() {
               .
             </p>
             <p className="mt-3 text-sm text-muted-foreground">
-              Shipping is weight-based using the per-SKU weights below —
-              turnaround, packaging and tracking policy is on the{" "}
+              Shipping is weight-based using the per-SKU weights listed with
+              each product — turnaround, packaging and tracking policy is on
+              the{" "}
               <Link
                 href="/shipping"
                 className="font-medium text-brand-strong underline underline-offset-2"
@@ -200,71 +128,57 @@ export default function CatalogPage() {
         </div>
       </section>
 
-      {categories.map((c) => (
-        <section key={c.slug} className="border-b border-border">
-          <div className="container-px py-10">
-            <h2 className="text-h4 text-foreground">
-              <Link href={`/category/${c.slug}`} className="hover:text-brand-strong">
-                {c.name}
-              </Link>{" "}
-              <span className="text-sm font-normal text-muted-foreground">
-                · {c.productCount.toLocaleString()} products
-              </span>
-            </h2>
-            {c.subcategories.map((sc) => {
-              const items = bySub.get(`${c.slug}/${sc.slug}`) ?? [];
-              if (items.length === 0) return null;
+      <section>
+        <div className="container-px py-12">
+          <h2 className="text-h4 text-foreground">Browse by category</h2>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((c) => {
+              const preview = getProductsByCategory(c.slug).slice(0, 3);
               return (
-                <div key={sc.slug} className="mt-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    {sc.name}
-                  </h3>
-                  <div className="mt-3 overflow-x-auto rounded-xl border border-border">
-                    <table className="w-full min-w-[840px] border-collapse text-sm">
-                      <thead>
-                        <tr className="border-b border-border bg-background/60 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                          <th className="px-3 py-2 font-medium">Product</th>
-                          <th className="px-3 py-2 font-medium">Size</th>
-                          <th className="px-3 py-2 font-medium">Item weight</th>
-                          <th className="px-3 py-2 font-medium">Ship weight</th>
-                          <th className="px-3 py-2 font-medium">Carton dims</th>
-                          <th className="px-3 py-2 text-right font-medium">
-                            Blank
-                          </th>
-                          <th className="px-3 py-2 text-right font-medium">
-                            Engraved
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="[&>tr>td:first-child]:pl-3 [&>tr>td:last-child]:pr-3">
-                        {items.map((p) => (
-                          <ProductRow key={p.id} p={p} />
-                        ))}
-                      </tbody>
-                    </table>
+                <Link
+                  key={c.slug}
+                  href={`/catalog/${c.slug}`}
+                  className="group rounded-2xl border border-border bg-background/60 p-5 transition-colors hover:border-brand-strong/50"
+                >
+                  <div className="flex items-center gap-2">
+                    {preview.map((p) => (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        key={p.id}
+                        src={cloudinary(p.image, { width: 96 })}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        width={56}
+                        height={56}
+                        className="size-14 rounded-lg border border-border bg-background object-contain"
+                      />
+                    ))}
                   </div>
-                </div>
+                  <h3 className="mt-4 font-heading text-lg font-semibold text-foreground group-hover:text-brand-strong">
+                    {c.name}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {c.productCount.toLocaleString()} products ·{" "}
+                    {c.subcategories.length} collections
+                  </p>
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-brand-strong">
+                    View price list
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </Link>
               );
             })}
           </div>
-        </section>
-      ))}
-
-      <section>
-        <div className="container-px py-10 text-sm text-muted-foreground">
-          <p>
-            Prices are wholesale per unit: blank price plus flat engraving
-            fees ($4.00 front, $2.00 back, $1.00 handling). Weights are
-            pounds; &quot;Ship weight&quot; and &quot;Carton dims&quot; are
-            per product type from our supplier&apos;s shipping master. Contact{" "}
+          <p className="mt-10 text-sm text-muted-foreground">
+            Questions, volume tiers or a CSV export: contact{" "}
             <a
               href={`mailto:${site.email}`}
               className="font-medium text-brand-strong underline underline-offset-2"
             >
               {site.email}
-            </a>{" "}
-            for the full rate card, volume tiers, or a CSV export of this
-            catalog.
+            </a>
+            .
           </p>
         </div>
       </section>
