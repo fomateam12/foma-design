@@ -9,6 +9,7 @@ import {
   getProductsBySubcategory,
 } from "@/data/catalog";
 import { catalogImageUrl } from "@/lib/catalog-image";
+import { inPartnerCatalog } from "@/lib/partner-prices";
 import { site } from "@/lib/site";
 
 /** Partner catalog — category page: one card per subcategory, each with its
@@ -41,6 +42,13 @@ export default async function CatalogCategoryPage({
   const { slug } = await params;
   const category = getCategory(slug);
   if (!category) notFound();
+  const visibleCount = category.subcategories.reduce(
+    (n, sc) =>
+      n +
+      getProductsBySubcategory(category.slug, sc.slug).filter(inPartnerCatalog)
+        .length,
+    0,
+  );
 
   return (
     <div>
@@ -55,7 +63,7 @@ export default async function CatalogCategoryPage({
           />
           <h1 className="mt-8 text-h2 text-foreground">{category.name}</h1>
           <p className="mt-3 max-w-2xl text-lead text-muted-foreground">
-            {category.productCount.toLocaleString()} products across{" "}
+            {visibleCount.toLocaleString()} products across{" "}
             {category.subcategories.length} collections — pick a collection to
             see its full price list with photos, sizes and weights.
           </p>
@@ -66,7 +74,8 @@ export default async function CatalogCategoryPage({
         <div className="container-px py-12">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {category.subcategories.map((sc) => {
-              const items = getProductsBySubcategory(category.slug, sc.slug);
+              const items = getProductsBySubcategory(category.slug, sc.slug).filter(inPartnerCatalog);
+              if (items.length === 0) return null;
               const preview = items.slice(0, 3);
               return (
                 <Link
@@ -93,7 +102,7 @@ export default async function CatalogCategoryPage({
                     {sc.name}
                   </h2>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {sc.productCount.toLocaleString()} products
+                    {items.length.toLocaleString()} products
                   </p>
                   <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-brand-strong">
                     View price list

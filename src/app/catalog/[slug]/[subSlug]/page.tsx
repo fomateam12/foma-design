@@ -10,7 +10,11 @@ import {
 } from "@/data/catalog";
 import { catalogImageUrl } from "@/lib/catalog-image";
 import { formatPrice, formatWeight } from "@/lib/format";
-import { ENGRAVING_FEES, partnerPriceFor } from "@/lib/partner-prices";
+import {
+  ENGRAVING_FEES,
+  inPartnerCatalog,
+  partnerPriceFor,
+} from "@/lib/partner-prices";
 import { site } from "@/lib/site";
 
 /** Partner catalog — subcategory page: every product as a card with photo,
@@ -120,7 +124,7 @@ export default async function CatalogSubcategoryPage({
   const match = getSubcategory(slug, subSlug);
   if (!match) notFound();
   const { category, subcategory } = match;
-  const items = getProductsBySubcategory(slug, subSlug);
+  const items = getProductsBySubcategory(slug, subSlug).filter(inPartnerCatalog);
 
   return (
     <div>

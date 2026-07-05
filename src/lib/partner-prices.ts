@@ -29,3 +29,10 @@ export function pricedSkuCount(): number {
 
 /** Flat decoration fees, in USD — mirror the xlsx so copy stays in sync. */
 export const ENGRAVING_FEES = { front: 4, back: 2, handling: 1 } as const;
+
+/** Partner-catalog visibility filter. Sublimation blanks are excluded from
+ *  the partner catalog, PDF and downloadable price list (operator decision,
+ *  2026-07-05) while remaining live on the storefront. */
+export function inPartnerCatalog(p: { name: string }): boolean {
+  return !/sublimat/i.test(p.name);
+}

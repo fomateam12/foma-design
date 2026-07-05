@@ -5760,20 +5760,6 @@
   "other": 1.0,
   "total": 22.65
  },
- "SM11W": {
-  "back": 2.0,
-  "blank": 1.16,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 6.16
- },
- "SM15W": {
-  "back": 2.0,
-  "blank": 1.71,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 6.71
- },
  "STM622": {
   "back": 2.0,
   "blank": 8.6,

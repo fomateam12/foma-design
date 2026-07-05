@@ -8,7 +8,7 @@ import {
   getProductsByCategory,
 } from "@/data/catalog";
 import { catalogImageUrl } from "@/lib/catalog-image";
-import { ENGRAVING_FEES } from "@/lib/partner-prices";
+import { ENGRAVING_FEES, inPartnerCatalog } from "@/lib/partner-prices";
 import { site } from "@/lib/site";
 
 /**
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function CatalogIndexPage() {
   const categories = getCategories();
-  const products = getAllProducts();
+  const products = getAllProducts().filter(inPartnerCatalog);
   const withWeight = products.filter(
     (p) => p.weightLb || p.shippingWeightLb,
   ).length;
@@ -140,7 +140,8 @@ export default function CatalogIndexPage() {
           <h2 className="text-h4 text-foreground">Browse by category</h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((c) => {
-              const preview = getProductsByCategory(c.slug).slice(0, 3);
+              const catProducts = getProductsByCategory(c.slug).filter(inPartnerCatalog);
+              const preview = catProducts.slice(0, 3);
               return (
                 <Link
                   key={c.slug}
@@ -166,7 +167,7 @@ export default function CatalogIndexPage() {
                     {c.name}
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {c.productCount.toLocaleString()} products ·{" "}
+                    {catProducts.length.toLocaleString()} products ·{" "}
                     {c.subcategories.length} collections
                   </p>
                   <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-brand-strong">

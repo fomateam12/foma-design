@@ -6,7 +6,11 @@ import {
 } from "@/data/catalog";
 import { catalogImageUrl } from "@/lib/catalog-image";
 import { formatPrice, formatWeight } from "@/lib/format";
-import { ENGRAVING_FEES, partnerPriceFor } from "@/lib/partner-prices";
+import {
+  ENGRAVING_FEES,
+  inPartnerCatalog,
+  partnerPriceFor,
+} from "@/lib/partner-prices";
 import { site } from "@/lib/site";
 
 /**
@@ -76,7 +80,17 @@ export default function CatalogPrintPage() {
           Contact: {site.email}
         </p>
       </header>
-      {categories.map((c) => (
+      {categories.map((c) => {
+        const sections = c.subcategories
+          .map((sc) => ({
+            sc,
+            items: getProductsBySubcategory(c.slug, sc.slug).filter(
+              inPartnerCatalog,
+            ),
+          }))
+          .filter(({ items }) => items.length > 0);
+        const total = sections.reduce((n, s) => n + s.items.length, 0);
+        return (
         <section key={c.slug} style={{ breakBefore: "page" }}>
           {/* Category divider page: the title stands alone, and every
               subcategory opens on a fresh page — no two sections ever
@@ -85,22 +99,27 @@ export default function CatalogPrintPage() {
             <p className="eyebrow text-brand-strong">Category</p>
             <h2 className="mt-3 text-h1 text-foreground">{c.name}</h2>
             <p className="mt-4 text-lead text-muted-foreground">
-              {c.productCount.toLocaleString()} products ·{" "}
-              {c.subcategories.length} collections
+              {total.toLocaleString()} products · {sections.length} collections
             </p>
             <ul className="mt-6 max-w-md text-sm text-muted-foreground">
-              {c.subcategories.map((sc) => (
+              {sections.map(({ sc, items }) => (
                 <li key={sc.slug}>
-                  {sc.name} ({sc.productCount.toLocaleString()})
+                  {sc.name} ({items.length.toLocaleString()})
                 </li>
               ))}
             </ul>
           </div>
-          {c.subcategories.map((sc) => {
-            const items = getProductsBySubcategory(c.slug, sc.slug);
-            if (items.length === 0) return null;
+          {sections.map(({ sc, items }) => {
+            // A subcategory with less than a full grid row would waste a
+            // page alone (e.g. Lighters) — let it flow after the previous
+            // section; break-inside keeps its header and row together.
+            const ownPage = items.length > 4;
             return (
-              <div key={sc.slug} style={{ breakBefore: "page" }}>
+              <div
+                key={sc.slug}
+                className={ownPage ? undefined : "mt-8"}
+                style={ownPage ? { breakBefore: "page" } : { breakInside: "avoid" }}
+              >
                 <h3
                   className="border-b border-border pb-2 text-lg font-semibold text-foreground"
                   style={{ breakAfter: "avoid" }}
@@ -121,7 +140,8 @@ export default function CatalogPrintPage() {
             );
           })}
         </section>
-      ))}
+        );
+      })}
     </div>
   );
 }
