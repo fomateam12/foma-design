@@ -12,6 +12,12 @@ import { cloudinary } from "@/lib/format";
 const R2_PUBLIC_BASE = "https://pub-7dbfe9f161d34085b011aea74e8f75ac.r2.dev";
 
 export function catalogImageUrl(src: string, width = 400): string {
-  if (src.startsWith("/products/")) return `${R2_PUBLIC_BASE}${src}`;
+  if (src.startsWith("/products/")) {
+    // R2 serves originals (multi-MB) — route through the Vercel optimizer
+    // for a resized variant. `w` must be one of the configured image
+    // widths; 96/256/640 are all in the default set.
+    const w = width <= 96 ? 96 : width <= 256 ? 256 : 640;
+    return `/_next/image?url=${encodeURIComponent(`${R2_PUBLIC_BASE}${src}`)}&w=${w}&q=75`;
+  }
   return cloudinary(src, { width });
 }
