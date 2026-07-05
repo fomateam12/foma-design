@@ -77,25 +77,42 @@ export default function CatalogPrintPage() {
         </p>
       </header>
       {categories.map((c) => (
-        <section key={c.slug} className="mt-8" style={{ breakBefore: "page" }}>
-          <h2 className="border-b border-border pb-2 text-h3 text-foreground">
-            {c.name}{" "}
-            <span className="text-sm font-normal text-muted-foreground">
-              · {c.productCount.toLocaleString()} products
-            </span>
-          </h2>
+        <section key={c.slug} style={{ breakBefore: "page" }}>
+          {/* Category divider page: the title stands alone, and every
+              subcategory opens on a fresh page — no two sections ever
+              share a page. */}
+          <div className="flex min-h-[80vh] flex-col justify-center">
+            <p className="eyebrow text-brand-strong">Category</p>
+            <h2 className="mt-3 text-h1 text-foreground">{c.name}</h2>
+            <p className="mt-4 text-lead text-muted-foreground">
+              {c.productCount.toLocaleString()} products ·{" "}
+              {c.subcategories.length} collections
+            </p>
+            <ul className="mt-6 max-w-md text-sm text-muted-foreground">
+              {c.subcategories.map((sc) => (
+                <li key={sc.slug}>
+                  {sc.name} ({sc.productCount.toLocaleString()})
+                </li>
+              ))}
+            </ul>
+          </div>
           {c.subcategories.map((sc) => {
             const items = getProductsBySubcategory(c.slug, sc.slug);
             if (items.length === 0) return null;
             return (
-              <div key={sc.slug} className="mt-5">
+              <div key={sc.slug} style={{ breakBefore: "page" }}>
                 <h3
-                  className="text-sm font-semibold uppercase tracking-wide text-muted-foreground"
+                  className="border-b border-border pb-2 text-lg font-semibold text-foreground"
                   style={{ breakAfter: "avoid" }}
                 >
-                  {c.name} › {sc.name} ({items.length})
+                  {c.name}{" "}
+                  <span className="font-normal text-muted-foreground">›</span>{" "}
+                  {sc.name}{" "}
+                  <span className="text-sm font-normal text-muted-foreground">
+                    ({items.length} products)
+                  </span>
                 </h3>
-                <div className="mt-2 grid grid-cols-4 gap-2">
+                <div className="mt-3 grid grid-cols-4 gap-2">
                   {items.map((p) => (
                     <PrintCard key={p.id} p={p} />
                   ))}
