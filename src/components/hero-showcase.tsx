@@ -12,17 +12,19 @@ import type { ReactNode } from "react";
  * get the finished static engraving.
  */
 
-const TRACE_PATH =
-  "M30 130 C45 60, 95 45, 100 90 C104 128, 60 132, 78 100 C95 68, 150 55, 170 105";
-
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** One engraving pass: 80% of the loop burns, 20% holds the finished mark. */
+const PASS = {
+  duration: 7,
+  times: [0, 0.8, 1],
+  repeat: Infinity,
+  ease: "linear" as const,
+};
 
 /* ------------------------- Wood board scene ------------------------- */
 
 function WoodScene({ reduce }: { reduce: boolean }) {
-  const trace = reduce
-    ? { pathLength: 1 }
-    : { pathLength: [0, 1, 1] };
   return (
     <div
       className="relative aspect-square w-full overflow-hidden"
@@ -48,74 +50,48 @@ function WoodScene({ reduce }: { reduce: boolean }) {
           }}
         />
 
-        {/* Engraved flourish being burned in, with the laser dot riding the
-            tip of the trace (a tiny travelling dash on the same path, so it
-            stays aligned at every card size) */}
-        <svg
-          viewBox="0 0 200 200"
-          preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full"
-        >
-          <motion.path
-            d={TRACE_PATH}
-            fill="none"
-            stroke="oklch(0.24 0.04 45)"
-            strokeWidth={5}
-            strokeLinecap="round"
-            initial={{ pathLength: reduce ? 1 : 0 }}
-            animate={trace}
-            transition={
-              reduce
-                ? undefined
-                : { duration: 7, times: [0, 0.8, 1], repeat: Infinity, ease: "linear" }
-            }
-          />
-          <motion.path
-            d={TRACE_PATH}
-            fill="none"
-            stroke="oklch(0.78 0.16 55)"
-            strokeWidth={1.6}
-            strokeLinecap="round"
-            opacity={0.9}
-            initial={{ pathLength: reduce ? 1 : 0 }}
-            animate={trace}
-            transition={
-              reduce
-                ? undefined
-                : { duration: 7, times: [0, 0.8, 1], repeat: Infinity, ease: "linear" }
-            }
-          />
-          {!reduce && (
-            <>
-              {/* glow halo */}
-              <motion.path
-                d={TRACE_PATH}
-                fill="none"
-                stroke="oklch(0.8 0.16 55 / 0.45)"
-                strokeWidth={11}
-                strokeLinecap="round"
-                pathLength={1}
-                strokeDasharray="0.001 1"
-                initial={{ strokeDashoffset: 1 }}
-                animate={{ strokeDashoffset: [1, 0.001, 0.001], opacity: [1, 1, 0] }}
-                transition={{ duration: 7, times: [0, 0.8, 1], repeat: Infinity, ease: "linear" }}
+        {/* "FomaPrint" wordmark burned in left-to-right, the laser dot
+            riding the reveal edge so the letters appear behind it */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative">
+            <motion.span
+              className="block whitespace-nowrap font-heading text-[22px] font-bold tracking-wide 2xl:text-[26px]"
+              style={{
+                color: "oklch(0.22 0.045 45)",
+                textShadow: "0 1px 0 rgba(255,255,255,0.1)",
+              }}
+              initial={{
+                clipPath: reduce ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+              }}
+              animate={
+                reduce
+                  ? undefined
+                  : {
+                      clipPath: [
+                        "inset(0 100% 0 0)",
+                        "inset(0 0% 0 0)",
+                        "inset(0 0% 0 0)",
+                      ],
+                    }
+              }
+              transition={reduce ? undefined : PASS}
+            >
+              FomaPrint
+            </motion.span>
+            {!reduce && (
+              <motion.span
+                className="absolute top-1/2 size-2 -translate-y-1/2 rounded-full"
+                style={{
+                  background: "oklch(0.97 0.05 85)",
+                  boxShadow:
+                    "0 0 6px 2px oklch(0.85 0.15 65), 0 0 18px 7px oklch(0.7 0.18 45 / 0.55)",
+                }}
+                animate={{ left: ["0%", "100%", "100%"], opacity: [1, 1, 0] }}
+                transition={PASS}
               />
-              {/* white-hot core */}
-              <motion.path
-                d={TRACE_PATH}
-                fill="none"
-                stroke="oklch(0.97 0.05 85)"
-                strokeWidth={4.5}
-                strokeLinecap="round"
-                pathLength={1}
-                strokeDasharray="0.001 1"
-                initial={{ strokeDashoffset: 1 }}
-                animate={{ strokeDashoffset: [1, 0.001, 0.001], opacity: [1, 1, 0] }}
-                transition={{ duration: 7, times: [0, 0.8, 1], repeat: Infinity, ease: "linear" }}
-              />
-            </>
-          )}
-        </svg>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Rising smoke wisp */}
@@ -174,12 +150,11 @@ function TumblerScene({ reduce }: { reduce: boolean }) {
             {[0, 1].map((i) => (
               <span
                 key={i}
-                className="flex h-full w-1/2 shrink-0 items-center justify-around font-heading text-[9px] font-bold uppercase tracking-[0.3em]"
+                className="flex h-full w-1/2 shrink-0 items-center justify-around font-heading text-[10px] font-bold uppercase tracking-[0.24em]"
                 style={{ color: "oklch(0.72 0.12 60 / 0.85)" }}
               >
-                <span>Your</span>
-                <span>Brand</span>
-                <span>Here</span>
+                <span>FomaPrint</span>
+                <span>FomaPrint</span>
               </span>
             ))}
           </motion.div>
