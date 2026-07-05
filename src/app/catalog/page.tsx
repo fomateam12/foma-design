@@ -7,7 +7,7 @@ import {
   getCategories,
   getProductsByCategory,
 } from "@/data/catalog";
-import { cloudinary } from "@/lib/format";
+import { catalogImageUrl } from "@/lib/catalog-image";
 import { ENGRAVING_FEES } from "@/lib/partner-prices";
 import { site } from "@/lib/site";
 
@@ -152,7 +152,7 @@ export default function CatalogIndexPage() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         key={p.id}
-                        src={cloudinary(p.image, { width: 96 })}
+                        src={catalogImageUrl(p.image, 96)}
                         alt=""
                         loading="lazy"
                         decoding="async"

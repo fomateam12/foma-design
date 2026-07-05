@@ -4,7 +4,8 @@ import {
   getProductsBySubcategory,
   type Product,
 } from "@/data/catalog";
-import { cloudinary, formatPrice, formatWeight } from "@/lib/format";
+import { catalogImageUrl } from "@/lib/catalog-image";
+import { formatPrice, formatWeight } from "@/lib/format";
 import { ENGRAVING_FEES, partnerPriceFor } from "@/lib/partner-prices";
 import { site } from "@/lib/site";
 
@@ -29,7 +30,7 @@ function PrintCard({ p }: { p: Product }) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={cloudinary(p.image, { width: 200 })}
+        src={catalogImageUrl(p.image, 200)}
         alt={p.name}
         width={200}
         height={200}

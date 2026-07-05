@@ -8,7 +8,7 @@ import {
   getCategory,
   getProductsBySubcategory,
 } from "@/data/catalog";
-import { cloudinary } from "@/lib/format";
+import { catalogImageUrl } from "@/lib/catalog-image";
 import { site } from "@/lib/site";
 
 /** Partner catalog — category page: one card per subcategory, each with its
@@ -79,7 +79,7 @@ export default async function CatalogCategoryPage({
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         key={p.id}
-                        src={cloudinary(p.image, { width: 96 })}
+                        src={catalogImageUrl(p.image, 96)}
                         alt=""
                         loading="lazy"
                         decoding="async"
