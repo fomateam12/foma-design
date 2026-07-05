@@ -30,9 +30,17 @@ export function pricedSkuCount(): number {
 /** Flat decoration fees, in USD — mirror the xlsx so copy stays in sync. */
 export const ENGRAVING_FEES = { front: 4, back: 2, handling: 1 } as const;
 
-/** Partner-catalog visibility filter. Sublimation blanks are excluded from
- *  the partner catalog, PDF and downloadable price list (operator decision,
- *  2026-07-05) while remaining live on the storefront. */
-export function inPartnerCatalog(p: { name: string }): boolean {
-  return !/sublimat/i.test(p.name);
+/** SKUs the operator pulled from the partner catalog only (2026-07-05):
+ *  the Brushed Silver / White 30 oz tumbler color cards stay on the
+ *  storefront but are not offered to partners. */
+const PARTNER_EXCLUDED_SKUS = new Set(["STM631", "STM632"]);
+
+/** Partner-catalog visibility filter. Sublimation blanks and the excluded
+ *  SKUs above are hidden from the partner catalog, PDF and downloadable
+ *  price list (operator decisions, 2026-07-05) while remaining live on the
+ *  storefront. */
+export function inPartnerCatalog(p: { name: string; sku: string }): boolean {
+  return (
+    !/sublimat/i.test(p.name) && !PARTNER_EXCLUDED_SKUS.has(p.sku.toUpperCase())
+  );
 }

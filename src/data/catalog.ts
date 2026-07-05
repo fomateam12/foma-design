@@ -649,6 +649,15 @@ const REMOVED_SKUS = new Set<string>([
   "GFT710",
   "GFT711", "GFT618", "GFT619",
   "GFT382", "GFT378", "GFT251A", "GFT250A", "GFT1310",
+  // Stainless Steel purge — operator instruction 2026-07-05: remove every
+  // stainless-steel product from the site and the partner catalog.
+  "GFT1011", // Football Leatherette Wrapped Stainless Steel Cigar Case with Cutter
+  "FSK502",  // Black 6 oz. Powder Coated Stainless Steel Flask
+  "FSK510",  // Navy Blue 6 oz. Powder Coated Stainless Steel Flask
+  "FSK602",  // 6 oz. Matte Black Stainless Steel Flask
+  "FSK652SETA", // 6 oz. Matte Black Stainless Steel Flask Set with Presentation Box
+  "FSK672SET",  // 6 oz. Matte Black Stainless Steel Flask Set with Funnel
+  "FSK705A",    // 7 oz. Leather Wrapped Stainless Steel Flask Kit
 ]);
 
 const ADDED_PRODUCTS: RawProduct[] = [
@@ -1714,21 +1723,6 @@ const ADDED_PRODUCTS: RawProduct[] = [
   // The five silicone-grip-coaster additions (GFT2071/2081/2091/2101/2102) were
   // marked "SIL (x)" in fomaprint liste.xlsx (2026-06-27 refresh) and dropped.
   // Their now-empty "Silicone Grip Coasters" subcategory was removed below.
-  {
-    id: "lbh21",
-    name: "Stainless Steel Polar Camel Insulated Beverage Holder",
-    sku: "LBH21",
-    size: "5 1/4\"",
-    price: 22.0,
-    image: "https://res.cloudinary.com/business-products/image/upload/q_auto,c_pad,b_transparent,w_300,h_300/v1669755588/products/images/large/LBH21--df17df08.png",
-    imageFull: "https://res.cloudinary.com/business-products/image/upload/q_auto/v1669755588/products/images/large/LBH21--df17df08.png",
-    categoryId: "2",
-    categorySlug: "polar-camel",
-    categoryName: "Polar Camel",
-    subId: "19",
-    subSlug: "polar-camel-beverage-holders",
-    subName: "Polar Camel Beverage Holders",
-  },
 
   // Polar Camel water-bottle lids from the JDS DRINKCAT26 catalog (page 57,
   // "Great for attaching your Polar Camel Water Bottle"). Not in the feed yet —

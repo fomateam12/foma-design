@@ -188,27 +188,6 @@
   "other": 1.0,
   "total": 17.9
  },
- "FSK502": {
-  "back": 2.0,
-  "blank": 3.45,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 8.45
- },
- "FSK510": {
-  "back": 2.0,
-  "blank": 3.45,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 8.45
- },
- "FSK602": {
-  "back": 2.0,
-  "blank": 3.25,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 8.25
- },
  "FSK615": {
   "back": 2.0,
   "blank": 5.45,
@@ -264,27 +243,6 @@
   "front": 4.0,
   "other": 1.0,
   "total": 10.45
- },
- "FSK652SETA": {
-  "back": 2.0,
-  "blank": 6.95,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 11.95
- },
- "FSK672SET": {
-  "back": 2.0,
-  "blank": 4.95,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 9.95
- },
- "FSK705A": {
-  "back": 2.0,
-  "blank": 5.75,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 10.75
  },
  "GDW8J": {
   "back": 2.0,
@@ -376,13 +334,6 @@
   "front": 4.0,
   "other": 1.0,
   "total": 20.6
- },
- "GFT1011": {
-  "back": 2.0,
-  "blank": 16.45,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 21.45
  },
  "GFT1012": {
   "back": 2.0,
@@ -2322,13 +2273,6 @@
   "front": 4.0,
   "other": 1.0,
   "total": 18.85
- },
- "LBH21": {
-  "back": 2.0,
-  "blank": 5.45,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 10.45
  },
  "LBH22": {
   "back": 2.0,
@@ -5766,20 +5710,6 @@
   "front": 4.0,
   "other": 1.0,
   "total": 13.6
- },
- "STM631": {
-  "back": 2.0,
-  "blank": 8.75,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 13.75
- },
- "STM632": {
-  "back": 2.0,
-  "blank": 9.75,
-  "front": 4.0,
-  "other": 1.0,
-  "total": 14.75
  },
  "TM-FOMA-AZR": {
   "back": 2.0,
