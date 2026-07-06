@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { TurnstileWidget } from "@/components/turnstile-widget";
+import { PhoneInput } from "@/components/phone-input";
 import { cn } from "@/lib/utils";
 import {
   resellerApplicationSchema,
@@ -17,6 +18,7 @@ import {
   HEAR_ABOUT_US,
   type ResellerApplicationInput,
 } from "@/lib/validation";
+import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY } from "@/data/phone-countries";
 
 const FIELD = "h-11";
 const SELECT =
@@ -33,6 +35,9 @@ export function SellerApplicationForm() {
   const mountedAt = useRef<number>(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [phoneCountryIso2, setPhoneCountryIso2] = useState<string>(
+    DEFAULT_PHONE_COUNTRY.iso2,
+  );
 
   useEffect(() => {
     mountedAt.current = Date.now();
@@ -75,12 +80,17 @@ export function SellerApplicationForm() {
     setSubmitError(null);
     const started = mountedAt.current;
     const elapsedMs = started > 0 ? Date.now() - started : undefined;
+    const phoneCountry =
+      PHONE_COUNTRIES.find((c) => c.iso2 === phoneCountryIso2) ??
+      DEFAULT_PHONE_COUNTRY;
+    const phone = `+${phoneCountry.dialCode} ${values.phone}`.trim();
     try {
       const res = await fetch("/api/reseller-application", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
+          phone,
           elapsedMs,
           cfTurnstileToken: turnstileToken ?? undefined,
         }),
@@ -173,12 +183,13 @@ export function SellerApplicationForm() {
         </div>
         <div>
           <Label htmlFor="se-phone">Phone *</Label>
-          <Input
+          <PhoneInput
             id="se-phone"
-            type="tel"
-            className={cn(FIELD, "mt-1.5")}
-            aria-invalid={!!errors.phone}
-            {...register("phone")}
+            className="mt-1.5"
+            countryIso2={phoneCountryIso2}
+            onCountryChange={setPhoneCountryIso2}
+            numberInputProps={register("phone")}
+            ariaInvalid={!!errors.phone}
           />
           <ErrorText msg={errors.phone?.message} />
         </div>
