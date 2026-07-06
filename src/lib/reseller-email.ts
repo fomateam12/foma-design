@@ -3,6 +3,7 @@ import { site } from "@/lib/site";
 import { ORDER_CUTOFF } from "@/lib/site-copy";
 import type { ResellerApplicationInput } from "@/lib/validation";
 import { log } from "@/lib/log";
+import { nyTimestamp } from "@/lib/time";
 
 /**
  * Reseller-application email delivery via Resend.
@@ -243,18 +244,6 @@ function applicantHtml(data: ResellerApplicationInput): string {
 
 /* -------------------------------- dispatch -------------------------------- */
 
-function nyTimestamp(): string {
-  try {
-    return new Intl.DateTimeFormat("en-US", {
-      timeZone: "America/New_York",
-      dateStyle: "medium",
-      timeStyle: "short",
-    }).format(new Date());
-  } catch {
-    return new Date().toISOString();
-  }
-}
-
 /**
  * Send both emails. Uses Promise.allSettled so a failed applicant confirmation
  * never discards a successfully-delivered internal notification (we still have
@@ -262,7 +251,7 @@ function nyTimestamp(): string {
  */
 export async function sendResellerApplicationEmails(
   data: ResellerApplicationInput,
-  ctx?: { traceId?: string },
+  ctx?: { traceId?: string; submittedAt?: string },
 ): Promise<ResellerEmailResult> {
   const traceId = ctx?.traceId;
   const apiKey = process.env.RESEND_API_KEY;
@@ -291,7 +280,7 @@ export async function sendResellerApplicationEmails(
   }
 
   const resend = new Resend(apiKey);
-  const submittedAt = nyTimestamp();
+  const submittedAt = ctx?.submittedAt ?? nyTimestamp();
 
   // RESELLER_NOTIFICATION_EMAIL may be a comma-separated list so the lead lands
   // in more than one inbox (e.g. info@fomaprint.com + a reliable Gmail). This
