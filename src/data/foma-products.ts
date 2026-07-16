@@ -508,6 +508,38 @@ export const fomaProducts: Product[] = [
     ],
   },
   {
+    id: "foma-tumbler-40oz-forest",
+    name: "Personalized 40oz Tumbler with Handle & Straw – Forest",
+    sku: "TM-FOMA-FRS",
+    size: "40oz · 12 × 6 in",
+    basePrice: 12.99,
+    image: "/products/TM-FOMA-FRS/TM-FOMA-FRS_engraved.png",
+    imageFull: "/products/TM-FOMA-FRS/TM-FOMA-FRS_engraved.png",
+    images: ["/products/TM-FOMA-FRS/TM-FOMA-FRS_engraved.png", "/products/_shared/engrave-area-40oz.jpg"],
+    categoryId: "3",
+    categorySlug: "drinkware",
+    categoryName: "Drinkware",
+    subcategorySlug: "40-oz-tumblers",
+    subcategoryName: "40 oz. Tumblers",
+    description:
+      "Personalized 40 oz stainless steel tumbler with handle and straw in Forest — double-wall vacuum insulated and laser-engraved to order with a custom name or design. Ships next day.",
+    longDescription:
+      "FOMA FAMILY's 40 oz tumbler in 18/8 stainless steel with double-wall vacuum insulation and a thermal copper lining — keeps drinks cold for up to 12 hours or hot for up to 6. Comfortable ergonomic handle, BPA-free clear sliding lid and a reusable straw for work, gym or travel. This is the Forest powder-coated colorway, laser-engraved to order with a name, monogram or birth-flower design for a crisp, permanent finish that won't fade or peel. A thoughtful personalized gift for birthdays, bridesmaids, weddings and the holidays — ships next day.",
+    badges: ["Bestseller"],
+    leadTimeDays: 1,
+    personalization: [
+      {
+        id: "engraving-text",
+        label: "Engraving text",
+        type: "text",
+        required: true,
+        placeholder: "Name, monogram, or birth-flower message",
+        maxLength: 40,
+        helpText: "The name or text we'll laser-engrave on the tumbler.",
+      },
+    ],
+  },
+  {
     id: "foma-charcuterie-marble",
     name: "Marble Charcuterie Board – 11 Piece Set",
     sku: "FOMA-CHAR-MARB",
