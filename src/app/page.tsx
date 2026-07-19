@@ -25,7 +25,6 @@ import { SectionHeader } from "@/components/section-header";
 import { BentoGrid, BentoCard } from "@/components/bento";
 import { ProductBanner } from "@/components/product-banner";
 import { Reveal, Stagger, StaggerItem } from "@/components/reveal";
-import { HeroShowcase } from "@/components/hero-showcase";
 import { StatCounter } from "@/components/stat-counter";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -106,12 +105,22 @@ export default function HomePage() {
     <>
       {/* ----------------------------- Hero ----------------------------- */}
       <section className="relative overflow-hidden border-b border-border">
+        {/* Sunlit workbench photograph as the hero banner. The scene keeps its
+            center clear (plaster wall + bench), so the headline sits on quiet
+            image area; a cream veil tops it up for AA contrast, heavier at the
+            top and bottom where the chip and stat strip land. */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-40 right-[-10%] h-[42rem] w-[42rem] rounded-full bg-brand-muted/70 blur-3xl" />
-          <div className="absolute left-[-15%] top-32 h-[30rem] w-[30rem] rounded-full bg-secondary blur-3xl" />
+          <Image
+            src="/banners/hero-workbench.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/30 to-background/95" />
+          <div className="absolute -top-40 right-[-10%] h-[42rem] w-[42rem] rounded-full bg-brand-muted/40 blur-3xl" />
         </div>
-
-        <HeroShowcase />
 
         <div className="container-px flex flex-col items-center py-16 text-center lg:py-24">
           <Stagger className="flex flex-col items-center">
