@@ -585,8 +585,9 @@ const REMOVED_SKUS = new Set<string>([
   "GFT897", "GFT898", "GFT902", "GFT921", "GFT922", "GFT990",
   "GFT991", "GFT992", "GFT993", "GSC101", "GSC102", "GSC103",
   "GSC104", "GSC201", "GSC202", "GSC203", "GSC301", "GSC302",
-  "GSC303", "GSC304", "LSC101", "LSC102", "LSC103", "LSC104",
-  "LSC105", "LSC106", "LSC107", "LSC108",
+  "GSC303", "GSC304",
+  // LSC101–LSC108 (10 oz Polar Camel Sippy Cups) restored 2026-07-20 by
+  // operator request — priced $9.10 blank in FomaPrint-Price-List.xlsx.
   "SLT075", "SLT076",
   "SLT077", "SLT078", "SLT079", "SLT080", "SLT081", "SLT088",
   "FSK101", "FSK102", "FSK103", "FSK104", "FSK111", "FSK303",
