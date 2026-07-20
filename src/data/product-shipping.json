@@ -4000,5 +4000,53 @@
     "engrave_mm": "135 × 85 mm",
     "fallback_weight_lb": null,
     "type": "Cutting Board"
+  },
+  "LSC101": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
+  },
+  "LSC102": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
+  },
+  "LSC103": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
+  },
+  "LSC104": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
+  },
+  "LSC105": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
+  },
+  "LSC106": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
+  },
+  "LSC107": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
+  },
+  "LSC108": {
+    "dim_in": "7 × 5 × 5 in",
+    "engrave_mm": "69.9 × 82.6 mm",
+    "fallback_weight_lb": 0.92,
+    "type": "10 oz Sippy Cup"
   }
 }
